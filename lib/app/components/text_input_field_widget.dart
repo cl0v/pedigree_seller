@@ -38,6 +38,15 @@ class TextInputFieldWidget extends StatelessWidget {
               obscureText: isObscure,
               decoration: InputDecoration(
                 border: InputBorder.none,
+                // suffixIcon:  Padding(
+                //   padding:
+                //       const EdgeInsets.only(left: 20.0, right: 20, bottom: 6),
+                //   child: prefixWidget ??
+                //       Icon(
+                //         icon,
+                //         size: 24,
+                //       ),
+                // ),
                 prefixIcon: Padding(
                   padding:
                       const EdgeInsets.only(left: 20.0, right: 20, bottom: 6),
