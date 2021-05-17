@@ -1,12 +1,15 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:pedigree_seller/app/components/custom_button_widget.dart';
+import 'package:image_picker/image_picker.dart';
 
-import 'package:pedigree_seller/app/components/custom_drop_down_button_widget.dart';
+import 'package:pedigree_seller/app/components/custom_button_widget.dart';
+import 'package:pedigree_seller/app/components/image_picker_tile_widget.dart';
 
 import '../../../constants.dart';
-import 'package:image_picker/image_picker.dart';
+
+//TODO: Criar área para cadastrar os pais do filhote
+//(Pelo menos dar essa possibilidade)
 
 class DogColors {
   String title;
@@ -53,34 +56,10 @@ class _StorePetParentsRegistrationState
     extends State<StorePetParentsRegistration> {
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        brightness: Brightness.light,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Text(
-          'Cores',
-          style: kTitleTextStyle,
-        ),
-        leading: Builder(builder: (BuildContext context) {
-          return IconButton(
-            icon: Icon(
-              Icons.arrow_back_ios,
-              color: Colors.grey[800],
-            ),
-            onPressed: () => Navigator.pop(context),
-          );
-        }),
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(right: 16),
-            child: Icon(
-              Icons.notifications_none,
-              color: Colors.grey[800],
-            ),
-          ),
-        ],
-      ),
+      bottomNavigationBar: _bottomAppBar(size, context),
+      appBar: _appBar(),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
@@ -89,41 +68,74 @@ class _StorePetParentsRegistrationState
             CustomCheckBoxListWidget(),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: CustomFormWidget(),
-            ),
-            Spacer(),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: CustomButtonWidget(
-                title: 'Avançar',
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => StorePetParentsRegistration(),
-                    ),
-                  );
-                },
-              ),
+              child: CustomImagePickerWidget(),
             ),
           ],
         ),
       ),
     );
   }
+
+  AppBar _appBar() {
+    return AppBar(
+      brightness: Brightness.light,
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      title: Text(
+        'Cores',
+        style: kTitleTextStyle,
+      ),
+      leading: Builder(builder: (BuildContext context) {
+        return IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.grey[800],
+          ),
+          onPressed: () => Navigator.pop(context),
+        );
+      }),
+    );
+  }
+
+  BottomAppBar _bottomAppBar(Size size, BuildContext context) {
+    return BottomAppBar(
+      color: Colors.transparent,
+      elevation: 0,
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(
+          size.width * 0.1,
+          0,
+          size.width * 0.1,
+          8,
+        ),
+        child: CustomButtonWidget(
+          title: 'Avançar',
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => StorePetParentsRegistration(),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
 }
 
-class CustomFormWidget extends StatefulWidget {
+class CustomImagePickerWidget extends StatefulWidget {
   @override
-  _CustomFormWidgetState createState() => _CustomFormWidgetState();
+  _CustomImagePickerWidgetState createState() =>
+      _CustomImagePickerWidgetState();
 }
 
-class _CustomFormWidgetState extends State<CustomFormWidget> {
+class _CustomImagePickerWidgetState extends State<CustomImagePickerWidget> {
   late final File _image;
 
   final picker = ImagePicker();
 
-  Future getImage(DogPick dPick) async {
+  getImage(DogPick dPick) async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
     setState(() {
@@ -149,18 +161,13 @@ class _CustomFormWidgetState extends State<CustomFormWidget> {
           padding: const EdgeInsets.only(top: 4.0),
           child: Column(
             children: dogPickList
-                .map((dogPick) => ListTile(
-                      title: Text(dogPick.title),
-                      leading: Icon(
-                        Icons.upload_rounded,
-                      ),
-                      trailing: dogPick.file == null
-                          ? Text('No image selected.')
-                          : Image.file(dogPick.file!),
-                      onTap: () {
-                        getImage(dogPick);
-                      },
-                    ))
+                .map(
+                  (dogPick) => ImagePickerTileWidget(
+                    title: dogPick.title,
+                    file: dogPick.file,
+                    fileSetter: getImage(dogPick),
+                  ),
+                )
                 .toList(),
           ),
         ),

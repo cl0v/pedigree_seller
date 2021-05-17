@@ -33,7 +33,9 @@ class _StoreSpeciesScreenState extends State<StoreSpeciesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
+      bottomNavigationBar: _bottomAppBar(size, context),
       appBar: AppBar(
         brightness: Brightness.light,
         backgroundColor: Colors.transparent,
@@ -51,15 +53,7 @@ class _StoreSpeciesScreenState extends State<StoreSpeciesScreen> {
             onPressed: () => Navigator.pop(context),
           );
         }),
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(right: 16),
-            child: Icon(
-              Icons.notifications_none,
-              color: Colors.grey[800],
-            ),
-          ),
-        ],
+       
       ),
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -75,22 +69,33 @@ class _StoreSpeciesScreenState extends State<StoreSpeciesScreen> {
                 list: _petList,
               ),
             ),
-            Spacer(),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: CustomButtonWidget(
-                  title: 'Avançar',
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => StorePetParentsRegistration(),
-                      ),
-                    );
-                  }),
-              // ),
-            ),
           ],
+        ),
+      ),
+    );
+  }
+
+  BottomAppBar _bottomAppBar(Size size, BuildContext context) {
+    return BottomAppBar(
+      color: Colors.transparent,
+      elevation: 0,
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(
+          size.width * 0.1,
+          0,
+          size.width * 0.1,
+          8,
+        ),
+        child: CustomButtonWidget(
+          title: 'Avançar',
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => StorePetParentsRegistration(),
+              ),
+            );
+          },
         ),
       ),
     );
