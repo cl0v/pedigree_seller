@@ -3,15 +3,17 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+//TODO: Fazer o imagePicker pegar imagens;
+
 class ImagePickerTileWidget extends StatelessWidget {
   final String title;
   final File? file;
-  final Function(File) fileSetter;
+  // final Function(File) fileSetter;
   const ImagePickerTileWidget({
     Key? key,
     required this.title,
     this.file,
-    required this.fileSetter,
+    // required this.fileSetter,
   }) : super(key: key);
 
   Future<File?> getImage() async {
@@ -27,10 +29,11 @@ class ImagePickerTileWidget extends StatelessWidget {
       leading: Icon(
         Icons.upload_rounded,
       ),
-      trailing: file != null ? Image.file(file!) : Text('Toque para enviar foto'),
+      trailing:
+          file != null ? Image.file(file!) : Text('Toque para enviar foto'),
       onTap: () async {
-        var img = await getImage();
-        if (img != null) fileSetter(img);
+        // var img = await getImage();
+        // if (img != null) fileSetter(img);
       },
     );
   }

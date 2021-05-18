@@ -64,7 +64,13 @@ class _PetScreenState extends State<PetScreen> {
         itemBuilder: (context, index) {
           var pet = petList[index];
           return ListTile(
-            //TODO: OnTap para editar
+            trailing: IconButton(
+              icon: Icon(Icons.adaptive.more),
+              onPressed: () {
+                //TODO: OnTap para editar
+                //Mostrar um popupmenubutton com as opçoes de editar, deletar, (Add arquivar), etc;
+              },
+            ),
             title: Text(pet.name),
           );
         },

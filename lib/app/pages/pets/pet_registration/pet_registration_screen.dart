@@ -5,11 +5,12 @@ import 'package:pedigree_seller/app/components/custom_button_widget.dart';
 import 'package:pedigree_seller/app/components/image_picker_tile_widget.dart';
 import 'package:pedigree_seller/app/models/pet_model.dart';
 import 'package:pedigree_seller/constants.dart';
+
+
 //TODO: Recriar a pagina para deixar bem claro como vai ficar na hora de adicionar(Quadrado grandao pra enviar foto, setinha pra botar nome, etc)
 //TODO: Permitir que a página que cria é a mesma que edita
 //(Essa pode ser a página de triagem, para preencher os dados rapidos(Especie, titulo e categoria, macho femea etc))
 //TODO: Implement controller of petRegistration
-
 
 ///Cadastrar os cachorros reprodutores (Pai e Mae)
 ///Para agilizar o cadastro da ninhada
@@ -47,12 +48,7 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
           child: CustomButtonWidget(
             title: 'Cadastrar',
             onPressed: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => StorePetParentsRegistration(),
-              //   ),
-              // );
+              //TODO: Implement cadastrar
             },
           ),
         ),
@@ -78,7 +74,7 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
         ),
         ImagePickerTileWidget(
           title: 'Foto',
-          fileSetter: fileSetter,
+          // fileSetter: fileSetter,
         ),
         //Selecionar categoria
         Padding(
@@ -125,7 +121,15 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Text('Macho'),
+                  Text(
+                    'Macho',
+                    style: TextStyle(
+                        color: _maleFemale
+                            ? kTitleTextStyle.color!.withOpacity(.3)
+                            : kTitleTextStyle.color,
+                        fontWeight:
+                            _maleFemale ? FontWeight.normal : FontWeight.bold),
+                  ),
                   Switch(
                     value: _maleFemale,
                     onChanged: (val) {
@@ -138,7 +142,15 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
                     inactiveTrackColor: Colors.blue,
                     inactiveThumbColor: Colors.blue,
                   ),
-                  Text('Femea')
+                  Text(
+                    'Femea',
+                    style: TextStyle(
+                        color: _maleFemale
+                            ? kTitleTextStyle.color
+                            : kTitleTextStyle.color!.withOpacity(.3),
+                        fontWeight:
+                            _maleFemale ? FontWeight.bold : FontWeight.normal),
+                  )
                 ],
               ),
             ],
@@ -151,7 +163,7 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
         //TODO: Selecionar a raça por aqui facilitaria muito a criação da ninhada
         ImagePickerTileWidget(
           title: 'Certificado de Pedigree',
-          fileSetter: fileSetter,
+          // fileSetter: fileSetter,
         )
       ],
     );

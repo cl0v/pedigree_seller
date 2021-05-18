@@ -12,17 +12,17 @@ class Filhote {
 }
 
 class NinhadaModel {
-  String titulo;
 
   ///Pretendo colocar relação de cores com quantidade
   ///'Cores' (String) : quantidade (int)
-  List<Filhote> filhotes;
   String fotoUrl; //TODO: Trocar para lista de foto
+  String titulo;
   String dataNascimento;
   String categoria;
   String especie;
   AnimalModel pai;
   AnimalModel mae;
+  List<Filhote> filhotes;
   NinhadaModel({
     required this.titulo,
     required this.filhotes,

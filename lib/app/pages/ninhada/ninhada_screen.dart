@@ -47,6 +47,24 @@ class _NinhadasScreenState extends State<NinhadasScreen> {
             //TODO: OnTap para editar
             //TODO: Botao de criar para criar;
             return ListTile(
+              trailing: Wrap(
+                spacing: 12, // space between two icons
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.remove_red_eye),
+                    onPressed: () {
+                      //TODO: Mostrar na tela de pet(o de vendar), como ta ficando
+                    },
+                  ), // icon-1
+                  IconButton(
+                    icon: Icon(Icons.adaptive.more),
+                    onPressed: () {
+                      //Mostrar um popupmenubutton com as opçoes de editar, deletar, (Add arquivar), etc;
+                    },
+                  ), // icon-1
+                  // Icon(Icons.adaptive.more), // icon-2
+                ],
+              ),
               title: Text(
                 ninhada.titulo,
               ),

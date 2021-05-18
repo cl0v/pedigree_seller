@@ -7,6 +7,7 @@ import 'package:pedigree_seller/app.dart';
 //TODO: Dashboard completa
 
 //TODO: Fazer a splash screen do pedigree (logo) ser uma hero com a loginscreen
+
 void main() {
   runApp(MyApp());
 }

@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
+
 import 'package:pedigree_seller/app/components/custom_button_widget.dart';
-import 'package:pedigree_seller/app/components/text_input_field_widget.dart';
-import 'package:pedigree_seller/app/pages/home/home_screen.dart';
-import 'package:pedigree_seller/app/pages/store_home/store_species_screen.dart';
+import 'package:pedigree_seller/app/components/expanded_dropdown_widget.dart';
+import 'package:pedigree_seller/app/components/image_picker_tile_widget.dart';
+import 'package:pedigree_seller/app/pages/ninhada/cadastrar_filhote/cadastrar_filhote_screen.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/constants.dart';
-
-//TODO
-/*
- - Categoria: Cachorro
- - Especie: rotwailer, bulldog
-*/
 
 enum PetCategory {
   Cat,
@@ -34,8 +29,9 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
         brightness: Brightness.light,
         backgroundColor: Colors.transparent,
         elevation: 0,
+        centerTitle: true,
         title: Text(
-          'Cadastrar',
+          'Cadastrar ninhada',
           style: kTitleTextStyle,
         ),
         leading: Builder(builder: (BuildContext context) {
@@ -47,67 +43,62 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
             onPressed: () => back(context),
           );
         }),
-        
       ),
       //TODO: Estudar como botar o singleChildScrollView
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        child: Column(
-          children: [
-            Column(
-              children: [
-                TextInputFieldWidget(
-                  icon: Icons.title,
-                  hint: 'Titulo da ninhada',
-                ),
-                TextInputFieldWidget(
-                  icon: Icons.add,
-                  hint: 'Quantidade de filhos',
-                ),
-
-                //TODO: Adicionar lista de categorias
-                TextInputFieldWidget(
-                  hint: 'Valor',
-                  padding: EdgeInsets.only(top: 8),
-                  prefixWidget: Radio(
-                    //TODO: Tentar remover o padding automatico do radio
-                    value: false,
-                    groupValue: [],
-                    onChanged: (v) {},
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: ListView(
+            children: [
+              ImagePickerTileWidget(
+                title: 'Foto',
+                // fileSetter: fileSetter,
+              ),
+              TextFormField(
+                decoration: InputDecoration(
+                  hintText: 'Titulo da ninhada',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(
+                      12,
+                    ),
                   ),
                 ),
-              ],
-            ),
-            
+              ),
+              TextFormField(
+                decoration: InputDecoration(
+                  hintText: 'Data de nascimento',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(
+                      12,
+                    ),
+                  ),
+                ),
+              ),
 
-            //TODO: Criar um dropdown com o mesmo esquema desse textfield
-            // RadioListTile(
-            //   value: false,
-            //   groupValue: [],
-            //   onChanged: (val) {},
-            //   title: Text('Gato'),
-            // ),
-            // RadioListTile(
-            //   value: false,
-            //   groupValue: [],
-            //   onChanged: (val) {},
-            //   title: Text('Cachorro'),
-            // ),
-            // RadioListTile(
-            //   value: false,
-            //   groupValue: [],
-            //   onChanged: (val) {},
-            //   title: Text('Rato'),
-            // ),
-            // RadioListTile(
-            //   value: false,
-            //   groupValue: [],
-            //   onChanged: (val) {},
-            //   title: Text('Coelho'),
-            // ),
-            //TODO: Adicionar icone de avançar no botao
-          ],
+              ExpandedDropDownWidget(
+                lista: ['Cachorro', 'Gato', 'Coelho'], //TODO: Nome muito grande faz a formatacao do titulo ficar tortar
+                texto: 'Selecione a Categoria',
+              ),
+              ExpandedDropDownWidget(
+                lista: ['Persa', 'Miau', 'Aulaula'],
+                texto: 'Selecione a Especie',
+              ),
+              ExpandedDropDownWidget(
+                lista: ['Persa', 'Miau', 'Aulaula'],
+                texto: 'Selecione a Mãe',
+              ),
+              ExpandedDropDownWidget(
+                lista: ['Persa', 'Miau', 'Aulaula'], //TODO: Passar os dog macho da mesma especie
+                texto: 'Selecione o Pai',
+              ),
+
+              JaNasceuCheckBoxWidget(),
+              //TODO: Se tiver marcado, vai pra prox pagina(para cadastrar os filhotes), se nao, envia o formulario
+              //TODO: Posso perguntar as cores dos filhotes pra ja facilitar o preenchimento depois(Todos nasceram da mesma cor? Qual cor dos filhotes)
+            ],
+          ),
         ),
       ),
     );
@@ -126,16 +117,36 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
         ),
         child: CustomButtonWidget(
           title: 'Avançar',
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => StoreSpeciesScreen(),
-              ),
-            );
-          },
+          onPressed: () => push(
+            context,
+            CadastrarFilhoteScreen(),
+          ),
         ),
       ),
+    );
+  }
+}
+
+class JaNasceuCheckBoxWidget extends StatefulWidget {
+  @override
+  _JaNasceuCheckBoxWidgetState createState() => _JaNasceuCheckBoxWidgetState();
+}
+
+class _JaNasceuCheckBoxWidgetState extends State<JaNasceuCheckBoxWidget> {
+  bool _value = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return CheckboxListTile(
+      value: _value,
+      onChanged: (val) {
+        if (val != null)
+          setState(() {
+            _value = val;
+          });
+      },
+      title: Text('Nasceram'),
+      subtitle: Text('Marque caso os filhotes ja tenham nascido'),
     );
   }
 }
