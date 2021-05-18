@@ -53,7 +53,6 @@ class _StoreSpeciesScreenState extends State<StoreSpeciesScreen> {
             onPressed: () => Navigator.pop(context),
           );
         }),
-       
       ),
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -75,29 +74,27 @@ class _StoreSpeciesScreenState extends State<StoreSpeciesScreen> {
     );
   }
 
-  BottomAppBar _bottomAppBar(Size size, BuildContext context) {
-    return BottomAppBar(
-      color: Colors.transparent,
-      elevation: 0,
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(
-          size.width * 0.1,
-          0,
-          size.width * 0.1,
-          8,
+  BottomAppBar _bottomAppBar(Size size, BuildContext context) => BottomAppBar(
+        color: Colors.transparent,
+        elevation: 0,
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(
+            size.width * 0.1,
+            0,
+            size.width * 0.1,
+            8,
+          ),
+          child: CustomButtonWidget(
+            title: 'Avançar',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => StorePetParentsRegistration(),
+                ),
+              );
+            },
+          ),
         ),
-        child: CustomButtonWidget(
-          title: 'Avançar',
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => StorePetParentsRegistration(),
-              ),
-            );
-          },
-        ),
-      ),
-    );
-  }
+      );
 }

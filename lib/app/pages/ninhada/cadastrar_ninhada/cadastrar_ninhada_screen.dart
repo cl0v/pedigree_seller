@@ -3,6 +3,7 @@ import 'package:pedigree_seller/app/components/custom_button_widget.dart';
 import 'package:pedigree_seller/app/components/text_input_field_widget.dart';
 import 'package:pedigree_seller/app/pages/home/home_screen.dart';
 import 'package:pedigree_seller/app/pages/store_home/store_species_screen.dart';
+import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/constants.dart';
 
 //TODO
@@ -18,12 +19,12 @@ enum PetCategory {
   Rabbit,
 }
 
-class StoreHomeScreen extends StatefulWidget {
+class CadastrarNinhadaScreen extends StatefulWidget {
   @override
-  _StoreHomeScreenState createState() => _StoreHomeScreenState();
+  _CadastrarNinhadaScreenState createState() => _CadastrarNinhadaScreenState();
 }
 
-class _StoreHomeScreenState extends State<StoreHomeScreen> {
+class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -40,11 +41,10 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
         leading: Builder(builder: (BuildContext context) {
           return IconButton(
             icon: Icon(
-              Icons.sort,
+              Icons.arrow_back_ios,
               color: Colors.grey[800],
             ),
-            onPressed: () => Scaffold.of(context).openDrawer(),
-            tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+            onPressed: () => back(context),
           );
         }),
         

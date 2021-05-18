@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:pedigree_seller/app/pages/ninhada/ninhada_screen.dart';
+import 'package:pedigree_seller/app/pages/pets/pets_screen.dart';
+import 'package:pedigree_seller/app/utils/nav.dart';
+import 'package:pedigree_seller/constants.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -6,6 +10,64 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  Widget _myGridItem(
+      String gridName, Color color1, Color color2, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(24),
+          gradient: LinearGradient(
+            colors: [
+              color1,
+              color2,
+            ],
+            begin: Alignment.centerLeft,
+            end: Alignment(1.0, 1.0),
+          ),
+        ),
+        child: Stack(
+          children: [
+            Opacity(
+              opacity: .3,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(24),
+                  // image: DecorationImage(
+                  //   image: NetworkImage(
+                  //     gridImage,
+                  //   ),
+                  //   fit: BoxFit.fill,
+                  // ),
+                ),
+              ),
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 16),
+                  child: Text(
+                    gridName,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,6 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
         brightness: Brightness.light,
         backgroundColor: Colors.transparent,
         elevation: 0,
+        title: Text('Dashboard', style: kTitleTextStyle,),
         leading: Builder(builder: (BuildContext context) {
           return IconButton(
             icon: Icon(
@@ -34,13 +97,22 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       drawer: CustomDrawer(),
-      body: SafeArea(
-        child: ListView(
-          physics: BouncingScrollPhysics(),
-          children: [
-            HomeTitleSectionWidget(),
-          ],
-        ),
+      body: GridView.count(
+        crossAxisCount: 2,
+        padding: EdgeInsets.all(16),
+        childAspectRatio: 0.9,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+        children: [
+          _myGridItem('Meus animais', Colors.red, Colors.blue, () {
+            push(context, PetScreen());
+          }),
+          _myGridItem('Ninhadas', Colors.red, Colors.blue, () {
+            push(context, NinhadasScreen());
+          }),
+          _myGridItem('Historico de vendas', Colors.red, Colors.blue, () {}),
+          _myGridItem('Dashboard ', Colors.red, Colors.blue, () {}),
+        ],
       ),
     );
   }

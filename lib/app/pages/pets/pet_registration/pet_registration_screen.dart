@@ -3,40 +3,16 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/components/custom_button_widget.dart';
 import 'package:pedigree_seller/app/components/image_picker_tile_widget.dart';
+import 'package:pedigree_seller/app/models/pet_model.dart';
 import 'package:pedigree_seller/constants.dart';
+//TODO: Recriar a pagina para deixar bem claro como vai ficar na hora de adicionar(Quadrado grandao pra enviar foto, setinha pra botar nome, etc)
+//TODO: Permitir que a página que cria é a mesma que edita
+//(Essa pode ser a página de triagem, para preencher os dados rapidos(Especie, titulo e categoria, macho femea etc))
+//TODO: Implement controller of petRegistration
 
-class PetRegistrationFormModel {
-  String name;
-  bool isMale;
-  //Especie
-  //Categoria
-  String category;
-  String specie;
-  File image;
-  File pedigreeCertification;
-  PetRegistrationFormModel({
-    required this.name,
-    required this.isMale,
-    required this.category,
-    required this.specie,
-    required this.image,
-    required this.pedigreeCertification,
-  });
-}
 
-List<String> petCategories = [
-  'Gato',
-  'Cachorro',
-  'Coelho',
-  'Hamster',
-];
-
-List<String> petSpecies = [
-  'Rotwailer',
-  'Cachorro',
-  'Coelho',
-  'Hamster',
-];
+///Cadastrar os cachorros reprodutores (Pai e Mae)
+///Para agilizar o cadastro da ninhada
 
 class PetRegistrationScreen extends StatefulWidget {
   @override
