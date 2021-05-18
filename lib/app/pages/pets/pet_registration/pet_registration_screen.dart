@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/components/custom_button_widget.dart';
 import 'package:pedigree_seller/app/components/image_picker_tile_widget.dart';
 import 'package:pedigree_seller/app/models/pet_model.dart';
+import 'package:pedigree_seller/app/pages/ninhada/components/category_screen.dart';
+import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/constants.dart';
-
 
 //TODO: Recriar a pagina para deixar bem claro como vai ficar na hora de adicionar(Quadrado grandao pra enviar foto, setinha pra botar nome, etc)
 //TODO: Permitir que a página que cria é a mesma que edita
@@ -14,6 +15,13 @@ import 'package:pedigree_seller/constants.dart';
 
 ///Cadastrar os cachorros reprodutores (Pai e Mae)
 ///Para agilizar o cadastro da ninhada
+///
+
+class PetRegistrationController {
+  Future onRegisterPressed() async {
+    //TODO: Registrar dog
+  }
+}
 
 class PetRegistrationScreen extends StatefulWidget {
   @override
@@ -28,6 +36,8 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
   }
 
   bool _maleFemale = false;
+
+  final controller = PetRegistrationController();
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +57,10 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
           ),
           child: CustomButtonWidget(
             title: 'Cadastrar',
-            onPressed: () {
-              //TODO: Implement cadastrar
+            onPressed: () async {
+              await controller.onRegisterPressed();
+              //Implementar StreamButtonWidget aqui
+              back(context);
             },
           ),
         ),
@@ -57,11 +69,15 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
   }
 
   Widget _body() {
-    return ListView(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-          child: TextFormField(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+      child: ListView(
+        children: [
+          ImagePickerTileWidget(
+            title: 'Foto',
+            // fileSetter: fileSetter,
+          ),
+          TextFormField(
             decoration: InputDecoration(
               hintText: 'Nome',
               border: OutlineInputBorder(
@@ -71,101 +87,43 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
               ),
             ),
           ),
-        ),
-        ImagePickerTileWidget(
-          title: 'Foto',
-          // fileSetter: fileSetter,
-        ),
-        //Selecionar categoria
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Selecione a categoria:'),
-              DropdownButton(
-                  onChanged: (val) {},
-                  items: petCategories
-                      .map((cat) => DropdownMenuItem(
-                            child: Text(cat),
-                            value: cat,
-                          ))
-                      .toList())
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Selecione a especie:'),
-              DropdownButton(
-                  onChanged: (val) {},
-                  items: petSpecies
-                      .map((cat) => DropdownMenuItem(
-                            child: Text(cat),
-                            value: cat,
-                          ))
-                      .toList())
-            ],
-          ),
-        ),
 
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Selecione o sexo:'),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text(
-                    'Macho',
-                    style: TextStyle(
-                        color: _maleFemale
-                            ? kTitleTextStyle.color!.withOpacity(.3)
-                            : kTitleTextStyle.color,
-                        fontWeight:
-                            _maleFemale ? FontWeight.normal : FontWeight.bold),
-                  ),
-                  Switch(
-                    value: _maleFemale,
-                    onChanged: (val) {
-                      setState(() {
-                        _maleFemale = val;
-                      });
-                    },
-                    activeColor: Colors.red,
-                    activeTrackColor: Colors.red,
-                    inactiveTrackColor: Colors.blue,
-                    inactiveThumbColor: Colors.blue,
-                  ),
-                  Text(
-                    'Femea',
-                    style: TextStyle(
-                        color: _maleFemale
-                            ? kTitleTextStyle.color
-                            : kTitleTextStyle.color!.withOpacity(.3),
-                        fontWeight:
-                            _maleFemale ? FontWeight.bold : FontWeight.normal),
-                  )
-                ],
-              ),
-            ],
+          //TODO: Criar uma bordinha pra ficar file
+          ListTile(
+            title: Text('Selecione a categoria'),
+            subtitle: Text('*Selecione a categoria'),
+            trailing: Icon(Icons.arrow_forward_ios),
+            onTap: () {
+              push(context, CategoryScreen());
+            },
           ),
-        ),
-
-        //Selecionar sexo
-
-        //TODO: Sexo
-        //TODO: Selecionar a raça por aqui facilitaria muito a criação da ninhada
-        ImagePickerTileWidget(
-          title: 'Certificado de Pedigree',
-          // fileSetter: fileSetter,
-        )
-      ],
+          ListTile(
+            title: Text(!_maleFemale ? 'Macho' : 'Fêmea'),
+            subtitle: Text('*Selecione o gênero'),
+            trailing: Switch(
+              value: _maleFemale,
+              onChanged: (val) {
+                setState(() {
+                  _maleFemale = val;
+                });
+              },
+              activeColor: Colors.red,
+              activeTrackColor: Colors.red,
+              inactiveTrackColor: Colors.blue,
+              inactiveThumbColor: Colors.blue,
+            ),
+            onTap: () {
+              setState(() {
+                _maleFemale = !_maleFemale;
+              });
+            },
+          ),
+          ImagePickerTileWidget(
+            title: 'Certificado de Pedigree',
+            // fileSetter: fileSetter,
+          )
+        ],
+      ),
     );
   }
 
