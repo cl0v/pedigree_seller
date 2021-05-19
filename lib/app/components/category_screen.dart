@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:pedigree_seller/app/models/pet_model.dart';
 import 'package:pedigree_seller/app/models/raca_model.dart';
-import 'package:pedigree_seller/app/pages/pets/pet_registration/pet_registration_screen.dart';
+import 'package:pedigree_seller/app/pages/reprodutores/cadastrar_reprodutores/cadastrar_reprodutores_screen.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 
 import '../../constants.dart';
@@ -10,12 +10,12 @@ import '../../constants.dart';
 
 class CategoryScreen extends StatelessWidget {
   final Raca? configs;
-  final controller;
+  final PetRegistrationController controller;
   final VoidCallback? onUpdate;
 
   final list = petCategories;
 
-  CategoryScreen({Key? key, this.configs, this.controller, this.onUpdate})
+  CategoryScreen({Key? key, this.configs, required this.controller, this.onUpdate})
       : super(key: key);
 
   @override
@@ -60,7 +60,7 @@ class CategoryScreen extends StatelessWidget {
                   ));
             } else {
               configs!.especie = list[idx];
-              controller.categoria = configs;
+              controller.categoria = configs!;
               onUpdate!.call();
               // controller.categoriaSelecionada = list[idx];
               //retorna para a página anterior a primeira categoryScreen

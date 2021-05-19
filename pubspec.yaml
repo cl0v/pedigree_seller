@@ -31,7 +31,9 @@ dependencies:
   date_time_picker: "^2.0.0"
   image_picker: ^0.7.5
   firebase_core: "^1.1.0"
-
+  cloud_firestore: "^2.2.0"
+  firebase_auth: "^1.2.0"
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

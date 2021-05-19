@@ -1,4 +1,5 @@
 import 'package:pedigree_seller/app/models/pet_model.dart';
+import 'package:pedigree_seller/app/models/reprodutores_model.dart';
 
 class Filhote {
   bool isMacho;
@@ -86,3 +87,31 @@ List<NinhadaModel> ninhadaListMock = [
     mae: petListMocked[1],
   ),
 ];
+
+
+
+class NovaNinhadaModel {
+  //TODO: Obrigatorio seleção
+  String titulo;
+  //Obrigatorio seleção
+  ReprodutorModel mae;
+  //Obrigatorio seleção
+  ReprodutorModel pai;
+  bool nascidos;
+  //Apenas nascidos
+  String? fotoUrl;
+  String? dataDeNascimento;
+  NovaNinhadaModel({
+    required this.titulo,
+    required this.mae,
+    required this.pai,
+    this.nascidos = true,
+    this.fotoUrl,
+    this.dataDeNascimento,
+  });
+
+  @override
+  String toString() {
+    return 'NovaNinhadaModel(titulo: $titulo, mae: $mae, pai: $pai, nascidos: $nascidos, fotoUrl: $fotoUrl, dataDeNascimento: $dataDeNascimento)';
+  }
+}

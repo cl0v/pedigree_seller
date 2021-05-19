@@ -12,7 +12,7 @@ class NinhadasScreen extends StatefulWidget {
 }
 
 class _NinhadasScreenState extends State<NinhadasScreen> {
-  List<NinhadaModel> ninhadaList = ninhadaListMock;
+  List<NovaNinhadaModel> ninhadaList = [];
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -88,13 +88,17 @@ class _NinhadasScreenState extends State<NinhadasScreen> {
         ),
         child: CustomButtonWidget(
           title: 'Cadastrar ninhada',
-          onPressed: () {
-            Navigator.push(
+          onPressed: () async {
+            NovaNinhadaModel? ninhada = await Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => CadastrarNinhadaScreen(),
               ),
             );
+            if (ninhada != null)
+              setState(() {
+                ninhadaList.add(ninhada);
+              });
           },
         ),
       ),

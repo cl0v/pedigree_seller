@@ -12,63 +12,41 @@ import 'package:pedigree_seller/constants.dart';
 
 //TODO: Recriar a pagina para deixar bem claro como vai ficar na hora de adicionar(Quadrado grandao pra enviar foto, setinha pra botar nome, etc)
 //TODO: Permitir que a página que cria é a mesma que edita
-//(Essa pode ser a página de triagem, para preencher os dados rapidos(Especie, titulo e categoria, macho femea etc))
-//TODO: Implement controller of petRegistration
 
-///Cadastrar os cachorros reprodutores (Pai e Mae)
+///Página de triagem, para facilitar o preenchimento dos dados mais comuns(Especie, titulo e categoria, macho femea etc))
+///Cadastrar os animais reprodutores (Pai e Mae)
 ///Para agilizar o cadastro da ninhada
-///
-
-
 class PetRegistrationController {
-  Raca? _categoria; //TODO:Mudar para pegar especie e categoria
-  var _isMacho = false;
-  var _nome = '';
-
-  set nomeSetter(String s) => _nome = s;
-
-  get categoriaSelecionada => _categoria!.especie;
-  set categoria(Raca c) => _categoria = c;
-  get isMachoGetter => _isMacho;
-  set isMachoSetter(bool b) => _isMacho = b;
+  Raca? categoria;
+  bool isMacho = false;
+  String nome = 'Reprodutor';
+  String? isRequired;
 
   Future onRegisterPressed(context) async {
-    ReprodutoresModel reprodutoresModel = ReprodutoresModel(
-      nome: _nome,
-      categoria: _categoria!,
-      isMacho: !_isMacho,
-    );
-    print(reprodutoresModel);
-    back(context, reprodutoresModel);
-
-    // PetModel Criar AnimalModel com as configs
+    if (categoria != null) {
+      ReprodutorModel reprodutor = ReprodutorModel(
+        nome: nome,
+        categoria: categoria!,
+        isMacho: isMacho,
+      );
+      back(context, reprodutor);
+    } else {
+      isRequired = 'Campo necessário';
+    }
   }
 }
 
-
-class PetRegistrationScreen extends StatefulWidget {
+class CadastrarReprodutoresScreen extends StatefulWidget {
   @override
-  _PetRegistrationScreenState createState() => _PetRegistrationScreenState();
+  _CadastrarReprodutoresScreenState createState() =>
+      _CadastrarReprodutoresScreenState();
 }
 
-class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
-  File? file;
-
-  fileSetter(File f) {
-    file = f;
-  }
-
-  bool _maleFemale = false;
-
+class _CadastrarReprodutoresScreenState
+    extends State<CadastrarReprodutoresScreen> {
   final controller = PetRegistrationController();
 
   String title = 'Selecione a categoria';
-
-  update() {
-    setState(() {
-      title = controller.categoriaSelecionada;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,23 +54,29 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
     return Scaffold(
       body: _body(),
       appBar: _appBar(),
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.transparent,
-        elevation: 0,
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(
-            size.width * 0.1,
-            0,
-            size.width * 0.1,
-            8,
-          ),
-          child: CustomButtonWidget(
-            title: 'Cadastrar',
-            onPressed: () async {
-              await controller.onRegisterPressed(context);
-              //Implementar StreamButtonWidget aqui
-            },
-          ),
+      bottomNavigationBar: _bottomNavBar(size, context),
+    );
+  }
+
+  BottomAppBar _bottomNavBar(Size size, BuildContext context) {
+    return BottomAppBar(
+      color: Colors.transparent,
+      elevation: 0,
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(
+          size.width * 0.1,
+          0,
+          size.width * 0.1,
+          8,
+        ),
+        child: CustomButtonWidget(
+          title: 'Cadastrar',
+          onPressed: () async {
+            setState(() {
+              controller.onRegisterPressed(context);
+            });
+            //Implementar StreamButtonWidget aqui
+          },
         ),
       ),
     );
@@ -109,7 +93,7 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
           ),
           TextFormField(
             onChanged: (val) {
-              controller.nomeSetter = val;
+              controller.nome = val;
             },
             decoration: InputDecoration(
               hintText: 'Nome',
@@ -128,18 +112,33 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
             subtitle: Text('*Selecione a categoria'),
             trailing: Icon(Icons.arrow_forward_ios),
             onTap: () {
-              push(context,
-                  CategoryScreen(controller: controller, onUpdate: update));
+              push(
+                context,
+                CategoryScreen(
+                  controller: controller,
+                  onUpdate: () {
+                    setState(() {
+                      title = controller.categoria!.especie!;
+                    });
+                  },
+                ),
+              );
             },
           ),
+          controller.isRequired != null
+              ? Text(
+                  controller.isRequired!,
+                  style: kErrorTextStyle,
+                )
+              : Container(),
           ListTile(
-            title: Text(!controller.isMachoGetter ? 'Macho' : 'Fêmea'),
+            title: Text(!controller.isMacho ? 'Macho' : 'Fêmea'),
             subtitle: Text('*Selecione o gênero'),
             trailing: Switch(
-              value: controller.isMachoGetter,
+              value: controller.isMacho,
               onChanged: (val) {
                 setState(() {
-                  controller.isMachoSetter = val;
+                  controller.isMacho = val;
                 });
               },
               activeColor: Colors.red,
@@ -149,7 +148,7 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
             ),
             onTap: () {
               setState(() {
-                _maleFemale = !_maleFemale;
+                controller.isMacho = !controller.isMacho;
               });
             },
           ),

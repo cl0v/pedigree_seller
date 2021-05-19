@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 
 class ExpandedDropDownWidget extends StatefulWidget {
   final List<String> lista;
+  final controller;
   final String texto;
   const ExpandedDropDownWidget({
     Key? key,
     required this.lista,
+    required this.controller,
     required this.texto,
   }) : super(key: key);
   @override
@@ -34,6 +36,7 @@ class _ExpandedDropDownWidgetState extends State<ExpandedDropDownWidget> {
           onTap: () {
             setState(() {
               _title = title;
+              widget.controller.setPaiTitulo(title);
             });
           },
         );

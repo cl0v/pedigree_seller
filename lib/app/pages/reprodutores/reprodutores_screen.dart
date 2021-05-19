@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/components/custom_button_widget.dart';
-import 'package:pedigree_seller/app/models/pet_model.dart';
 import 'package:pedigree_seller/app/models/reprodutores_model.dart';
-import 'package:pedigree_seller/app/pages/pets/pet_registration/pet_registration_screen.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/constants.dart';
 
 //TODO: Implement PetController
 
-class PetScreen extends StatefulWidget {
+class ReprodutoresScreen extends StatefulWidget {
   @override
-  _PetScreenState createState() => _PetScreenState();
+  _ReprodutoresScreenState createState() => _ReprodutoresScreenState();
 }
 
-class _PetScreenState extends State<PetScreen> {
-  List<ReprodutoresModel> petList = [];
+class _ReprodutoresScreenState extends State<ReprodutoresScreen> {
+  List<ReprodutorModel> petList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +32,7 @@ class _PetScreenState extends State<PetScreen> {
           child: CustomButtonWidget(
             title: 'Cadastrar um Pet',
             onPressed: () async {
-              ReprodutoresModel? valor =
+              ReprodutorModel? valor =
                   await pushNamed(context, Routes.CadastrarPet);
               if (valor != null)
                 setState(() {

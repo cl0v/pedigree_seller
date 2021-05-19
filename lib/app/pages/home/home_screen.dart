@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/pages/ninhada/ninhada_screen.dart';
-import 'package:pedigree_seller/app/pages/pets/pets_screen.dart';
+import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/constants.dart';
 
@@ -105,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
         mainAxisSpacing: 10,
         children: [
           _myGridItem('Meus animais', Colors.red, Colors.blue, () {
-            push(context, PetScreen());
+            pushNamed(context, Routes.Reprodutores);
           }),
           _myGridItem('Ninhadas', Colors.red, Colors.blue, () {
             push(context, NinhadasScreen());
