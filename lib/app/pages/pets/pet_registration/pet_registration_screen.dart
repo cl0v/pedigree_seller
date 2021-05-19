@@ -1,9 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+
 import 'package:pedigree_seller/app/components/custom_button_widget.dart';
 import 'package:pedigree_seller/app/components/image_picker_tile_widget.dart';
-import 'package:pedigree_seller/app/pages/ninhada/components/category_screen.dart';
+import 'package:pedigree_seller/app/components/category_screen.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/constants.dart';
 
@@ -16,20 +17,62 @@ import 'package:pedigree_seller/constants.dart';
 ///Para agilizar o cadastro da ninhada
 ///
 
+class Raca {
+  String? category;
+  String? especie;
+  Raca({
+    this.category,
+    this.especie,
+  });
+
+  @override
+  String toString() => 'Raca(category: $category, especie: $especie)';
+}
+
 class PetRegistrationController {
-  var _categoria = ''; //TODO:Mudar para pegar especie e categoria
+  Raca? _categoria; //TODO:Mudar para pegar especie e categoria
   var _isMacho = false;
   var _nome = '';
 
   set nomeSetter(String s) => _nome = s;
 
-  get categoriaSelecionada => _categoria;
-  set categoria(String s) => _categoria = s;
+  get categoriaSelecionada => _categoria!.especie;
+  set categoria(Raca c) => _categoria = c;
   get isMachoGetter => _isMacho;
   set isMachoSetter(bool b) => _isMacho = b;
 
-  Future onRegisterPressed() async {
-    //TODO: Registrar dog
+  Future onRegisterPressed(context) async {
+    ReprodutoresModel reprodutoresModel = ReprodutoresModel(
+      nome: _nome,
+      categoria: _categoria!,
+      isMacho: !_isMacho,
+    );
+    print(reprodutoresModel);
+    back(context, reprodutoresModel);
+
+    // PetModel Criar AnimalModel com as configs
+  }
+}
+
+//TODO: Foi o que criei agora porra
+class ReprodutoresModel {
+  String file = 'FileUrl';
+  String certificado = 'FileUrl';
+  String nome;
+  Raca categoria;
+  bool isMacho;
+
+  ReprodutoresModel({
+    // required this.file,
+    // required this.certificado,
+    required this.nome,
+    required this.categoria,
+    required this.isMacho,
+  });
+
+  @override
+  String toString() {
+    return 'ReprodutoresModel(file: $file, certificado: $certificado, nome: $nome, categoria: ${categoria.toString()}, isMacho: $isMacho)';
   }
 }
 
@@ -76,9 +119,8 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
           child: CustomButtonWidget(
             title: 'Cadastrar',
             onPressed: () async {
-              await controller.onRegisterPressed();
+              await controller.onRegisterPressed(context);
               //Implementar StreamButtonWidget aqui
-              back(context);
             },
           ),
         ),
@@ -111,18 +153,13 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
 
           //TODO: Criar uma bordinha pra ficar file
           ListTile(
+            //TODO: Tentar colocar em forma de widget reutilizavel
             title: Text(title),
             subtitle: Text('*Selecione a categoria'),
             trailing: Icon(Icons.arrow_forward_ios),
             onTap: () {
-              push(
-                  context,
-                  CategoryScreen(
-                    controller: controller,
-                    onUpdate: 
-                      update
-                    
-                  ));
+              push(context,
+                  CategoryScreen(controller: controller, onUpdate: update));
             },
           ),
           ListTile(

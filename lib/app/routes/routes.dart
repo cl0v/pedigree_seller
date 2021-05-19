@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/pages/home/home_screen.dart';
-import 'package:pedigree_seller/app/pages/ninhada/components/category_screen.dart';
+import 'package:pedigree_seller/app/components/category_screen.dart';
 import 'package:pedigree_seller/app/pages/ninhada/ninhada_screen.dart';
 import 'package:pedigree_seller/app/pages/pets/pet_registration/pet_registration_screen.dart';
 import 'package:pedigree_seller/app/pages/pets/pets_screen.dart';

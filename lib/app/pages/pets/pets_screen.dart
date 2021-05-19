@@ -14,7 +14,7 @@ class PetScreen extends StatefulWidget {
 }
 
 class _PetScreenState extends State<PetScreen> {
-  List<AnimalModel> petList = petListMocked;
+  List<ReprodutoresModel> petList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +32,13 @@ class _PetScreenState extends State<PetScreen> {
           ),
           child: CustomButtonWidget(
             title: 'Cadastrar um Pet',
-            onPressed: () {
-              pushNamed(context, Routes.CadastrarPet);
+            onPressed: () async {
+              ReprodutoresModel? valor =
+                  await pushNamed(context, Routes.CadastrarPet);
+              if (valor != null)
+                setState(() {
+                  petList.add(valor);
+                });
             },
           ),
         ),
@@ -61,6 +66,7 @@ class _PetScreenState extends State<PetScreen> {
         itemBuilder: (context, index) {
           var pet = petList[index];
           return ListTile(
+            // leading: Icon(Icons.mars),
             trailing: IconButton(
               icon: Icon(Icons.adaptive.more),
               onPressed: () {
@@ -68,7 +74,8 @@ class _PetScreenState extends State<PetScreen> {
                 //Mostrar um popupmenubutton com as opçoes de editar, deletar, (Add arquivar), etc;
               },
             ),
-            title: Text(pet.name),
+            subtitle: Text(pet.categoria.especie!),
+            title: Text(pet.nome),
           );
         },
       ),

@@ -11,7 +11,7 @@ push(BuildContext context, Widget page) => Navigator.push(
 pushNamed(BuildContext context, String route) =>
     Navigator.pushNamed(context, route);
 
-back(BuildContext context) => Navigator.pop(context);
+back(BuildContext context, [result]) => Navigator.pop(context, result);
 
 backToHome(BuildContext context) => Navigator.pushAndRemoveUntil(
     context,

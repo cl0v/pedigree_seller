@@ -4,7 +4,7 @@ import 'package:pedigree_seller/app/models/pet_model.dart';
 import 'package:pedigree_seller/app/pages/pets/pet_registration/pet_registration_screen.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 
-import '../../../../constants.dart';
+import '../../constants.dart';
 
 class ItemTile {
   String titulo;
@@ -15,24 +15,14 @@ class ItemTile {
   });
 }
 
-class Configs {
-  String? category;
-  String? especie;
-  Configs({
-    this.category,
-    this.especie,
-  });
-}
-
 class CategoryScreen extends StatelessWidget {
-  final Configs? configs;
+  final Raca? configs;
   final controller;
   final VoidCallback? onUpdate;
 
   final list = petCategories;
 
-  CategoryScreen(
-      {Key? key, this.configs, this.controller,  this.onUpdate})
+  CategoryScreen({Key? key, this.configs, this.controller, this.onUpdate})
       : super(key: key);
 
   @override
@@ -67,7 +57,7 @@ class CategoryScreen extends StatelessWidget {
           trailing: Icon(Icons.arrow_forward_ios),
           onTap: () {
             if (configs == null) {
-              Configs c = Configs(category: list[idx]);
+              Raca c = Raca(category: list[idx]);
               push(
                   context,
                   CategoryScreen(
@@ -76,7 +66,8 @@ class CategoryScreen extends StatelessWidget {
                     onUpdate: onUpdate,
                   ));
             } else {
-              controller.categoria = list[idx];
+              configs!.especie = list[idx];
+              controller.categoria = configs;
               onUpdate!.call();
               // controller.categoriaSelecionada = list[idx];
               //retorna para a página anterior a primeira categoryScreen
