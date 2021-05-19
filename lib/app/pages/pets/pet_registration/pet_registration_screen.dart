@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/components/custom_button_widget.dart';
 import 'package:pedigree_seller/app/components/image_picker_tile_widget.dart';
 import 'package:pedigree_seller/app/components/category_screen.dart';
+import 'package:pedigree_seller/app/models/raca_model.dart';
+import 'package:pedigree_seller/app/models/reprodutores_model.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/constants.dart';
 
@@ -17,17 +19,6 @@ import 'package:pedigree_seller/constants.dart';
 ///Para agilizar o cadastro da ninhada
 ///
 
-class Raca {
-  String? category;
-  String? especie;
-  Raca({
-    this.category,
-    this.especie,
-  });
-
-  @override
-  String toString() => 'Raca(category: $category, especie: $especie)';
-}
 
 class PetRegistrationController {
   Raca? _categoria; //TODO:Mudar para pegar especie e categoria
@@ -54,27 +45,6 @@ class PetRegistrationController {
   }
 }
 
-//TODO: Foi o que criei agora porra
-class ReprodutoresModel {
-  String file = 'FileUrl';
-  String certificado = 'FileUrl';
-  String nome;
-  Raca categoria;
-  bool isMacho;
-
-  ReprodutoresModel({
-    // required this.file,
-    // required this.certificado,
-    required this.nome,
-    required this.categoria,
-    required this.isMacho,
-  });
-
-  @override
-  String toString() {
-    return 'ReprodutoresModel(file: $file, certificado: $certificado, nome: $nome, categoria: ${categoria.toString()}, isMacho: $isMacho)';
-  }
-}
 
 class PetRegistrationScreen extends StatefulWidget {
   @override

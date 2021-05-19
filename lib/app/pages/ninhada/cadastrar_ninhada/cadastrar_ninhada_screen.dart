@@ -77,23 +77,7 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
                 ),
               ),
 
-              ExpandedDropDownWidget(
-                lista: ['Cachorro', 'Gato', 'Coelho'], //TODO: Nome muito grande faz a formatacao do titulo ficar tortar
-                texto: 'Selecione a Categoria',
-              ),
-              ExpandedDropDownWidget(
-                lista: ['Persa', 'Miau', 'Aulaula'],
-                texto: 'Selecione a Especie',
-              ),
-              ExpandedDropDownWidget(
-                lista: ['Persa', 'Miau', 'Aulaula'],
-                texto: 'Selecione a Mãe',
-              ),
-              ExpandedDropDownWidget(
-                lista: ['Persa', 'Miau', 'Aulaula'], //TODO: Passar os dog macho da mesma especie
-                texto: 'Selecione o Pai',
-              ),
-
+              
               JaNasceuCheckBoxWidget(),
               //TODO: Se tiver marcado, vai pra prox pagina(para cadastrar os filhotes), se nao, envia o formulario
               //TODO: Posso perguntar as cores dos filhotes pra ja facilitar o preenchimento depois(Todos nasceram da mesma cor? Qual cor dos filhotes)

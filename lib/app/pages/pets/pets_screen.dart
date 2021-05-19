@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/components/custom_button_widget.dart';
 import 'package:pedigree_seller/app/models/pet_model.dart';
+import 'package:pedigree_seller/app/models/reprodutores_model.dart';
 import 'package:pedigree_seller/app/pages/pets/pet_registration/pet_registration_screen.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';

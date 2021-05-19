@@ -1,19 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:pedigree_seller/app/models/pet_model.dart';
+import 'package:pedigree_seller/app/models/raca_model.dart';
 import 'package:pedigree_seller/app/pages/pets/pet_registration/pet_registration_screen.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 
 import '../../constants.dart';
 
-class ItemTile {
-  String titulo;
-  bool hasSub;
-  ItemTile({
-    required this.titulo,
-    required this.hasSub,
-  });
-}
 
 class CategoryScreen extends StatelessWidget {
   final Raca? configs;
