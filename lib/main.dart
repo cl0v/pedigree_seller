@@ -6,6 +6,8 @@ import 'package:firebase_core/firebase_core.dart';
 
 //TODO: Fazer a splash screen do pedigree (logo) ser uma hero com a loginscreen
 
+
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();

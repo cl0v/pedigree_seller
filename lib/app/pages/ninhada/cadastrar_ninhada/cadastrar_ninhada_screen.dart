@@ -1,57 +1,77 @@
 import 'package:flutter/material.dart';
-
-import 'package:pedigree_seller/app/components/custom_button_widget.dart';
 import 'package:pedigree_seller/app/components/expanded_dropdown_widget.dart';
 import 'package:pedigree_seller/app/models/ninhada_model.dart';
 import 'package:pedigree_seller/app/models/reprodutores_model.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
+import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
 import 'package:pedigree_seller/constants.dart';
 
+//TODO: Tentar replicar o InputDecoration.errorText;
+
 class CadastrarNinhadaController {
-  String _titulo = 'Nova ninhada';
-  set tituloSetter(String s) => _titulo = s;
-  get tituloGetter => _titulo;
+  //ScreenController
+  String titulo = 'Nova ninhada';
   ReprodutorModel? _mae;
-  set maeSetter(ReprodutorModel m) => _mae = m;
   ReprodutorModel? _pai;
-  set paiSetter(ReprodutorModel p) => _pai = p;
   bool nascidos = false;
 
-  String? isRequired;
+  bool isMaeSelected = false;
+  bool isPaiSelected = false;
 
-  onConfirmPressed(context) {
-    print((_mae != null && _pai != null));
-    if (_mae != null && _pai != null) {
+  bool confirmed = false;
+
+  //TODO: Opção de não informar quantidade(Para o anuncio ficar sempre ativo)
+
+  onConfirmPressed(context) async {
+    if (isMaeSelected && isPaiSelected) {
       NovaNinhadaModel ninhada = NovaNinhadaModel(
-        titulo: _titulo,
+        titulo: titulo,
         mae: _mae!,
         pai: _pai!,
         nascidos: nascidos,
       );
+      await saveNinhada(ninhada);
       back(context, ninhada);
     } else {
-      isRequired = 'Campo necessário';
+      confirmed = true;
     }
   }
 
-  List<String> fetchListaMaes() {
-    return [m1.nome, m2.nome];
+  Future saveNinhada(NovaNinhadaModel ninhada) async {
+    //TODO: Implement Salvar no banco
+    print(ninhada);
   }
 
-  //O primeiro a ser escolhido vai definir o segundo,
-  // ja que deve ter as mesmas caracteristicas
-  //where(p1.config == bixo.config).toList
-  List<String> fetchListaPaes() {
-    return [p2.nome, p1.nome];
+  Future<List<String>> fetchMaes() async {
+    //TODO: Implement Receber do banco
+    return [p1, p2, m1, m2].where((p) => p.isMacho == false).map((r) => r.nome).toList();
+  }
+  // Future<List<String>> fetchPais([ReprodutorOptions options]) async {
+  Future<List<String>> fetchPais() async {
+     //TODO: Implement Receber do banco
+     return [p1, p2, m1, m2].where((p) => p.isMacho == true).map((r) => r.nome).toList();
   }
 
-  setPaiTitulo(String title) {
+  setSelectedAnimal(String title) {
+    //TODO: Melhorar isso
     var dog = [p1, p2, m1, m2].firstWhere((p) => p.nome == title);
     if (dog.isMacho) {
-      paiSetter = dog;
-    } else
-      maeSetter = dog;
+      _pai = dog;
+      isPaiSelected = true;
+    } else {
+      _mae = dog;
+      isMaeSelected = true;
+    }
   }
+
+  //Providers connection
+
+
+
+  // O primeiro a ser escolhido vai definir o segundo,
+  // ja que deve ter as mesmas caracteristicas
+  // where(p1.config == bixo.config).toList
+
 }
 
 class CadastrarNinhadaScreen extends StatefulWidget {
@@ -62,32 +82,22 @@ class CadastrarNinhadaScreen extends StatefulWidget {
 class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
   final controller = CadastrarNinhadaController();
 
-
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
-      bottomNavigationBar: _bottomAppBar(size, context),
-      appBar: AppBar(
-        brightness: Brightness.light,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-        title: Text(
-          'Cadastrar ninhada',
-          style: kTitleTextStyle,
+      bottomNavigationBar: ScaffoldCommonComponents.customBottomAppBar(
+        'Avançar',
+        () => setState(
+          () {
+            controller.onConfirmPressed(context);
+          },
         ),
-        leading: Builder(builder: (BuildContext context) {
-          return IconButton(
-            icon: Icon(
-              Icons.arrow_back_ios,
-              color: Colors.grey[800],
-            ),
-            onPressed: () => back(context),
-          );
-        }),
+        context,
       ),
-      //TODO: Estudar como botar o singleChildScrollView
+      appBar: ScaffoldCommonComponents.customAppBar(
+        'Cadastrar ninhada',
+        () => back(context),
+      ),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
@@ -97,13 +107,10 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
             children: [
               TextFormField(
                 onChanged: (val) {
-                  controller.tituloSetter = val;
-                  controller.isRequired = null;
+                  controller.titulo = val;
                 },
                 decoration: InputDecoration(
                   hintText: 'Titulo da ninhada',
-                  // errorText: controller.isRequired,
-                  //TODO: Descobrir como é feito esse texto
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(
                       12,
@@ -112,26 +119,53 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
                 ),
               ),
 
-              ExpandedDropDownWidget(
-                lista: controller.fetchListaMaes(),
-                controller: controller,
-                texto: 'Selecione a Mãe',
+              FutureBuilder<List<String>>(
+                future: controller.fetchMaes(),
+                builder: (context, snapshot) {
+                  List<String> l = [];
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.done:
+                      l = snapshot.data!;
+                      break;
+                    default:
+                      l = [];
+                  }
+                  return ExpandedDropDownWidget(
+                    lista: l,
+                    controller: controller,
+                    texto: 'Selecione a Mãe',
+                  );
+                },
               ),
-              controller.isRequired != null
+
+              !controller.isMaeSelected && controller.confirmed
                   ? Text(
-                      controller.isRequired!,
+                      'Campo necessário',
                       style: kErrorTextStyle,
                     )
                   : Container(),
-              ExpandedDropDownWidget(
-                lista: controller
-                    .fetchListaPaes(), //TODO: Passar os dog macho da mesma especie
-                controller: controller,
-                texto: 'Selecione o Pai',
+              FutureBuilder<List<String>>(
+                future: controller.fetchPais(),
+                builder: (context, snapshot) {
+                  List<String> l = [];
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.done:
+                      l = snapshot.data!;
+                      break;
+                    default:
+                      l = [];
+                  }
+                  return ExpandedDropDownWidget(
+                    lista: l,
+                    controller: controller,
+                    texto: 'Selecione o Pai',
+                  );
+                },
               ),
-              controller.isRequired != null
+
+              !controller.isPaiSelected && controller.confirmed
                   ? Text(
-                      controller.isRequired!,
+                      'Campo necessário',
                       style: kErrorTextStyle,
                     )
                   : Container(),
@@ -171,27 +205,6 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
               //TODO: Posso perguntar as cores dos filhotes pra ja facilitar o preenchimento depois(Todos nasceram da mesma cor? Qual cor dos filhotes)
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  BottomAppBar _bottomAppBar(Size size, BuildContext context) {
-    return BottomAppBar(
-      color: Colors.transparent,
-      elevation: 0,
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(
-          size.width * 0.1,
-          0,
-          size.width * 0.1,
-          8,
-        ),
-        child: CustomButtonWidget(
-          title: 'Avançar',
-          onPressed: () => setState(() {
-            controller.onConfirmPressed(context);
-          }),
         ),
       ),
     );

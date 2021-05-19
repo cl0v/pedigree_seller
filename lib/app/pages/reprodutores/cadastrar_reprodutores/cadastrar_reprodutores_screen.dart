@@ -29,10 +29,15 @@ class PetRegistrationController {
         categoria: categoria!,
         isMacho: isMacho,
       );
+      await saveReprodutor(reprodutor);
       back(context, reprodutor);
     } else {
       isRequired = 'Campo necessário';
     }
+  }
+
+  Future saveReprodutor(ReprodutorModel reprodutor) async {
+    //TODO: implement saveReprodutor
   }
 }
 

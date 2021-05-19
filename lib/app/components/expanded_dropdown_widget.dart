@@ -15,12 +15,8 @@ class ExpandedDropDownWidget extends StatefulWidget {
 }
 
 class _ExpandedDropDownWidgetState extends State<ExpandedDropDownWidget> {
-  late String _title;
-  @override
-  void initState() {
-    super.initState();
-    _title = widget.lista.first;
-  }
+  String _title = 'Selecione uma das opções';
+  
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +32,7 @@ class _ExpandedDropDownWidgetState extends State<ExpandedDropDownWidget> {
           onTap: () {
             setState(() {
               _title = title;
-              widget.controller.setPaiTitulo(title);
+              widget.controller.setSelectedAnimal(title);
             });
           },
         );
