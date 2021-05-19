@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:pedigree_seller/app/models/pet_model.dart';
+import 'package:pedigree_seller/app/pages/pets/pet_registration/pet_registration_screen.dart';
+import 'package:pedigree_seller/app/utils/nav.dart';
 
 import '../../../../constants.dart';
 
@@ -22,37 +24,19 @@ class Configs {
   });
 }
 
-class CategoryController {
+class CategoryScreen extends StatelessWidget {
+  final Configs? configs;
+  final controller;
+  final VoidCallback? onUpdate;
+
   final list = petCategories;
 
-  Future<List> fetchConfigs(Configs configs) async {
-    return [];
-  }
-}
-
-class CategoryScreen extends StatefulWidget {
-  final Configs? configs;
-
-  // final onConfigsIs
-
-  CategoryScreen({
-    this.configs,
-  });
-
-  @override
-  _CategoryScreenState createState() => _CategoryScreenState();
-}
-
-class _CategoryScreenState extends State<CategoryScreen> {
-  final controller = CategoryController();
-
-  criaConfigsEProcuraEspecie() {}
-
-  retornaComEspecie() {}
+  CategoryScreen(
+      {Key? key, this.configs, this.controller,  this.onUpdate})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         brightness: Brightness.light,
@@ -62,39 +46,45 @@ class _CategoryScreenState extends State<CategoryScreen> {
           'Categorias',
           style: kTitleTextStyle,
         ),
-        leading: Builder(builder: (BuildContext context) {
-          return IconButton(
-            icon: Icon(
-              Icons.arrow_back_ios,
-              color: Colors.grey[800],
-            ),
-            onPressed: () => Navigator.pop(context),
-          );
-        }),
-      ),
-      body: CustomListViewWidget(controller: controller),
-    );
-  }
-}
-
-class CustomListViewWidget extends StatelessWidget {
-  final controller;
-
-  CustomListViewWidget(
-      {Key? key, required this.controller,})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: controller.list.length,
-      itemBuilder: (context, idx) => ListTile(
-        title: Text(
-          controller.list[idx],
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.grey[800],
+              ),
+              onPressed: () => Navigator.pop(context),
+            );
+          },
         ),
-        trailing: Icon(Icons.arrow_forward_ios),
-        onTap: () {
-        },
+      ),
+      body: ListView.builder(
+        itemCount: list.length,
+        itemBuilder: (context, idx) => ListTile(
+          title: Text(
+            list[idx],
+          ),
+          trailing: Icon(Icons.arrow_forward_ios),
+          onTap: () {
+            if (configs == null) {
+              Configs c = Configs(category: list[idx]);
+              push(
+                  context,
+                  CategoryScreen(
+                    configs: c,
+                    controller: controller,
+                    onUpdate: onUpdate,
+                  ));
+            } else {
+              controller.categoria = list[idx];
+              onUpdate!.call();
+              // controller.categoriaSelecionada = list[idx];
+              //retorna para a página anterior a primeira categoryScreen
+
+              Navigator.popUntil(context, ModalRoute.withName('/pets/create'));
+            }
+          },
+        ),
       ),
     );
   }

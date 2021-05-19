@@ -17,6 +17,17 @@ import 'package:pedigree_seller/constants.dart';
 ///
 
 class PetRegistrationController {
+  var _categoria = ''; //TODO:Mudar para pegar especie e categoria
+  var _isMacho = false;
+  var _nome = '';
+
+  set nomeSetter(String s) => _nome = s;
+
+  get categoriaSelecionada => _categoria;
+  set categoria(String s) => _categoria = s;
+  get isMachoGetter => _isMacho;
+  set isMachoSetter(bool b) => _isMacho = b;
+
   Future onRegisterPressed() async {
     //TODO: Registrar dog
   }
@@ -37,6 +48,14 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
   bool _maleFemale = false;
 
   final controller = PetRegistrationController();
+
+  String title = 'Selecione a categoria';
+
+  update() {
+    setState(() {
+      title = controller.categoriaSelecionada;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +96,9 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
             // fileSetter: fileSetter,
           ),
           TextFormField(
+            onChanged: (val) {
+              controller.nomeSetter = val;
+            },
             decoration: InputDecoration(
               hintText: 'Nome',
               border: OutlineInputBorder(
@@ -89,21 +111,28 @@ class _PetRegistrationScreenState extends State<PetRegistrationScreen> {
 
           //TODO: Criar uma bordinha pra ficar file
           ListTile(
-            title: Text('Selecione a categoria'),
+            title: Text(title),
             subtitle: Text('*Selecione a categoria'),
             trailing: Icon(Icons.arrow_forward_ios),
             onTap: () {
-              push(context, CategoryScreen());
+              push(
+                  context,
+                  CategoryScreen(
+                    controller: controller,
+                    onUpdate: 
+                      update
+                    
+                  ));
             },
           ),
           ListTile(
-            title: Text(!_maleFemale ? 'Macho' : 'Fêmea'),
+            title: Text(!controller.isMachoGetter ? 'Macho' : 'Fêmea'),
             subtitle: Text('*Selecione o gênero'),
             trailing: Switch(
-              value: _maleFemale,
+              value: controller.isMachoGetter,
               onChanged: (val) {
                 setState(() {
-                  _maleFemale = val;
+                  controller.isMachoSetter = val;
                 });
               },
               activeColor: Colors.red,
