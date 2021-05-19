@@ -13,13 +13,46 @@ class ItemTile {
   });
 }
 
+class Configs {
+  String? category;
+  String? especie;
+  Configs({
+    this.category,
+    this.especie,
+  });
+}
 
-
-class CategoryScreen extends StatelessWidget {
+class CategoryController {
   final list = petCategories;
+
+  Future<List> fetchConfigs(Configs configs) async {
+    return [];
+  }
+}
+
+class CategoryScreen extends StatefulWidget {
+  final Configs? configs;
+
+  // final onConfigsIs
+
+  CategoryScreen({
+    this.configs,
+  });
+
+  @override
+  _CategoryScreenState createState() => _CategoryScreenState();
+}
+
+class _CategoryScreenState extends State<CategoryScreen> {
+  final controller = CategoryController();
+
+  criaConfigsEProcuraEspecie() {}
+
+  retornaComEspecie() {}
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         brightness: Brightness.light,
@@ -39,15 +72,29 @@ class CategoryScreen extends StatelessWidget {
           );
         }),
       ),
-      body: ListView.builder(
-        itemCount: list.length,
-        itemBuilder: (context, idx) => ListTile(
-          title: Text(
-            list[idx],
-          ),
-          trailing: Icon(Icons.arrow_forward_ios),
-          onTap: () {},
+      body: CustomListViewWidget(controller: controller),
+    );
+  }
+}
+
+class CustomListViewWidget extends StatelessWidget {
+  final controller;
+
+  CustomListViewWidget(
+      {Key? key, required this.controller,})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: controller.list.length,
+      itemBuilder: (context, idx) => ListTile(
+        title: Text(
+          controller.list[idx],
         ),
+        trailing: Icon(Icons.arrow_forward_ios),
+        onTap: () {
+        },
       ),
     );
   }
