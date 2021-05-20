@@ -76,7 +76,7 @@ class _ReprodutoresScreenState extends State<ReprodutoresScreen> {
                             //Mostrar um popupmenubutton com as opçoes de editar, deletar, (Add arquivar), etc;
                           },
                         ),
-                        subtitle: Text(pet.categoria.especie!),
+                        subtitle: Text(pet.categoria.especie),
                         title: Text(pet.nome),
                       );
                     },

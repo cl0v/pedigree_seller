@@ -12,7 +12,7 @@ abstract class Routes {
   static const Register = '/register';
   static const Ninhada = '/ninhada';
   static const Reprodutores = '/reprodutores';
-  static const CadastrarReprodutor = '/reprodutores/create';
+  static const CadastrarReprodutor = '/reprodutores/cadastrar';
   // static const Categoria = '/category';
 }
 

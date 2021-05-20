@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/components/image_picker_tile_widget.dart';
 import 'package:pedigree_seller/app/components/category_screen.dart';
-import 'package:pedigree_seller/app/models/animal_model.dart';
 import 'package:pedigree_seller/app/models/raca_model.dart';
 import 'package:pedigree_seller/app/models/reprodutores_model.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
@@ -21,22 +20,22 @@ enum CategorySteps {
 }
 
 class PetRegistrationController {
-  Raca? categoria;
   bool isMacho = true;
   String nome = 'Reprodutor';
   String? isRequired;
 
   CategorySteps steps = CategorySteps.Categoria;
-  String cat = '';
+  String categoria = '';
+  String especie = '';
 
   List<String> fetchCategoryStringList(int val) {
     switch (val) {
       case 0:
         return fetchCategorias();
       case 1:
-        return fetchEspecies(cat);
+        return fetchEspecies(categoria);
     }
-    return petCategories;
+    return fetchCategorias();
   }
 
   List<String> fetchCategorias() {
@@ -48,10 +47,10 @@ class PetRegistrationController {
   }
 
   Future onRegisterPressed(context) async {
-    if (categoria != null) {
+    if (categoria != '' && especie != '') {
       ReprodutorModel reprodutor = ReprodutorModel(
         nome: nome,
-        categoria: categoria!,
+        categoria: Raca(category: categoria, especie: especie),
         isMacho: isMacho,
       );
       await saveReprodutor(reprodutor);
@@ -134,7 +133,7 @@ class _CadastrarReprodutoresScreenState
                   controller: controller,
                   onUpdate: () {
                     setState(() {
-                      title = controller.categoria!.especie!;
+                      title = controller.especie;
                     });
                   },
                 ),

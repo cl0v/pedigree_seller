@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 class Raca {
-  String? category;
-  String? especie;
+  String category;
+  String especie;
   Raca({
-    this.category,
-    this.especie,
+    required this.category,
+    required this.especie,
   });
 
   @override

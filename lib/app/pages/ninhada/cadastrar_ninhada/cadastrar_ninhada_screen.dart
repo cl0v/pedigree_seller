@@ -27,8 +27,8 @@ class CadastrarNinhadaController {
       NovaNinhadaModel ninhada = NovaNinhadaModel(
         titulo: titulo,
         mae: _mae!,
-        categoria: _mae!.categoria.category!,
-        especie: _mae!.categoria.especie!,
+        categoria: _mae!.categoria.category,
+        especie: _mae!.categoria.especie,
         pai: _pai!,
         nascidos: nascidos,
       );
@@ -46,12 +46,19 @@ class CadastrarNinhadaController {
 
   Future<List<String>> fetchMaes() async {
     //TODO: Implement Receber do banco
-    return [p1, p2, m1, m2].where((p) => p.isMacho == false).map((r) => r.nome).toList();
+    return [p1, p2, m1, m2]
+        .where((p) => p.isMacho == false)
+        .map((r) => r.nome)
+        .toList();
   }
+
   // Future<List<String>> fetchPais([ReprodutorOptions options]) async {
   Future<List<String>> fetchPais() async {
-     //TODO: Implement Receber do banco
-     return [p1, p2, m1, m2].where((p) => p.isMacho == true).map((r) => r.nome).toList();
+    //TODO: Implement Receber do banco
+    return [p1, p2, m1, m2]
+        .where((p) => p.isMacho == true)
+        .map((r) => r.nome)
+        .toList();
   }
 
   setSelectedAnimal(String title) {
@@ -67,8 +74,6 @@ class CadastrarNinhadaController {
   }
 
   //Providers connection
-
-
 
   // O primeiro a ser escolhido vai definir o segundo,
   // ja que deve ter as mesmas caracteristicas

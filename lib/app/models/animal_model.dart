@@ -38,38 +38,6 @@ class FirebaseAnimalModel extends AnimalModel {
         );
 }
 
-List<String> petCategories = [
-  'Gato',
-  'Cachorro',
-  'Coelho',
-  'Hamster',
-];
-
-List<String> petSpecies = [
-  'Rotwailer',
-  'Cachorro',
-  'Coelho',
-  'Hamster',
-];
-
-
-
-class PetInfo {
-  String category;
-  String especie;
-  PetInfo({
-    required this.category,
-    required this.especie,
-  });
-}
-
-final petConfigsList = [
-  PetInfo(category: 'Dog', especie: 'Labrador'),
-  PetInfo(category: 'Dog', especie: 'Rotwailer'),
-  PetInfo(category: 'Dog', especie: 'BullDog'),
-  PetInfo(category: 'Cat', especie: 'Persa'),
-];
-
 
 List<AnimalModel> petListMocked = [
   AnimalModel(

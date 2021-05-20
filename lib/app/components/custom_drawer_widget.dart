@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 
+//TODO: Corrigir bug de rotas bugadas
+
 class CustomDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,7 @@ class CustomDrawer extends StatelessWidget {
             title: Text('Home'),
             leading: Icon(Icons.home),
             onTap: () {
-              Navigator.popUntil(context, ModalRoute.withName('/'));
+              popUntil(context, Routes.Home);
             },
           ),
           ListTile(
@@ -54,7 +56,6 @@ class CustomDrawer extends StatelessWidget {
             title: Text('Sair'),
             leading: Icon(Icons.exit_to_app),
             onTap: () {
-
               //TODO: Implement exit
             },
           ),
