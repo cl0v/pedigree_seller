@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-
 class Raca {
   String? category;
   String? especie;
@@ -30,3 +29,17 @@ class Raca {
 
   factory Raca.fromJson(String source) => Raca.fromMap(json.decode(source));
 }
+
+Map<String, List<String>> racas = {
+  'Cachorro': [
+    'Rotwailer',
+    'Poodle',
+    'Fila',
+  ],
+  'Gato': [
+    'Persa',
+    'Chaninha',
+  ],
+  'Hamster': [],
+  'Coelho': [],
+};
