@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pedigree_seller/app/models/raca_model.dart';
 import 'package:pedigree_seller/app/pages/reprodutores/cadastrar_reprodutores/cadastrar_reprodutores_screen.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
@@ -7,14 +6,12 @@ import 'package:pedigree_seller/app/utils/nav.dart';
 import '../../constants.dart';
 
 class CategoryScreen extends StatelessWidget {
-  final Raca? configs;
   final PetRegistrationController controller;
   final VoidCallback onUpdate;
   final int stepCount;
 
   CategoryScreen({
     Key? key,
-    this.configs,
     required this.controller,
     required this.onUpdate,
     this.stepCount = 0,

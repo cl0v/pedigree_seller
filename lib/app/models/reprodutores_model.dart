@@ -1,15 +1,10 @@
 
-//TODO: Foi o que criei agora porra
-import 'dart:convert';
-
-import 'package:pedigree_seller/app/models/raca_model.dart';
-
 class ReprodutorModel {
   String file;
   String certificado;
   String nome;
-  Raca categoria;
   bool isMacho;
+  EspecificacoesAnimalModel categoria;
 
   ReprodutorModel({
     this.file = 'FileUrl',
@@ -18,55 +13,53 @@ class ReprodutorModel {
     required this.categoria,
     required this.isMacho,
   });
-
-  @override
-  String toString() {
-    return 'ReprodutoresModel(file: $file, certificado: $certificado, nome: $nome, categoria: ${categoria.toString()}, isMacho: $isMacho)';
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'file': file,
-      'certificado': certificado,
-      'nome': nome,
-      'categoria': categoria.toMap(),
-      'isMacho': isMacho,
-    };
-  }
-
-  factory ReprodutorModel.fromMap(Map<String, dynamic> map) {
-    return ReprodutorModel(
-      file: map['file'],
-      certificado: map['certificado'],
-      nome: map['nome'],
-      categoria: Raca.fromMap(map['categoria']),
-      isMacho: map['isMacho'],
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory ReprodutorModel.fromJson(String source) => ReprodutorModel.fromMap(json.decode(source));
 }
+
+class EspecificacoesAnimalModel {
+  String categoria;
+  String especie;
+  EspecificacoesAnimalModel({
+    required this.categoria,
+    required this.especie,
+  });
+}
+
+Map<String, List<String>> racas = {
+  'Cachorro': [
+    'Rotwailer',
+    'Poodle',
+    'Fila',
+  ],
+  'Gato': [
+    'Persa',
+    'Chaninha',
+  ],
+  'Hamster': [],
+  'Coelho': [],
+};
+
 
 
 final m1 = ReprodutorModel(
   nome: 'Vagabunda',
-  categoria: Raca(category: 'Cachorro', especie: 'Hamster'),
+  categoria: EspecificacoesAnimalModel(categoria: 'Cachorro', especie: 'Hamster'),
   isMacho: false,
 );
+
 final m2 = ReprodutorModel(
   nome: 'Lora',
-  categoria: Raca(category: 'Cachorro', especie: 'Hamster'),
+  categoria: EspecificacoesAnimalModel(categoria: 'Cachorro', especie: 'Hamster'),
   isMacho: false,
 );
+
 final p1 = ReprodutorModel(
   nome: 'Vagabund',
-  categoria: Raca(category: 'Cachorro', especie: 'Hamster'),
+  categoria: EspecificacoesAnimalModel(categoria: 'Cachorro', especie: 'Hamster'),
   isMacho: true,
 );
+
 final p2 = ReprodutorModel(
   nome: 'Popo',
-  categoria: Raca(category: 'Cachorro', especie: 'Hamster'),
+  categoria: EspecificacoesAnimalModel(categoria: 'Cachorro', especie: 'Hamster'),
   isMacho: true,
 );

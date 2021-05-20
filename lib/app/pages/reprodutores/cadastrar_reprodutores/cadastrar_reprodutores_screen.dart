@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/components/image_picker_tile_widget.dart';
 import 'package:pedigree_seller/app/components/category_screen.dart';
-import 'package:pedigree_seller/app/models/raca_model.dart';
 import 'package:pedigree_seller/app/models/reprodutores_model.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
@@ -50,7 +49,7 @@ class PetRegistrationController {
     if (categoria != '' && especie != '') {
       ReprodutorModel reprodutor = ReprodutorModel(
         nome: nome,
-        categoria: Raca(category: categoria, especie: especie),
+        categoria: EspecificacoesAnimalModel(categoria: categoria, especie: especie),
         isMacho: isMacho,
       );
       await saveReprodutor(reprodutor);
