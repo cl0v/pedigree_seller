@@ -3,6 +3,20 @@ import 'package:pedigree_seller/app/components/custom_button_widget.dart';
 import 'package:pedigree_seller/constants.dart';
 
 class ScaffoldCommonComponents {
+  static AppBar customAppBarWithoutIcons(String title) {
+    return AppBar(
+      brightness: Brightness.light,
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      centerTitle: true,
+      automaticallyImplyLeading: false,
+      title: Text(
+        title,
+        style: kTitleTextStyle,
+      ),
+    );
+  }
+
   static BottomAppBar customBottomAppBar(
       String title, VoidCallback onPressed, BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -21,6 +35,41 @@ class ScaffoldCommonComponents {
           onPressed: onPressed,
         ),
       ),
+    );
+  }
+
+  static AppBar customAppBarWithDrawer(String title, IconData actionButtonIcon,
+      VoidCallback onActionButtonPressed) {
+    return AppBar(
+      brightness: Brightness.light,
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      title: Text(
+        title,
+        style: kTitleTextStyle,
+      ),
+      leading: Builder(builder: (BuildContext context) {
+        return IconButton(
+          icon: Icon(
+            Icons.sort,
+            color: Colors.grey[800],
+          ),
+          onPressed: () => Scaffold.of(context).openDrawer(),
+          tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+        );
+      }),
+      actions: [
+        Padding(
+          padding: EdgeInsets.only(right: 16),
+          child: IconButton(
+            icon: Icon(
+              actionButtonIcon,
+              color: Colors.grey[800],
+            ),
+            onPressed: onActionButtonPressed,
+          ),
+        ),
+      ],
     );
   }
 

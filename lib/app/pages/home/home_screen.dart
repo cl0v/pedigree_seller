@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:pedigree_seller/app/components/custom_drawer_widget.dart';
 import 'package:pedigree_seller/app/pages/ninhada/ninhada_screen.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
-import 'package:pedigree_seller/constants.dart';
+import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -68,33 +69,17 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+//TODO: Na home vai ter algumas metricas
+//TODO: Pedir email e nome da pessoa que clicar no botao para ligar (Unica forma
+// de mensurar o inicio do app antes de fechar o pagamento e o chat);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        brightness: Brightness.light,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Text('Dashboard', style: kTitleTextStyle,),
-        leading: Builder(builder: (BuildContext context) {
-          return IconButton(
-            icon: Icon(
-              Icons.sort,
-              color: Colors.grey[800],
-            ),
-            onPressed: () => Scaffold.of(context).openDrawer(),
-            tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-          );
-        }),
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(right: 16),
-            child: Icon(
-              Icons.notifications_none,
-              color: Colors.grey[800],
-            ),
-          ),
-        ],
+      appBar: ScaffoldCommonComponents.customAppBarWithDrawer(
+        'Home',
+        Icons.notifications_none,
+        () {},
       ),
       drawer: CustomDrawer(),
       body: GridView.count(
@@ -104,50 +89,14 @@ class _HomeScreenState extends State<HomeScreen> {
         crossAxisSpacing: 10,
         mainAxisSpacing: 10,
         children: [
-          _myGridItem('Meus animais', Colors.red, Colors.blue, () {
+          _myGridItem('Meus animais', Colors.green, Colors.blue, () {
             pushNamed(context, Routes.Reprodutores);
           }),
-          _myGridItem('Ninhadas', Colors.red, Colors.blue, () {
+          _myGridItem('Ninhadas', Colors.pink, Colors.blue, () {
             push(context, NinhadasScreen());
           }),
           _myGridItem('Historico de vendas', Colors.red, Colors.blue, () {}),
-          _myGridItem('Dashboard ', Colors.red, Colors.blue, () {}),
-        ],
-      ),
-    );
-  }
-}
-
-class CustomDrawer extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        children: [
-          DrawerHeader(
-            child: Text('Header'),
-          ),
-          ListTile(
-            title: Text('Home'),
-            leading: Icon(Icons.home),
-            onTap: () {
-              //TODO: Implement onTap
-            },
-          ),
-          ListTile(
-            title: Text('Painel'),
-            leading: Icon(Icons.dashboard),
-            onTap: () {
-              //TODO: Implement onTap
-            },
-          ),
-          ListTile(
-            title: Text('Perfil'),
-            leading: Icon(Icons.person),
-            onTap: () {
-              //TODO: Implement onTap
-            },
-          ),
+          _myGridItem('Dashboard ', Colors.purple, Colors.blue, () {}),
         ],
       ),
     );

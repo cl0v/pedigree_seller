@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class TextInputFieldWidget extends StatelessWidget {
   const TextInputFieldWidget({
     required this.hint,
+    required this.controller,
     this.prefixWidget,
     this.icon,
     this.padding,
@@ -13,8 +14,9 @@ class TextInputFieldWidget extends StatelessWidget {
 
   final IconData? icon;
   final String hint;
-  final Widget? prefixWidget;
   final bool isObscure;
+  final TextEditingController controller;
+  final Widget? prefixWidget;
   final EdgeInsetsGeometry? padding;
   final TextInputType? inputType;
   final TextInputAction? inputAction;
@@ -34,19 +36,11 @@ class TextInputFieldWidget extends StatelessWidget {
         child: Center(
           child: Padding(
             padding: const EdgeInsets.only(top: 4.0),
-            child: TextField(
+            child: TextFormField(
+              controller: controller,
               obscureText: isObscure,
               decoration: InputDecoration(
                 border: InputBorder.none,
-                // suffixIcon:  Padding(
-                //   padding:
-                //       const EdgeInsets.only(left: 20.0, right: 20, bottom: 6),
-                //   child: prefixWidget ??
-                //       Icon(
-                //         icon,
-                //         size: 24,
-                //       ),
-                // ),
                 prefixIcon: Padding(
                   padding:
                       const EdgeInsets.only(left: 20.0, right: 20, bottom: 6),

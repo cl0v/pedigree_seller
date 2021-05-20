@@ -1,11 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-
-import 'package:pedigree_seller/app/components/custom_button_widget.dart';
 import 'package:pedigree_seller/app/components/image_picker_tile_widget.dart';
 import 'package:pedigree_seller/app/components/category_screen.dart';
-import 'package:pedigree_seller/app/models/pet_model.dart';
+import 'package:pedigree_seller/app/models/animal_model.dart';
 import 'package:pedigree_seller/app/models/raca_model.dart';
 import 'package:pedigree_seller/app/models/reprodutores_model.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
@@ -18,7 +14,6 @@ import 'package:pedigree_seller/constants.dart';
 ///Página de triagem, para facilitar o preenchimento dos dados mais comuns(Especie, titulo e categoria, macho femea etc))
 ///Cadastrar os animais reprodutores (Pai e Mae)
 ///Para agilizar o cadastro da ninhada
-///
 
 enum CategorySteps {
   Categoria,

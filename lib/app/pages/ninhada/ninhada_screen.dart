@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:pedigree_seller/app/components/custom_drawer_widget.dart';
 import 'package:pedigree_seller/app/models/ninhada_model.dart';
 import 'package:pedigree_seller/app/pages/ninhada/cadastrar_ninhada/cadastrar_ninhada_screen.dart';
+import 'package:pedigree_seller/app/repositories/firebase_animal_repository.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
 
@@ -11,7 +13,12 @@ class NinhadaController {
   List<NovaNinhadaModel> ninhadaList = [];
 
   Future<List<NovaNinhadaModel>> fetchNinhadas() async {
+    // FirebaseAnimalRepository.fetchNinhadas();
     return ninhadaList;
+  }
+
+  viewNinhada(NovaNinhadaModel ninhada) {
+    //TODO: Implement push to petScreen
   }
 }
 
@@ -44,12 +51,22 @@ class _NinhadasScreenState extends State<NinhadasScreen> {
         },
         context,
       ),
-      appBar: ScaffoldCommonComponents.customAppBar(
-        'Ninhada',
-        () => back(
+      appBar: ScaffoldCommonComponents.customAppBarWithDrawer(
+          'Ninhada', Icons.add, () async {
+        NovaNinhadaModel? ninhada = await Navigator.push(
           context,
-        ),
-      ),
+          MaterialPageRoute(
+            builder: (context) => CadastrarNinhadaScreen(),
+          ),
+        );
+        if (ninhada != null)
+          setState(
+            () {
+              controller.ninhadaList.add(ninhada);
+            },
+          );
+      }),
+      drawer: CustomDrawer(),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
@@ -70,14 +87,15 @@ class _NinhadasScreenState extends State<NinhadasScreen> {
                     //TODO: OnTap para editar
                     //TODO: Botao de criar para criar;
                     return ListTile(
-                      leading: Text('Aguardando'), //TODO: Adicionar status
+                      //TODO: Adicionar status
+                      subtitle: Text('Status: Aguardando aprovação'),
                       trailing: Wrap(
                         spacing: 12, // space between two icons
                         children: [
                           IconButton(
                             icon: Icon(Icons.remove_red_eye),
                             onPressed: () {
-                              //TODO: Mostrar na tela de pet(o de vendar), como ta ficando
+                              controller.viewNinhada(ninhada);
                             },
                           ), // icon-1
                           IconButton(
@@ -91,6 +109,9 @@ class _NinhadasScreenState extends State<NinhadasScreen> {
                       ),
                       title: Text(
                         ninhada.titulo,
+                      ),
+                      leading: Text(
+                        ninhada.especie,
                       ),
                     );
                   },

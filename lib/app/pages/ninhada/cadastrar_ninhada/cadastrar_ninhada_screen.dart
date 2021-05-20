@@ -27,6 +27,8 @@ class CadastrarNinhadaController {
       NovaNinhadaModel ninhada = NovaNinhadaModel(
         titulo: titulo,
         mae: _mae!,
+        categoria: _mae!.categoria.category!,
+        especie: _mae!.categoria.especie!,
         pai: _pai!,
         nascidos: nascidos,
       );

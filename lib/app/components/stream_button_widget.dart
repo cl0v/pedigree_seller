@@ -1,15 +1,14 @@
-
 import 'package:flutter/material.dart';
 
 class StreamButtonWidget extends StatefulWidget {
-  final List<StateButtonOptions> state;
+  final List<StateButtonOptions> states;
   final VoidCallback onPressed;
   final Stream stream;
   final dynamic initialState;
 
   const StreamButtonWidget({
     Key? key,
-    required this.state,
+    required this.states,
     required this.onPressed,
     required this.stream,
     required this.initialState,
@@ -20,14 +19,15 @@ class StreamButtonWidget extends StatefulWidget {
 }
 
 class _StreamButtonWidgetState extends State<StreamButtonWidget> {
-  late StateButtonOptions _state = widget.state.first;
+  late StateButtonOptions _state = widget.states.first;
 
   @override
   void initState() {
     super.initState();
+    _state = widget.states.firstWhere((s) => s.state == widget.initialState);
     widget.stream.listen((events) {
       setState(() {
-        _state = widget.state.firstWhere((s) => s.state == events);
+        _state = widget.states.firstWhere((s) => s.state == events);
       });
     });
   }

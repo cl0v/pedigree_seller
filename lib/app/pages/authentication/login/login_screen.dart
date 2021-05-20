@@ -5,6 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:pedigree_seller/app/components/stream_button_widget.dart';
 import 'package:pedigree_seller/app/components/text_input_field_widget.dart';
 import 'package:pedigree_seller/app/pages/authentication/register/register_screen.dart';
+import 'package:pedigree_seller/app/routes/routes.dart';
+import 'package:pedigree_seller/app/utils/nav.dart';
+import 'package:pedigree_seller/constants.dart';
 
 enum LoginState {
   Idle,
@@ -14,14 +17,30 @@ enum LoginState {
 }
 
 class LoginController {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController senhaController = TextEditingController();
+
+  bool confirmed = false;
+  bool emailPreenchido = false;
+  bool senhaPreenchido = false;
+
   StreamController controller = StreamController();
   StreamSink get streamInput => controller.sink;
   Stream get output => controller.stream;
 
-  login() async {
+  login(context) async {
+    confirmed = true;
+    emailPreenchido = emailController.text != '';
+    senhaPreenchido = senhaController.text != '';
+
+    if (!(emailPreenchido && senhaPreenchido)) return;
+
     streamInput.add(LoginState.Loading);
     await Future.delayed(Duration(seconds: 2));
-    streamInput.add(LoginState.Error);
+    streamInput.add(LoginState.Confirmed);
+    pushNamed(context, Routes.Home);
+
+    //TODO: Implement onLoginPressed
   }
 }
 
@@ -50,29 +69,40 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                TextInputFieldWidget(
-                  hint: 'Email',
-                  icon: Icons.email,
-                  inputType: TextInputType.emailAddress,
-                  inputAction: TextInputAction.next,
-                ),
-                TextInputFieldWidget(
-                  hint: 'Password',
-                  icon: Icons.lock,
-                  isObscure: true,
-                  inputAction: TextInputAction.done,
-                ),
-                SizedBox(
-                  height: 25,
-                ),
-                loginBtn(),
-                SizedBox(
-                  height: 25,
-                ),
-              ],
+            SingleChildScrollView(
+              child: Column(
+                // crossAxisAlignment: CrossAxisAlignment.,
+                children: [
+                  TextInputFieldWidget(
+                    hint: 'Email',
+                    
+                    icon: Icons.email,
+                    inputType: TextInputType.emailAddress,
+                    inputAction: TextInputAction.next,
+                    controller: controller.emailController,
+                  ),
+                  controller.confirmed && !controller.emailPreenchido
+                      ? errorText
+                      : Container(),
+                  TextInputFieldWidget(
+                    hint: 'Senha',
+                    icon: Icons.lock,
+                    isObscure: true,
+                    inputAction: TextInputAction.done,
+                    controller: controller.senhaController,
+                  ),
+                  controller.confirmed && !controller.senhaPreenchido
+                      ? errorText
+                      : Container(),
+                  SizedBox(
+                    height: 25,
+                  ),
+                  loginBtn(),
+                  SizedBox(
+                    height: 25,
+                  ),
+                ],
+              ),
             ),
             GestureDetector(
               onTap: () {
@@ -107,7 +137,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final stateList = [
       StateButtonOptions(
           child: Text(
-            'Login',
+            'Entrar',
             style: TextStyle(
               fontWeight: FontWeight.bold,
               color: Colors.white,
@@ -115,10 +145,10 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           state: LoginState.Idle),
       StateButtonOptions(
-        child: Theme(
-          data: ThemeData().copyWith(accentColor: Colors.white),
-          child: CircularProgressIndicator(),
+        child: CircularProgressIndicator(
+          color: Colors.white,
         ),
+        // child: Icon(Icons.add, color: Colors.white,),
         state: LoginState.Loading,
       ),
       StateButtonOptions(
@@ -141,8 +171,12 @@ class _LoginScreenState extends State<LoginScreen> {
     return StreamButtonWidget(
       stream: controller.output,
       initialState: LoginState.Idle,
-      state: stateList,
-      onPressed: controller.login,
+      states: stateList,
+      onPressed: () {
+        setState(() {
+          controller.login(context);
+        });
+      },
     );
   }
 }

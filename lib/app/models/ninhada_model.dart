@@ -1,4 +1,4 @@
-import 'package:pedigree_seller/app/models/pet_model.dart';
+import 'package:pedigree_seller/app/models/animal_model.dart';
 import 'package:pedigree_seller/app/models/reprodutores_model.dart';
 
 class Filhote {
@@ -13,7 +13,6 @@ class Filhote {
 }
 
 class NinhadaModel {
-
   ///Pretendo colocar relação de cores com quantidade
   ///'Cores' (String) : quantidade (int)
   String fotoUrl; //TODO: Trocar para lista de foto
@@ -88,8 +87,6 @@ List<NinhadaModel> ninhadaListMock = [
   ),
 ];
 
-
-
 class NovaNinhadaModel {
   //TODO: Obrigatorio seleção
   String titulo;
@@ -98,11 +95,15 @@ class NovaNinhadaModel {
   //Obrigatorio seleção
   ReprodutorModel pai;
   bool nascidos;
+  String categoria;
+  String especie;
   //Apenas nascidos
   String? fotoUrl;
   String? dataDeNascimento;
   NovaNinhadaModel({
     required this.titulo,
+    required this.categoria,
+    required this.especie,
     required this.mae,
     required this.pai,
     this.nascidos = true,

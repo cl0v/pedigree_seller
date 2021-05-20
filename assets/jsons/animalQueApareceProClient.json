@@ -1,0 +1,31 @@
+[
+    {
+        "titulo": "Cachorrinhos fofos",
+        "preco": "3000,00",
+        "phone": "99999999999",
+        "data": "22/05/2021",
+        "categoria": {
+            "categoria": "Cachorro",
+            "especie": "Rotwailer"
+        },
+        "pais": {
+            "pai": "ReferenciaXXXXX",
+            "mae": "ReferenciaXXXXX"
+        },
+        "canil": "ReferenciaXXXXX",
+        "cores": {
+            "preto": {
+                "quantidade": 3,
+                "isMacho": 2
+            },
+            "branco": {
+                "quantidade": 6,
+                "isMacho": 4
+            },
+            "misto": {
+                "quantidade": 1,
+                "isMacho": 0
+            }
+        }
+    }
+]
