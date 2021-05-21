@@ -7,8 +7,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Pedigree seller',
       debugShowCheckedModeBanner: false,
-      // home: CategoryScreen(),
-      initialRoute: Routes.Home,
+      initialRoute: Routes.Canil,
       routes: routes,
     );
   }

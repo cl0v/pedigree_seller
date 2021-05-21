@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/components/custom_button_widget.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
+import 'package:pedigree_seller/app/utils/screen_size.dart';
 import 'package:pedigree_seller/constants.dart';
 
 class ScaffoldCommonComponents {
@@ -20,7 +21,7 @@ class ScaffoldCommonComponents {
 
   static BottomAppBar customBottomAppBar(
       String title, VoidCallback onPressed, BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    Size size = getSize(context);
     return BottomAppBar(
       color: Colors.transparent,
       elevation: 0,

@@ -11,11 +11,16 @@ class CanilModel {
     required this.titulo,
     required this.contato,
     required this.cnpj,
-    required this.dataCadastro,
-    required this.donoReferencia,
-    required this.ninhadasReferencia,
-    required this.reprodutoresReferencia,
+    this.dataCadastro = '',
+    this.donoReferencia = '',
+    this.ninhadasReferencia  = const [],
+    this.reprodutoresReferencia  = const [],
   });
+
+  @override
+  String toString() {
+    return 'CanilModel(titulo: $titulo, contato: $contato, cnpj: $cnpj, dataCadastro: $dataCadastro, donoReferencia: $donoReferencia, ninhadasReferencia: $ninhadasReferencia, reprodutoresReferencia: $reprodutoresReferencia)';
+  }
 }
 
 final CanilModel canilMocked = CanilModel(

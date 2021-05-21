@@ -1,10 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:pedigree_seller/app/pages/canil/viewmodel/canil_view_model.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
 import 'package:pedigree_seller/constants.dart';
-import 'package:pedigree_seller/app/models/canil_model.dart';
 import 'package:pedigree_seller/app/utils/screen_size.dart';
 /*
  - Recebe de um future o canil, caso não esteja cadastrado, aparecerá uma mensagem pedindo para cadastrar
@@ -12,9 +12,12 @@ import 'package:pedigree_seller/app/utils/screen_size.dart';
 */
 
 class CanilController {
-  Future<CanilModel?> fetchCanil() async {
+  CanilViewModel? canil ;
+  // = CanilViewModel(titulo: 'Teste');
+
+  Future<CanilViewModel?> fetchCanil() async {
     //TODO: Implement fetchCanil
-    return null;
+    return canil;
   }
 }
 
@@ -29,7 +32,7 @@ class _CanilScreenState extends State<CanilScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: ScaffoldCommonComponents.customAppBarWithoutIcons('Canil'),
-      body: FutureBuilder<CanilModel?>(
+      body: FutureBuilder<CanilViewModel?>(
         future: controller.fetchCanil(),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
@@ -50,8 +53,12 @@ class _CanilScreenState extends State<CanilScreen> {
                               text: 'Clique aqui para criar',
                               style: TextStyle(color: Colors.blue),
                               recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  pushNamed(context, Routes.CadastrarCanil);
+                                ..onTap = () async {
+                                  var canil = await pushNamed(
+                                      context, Routes.CadastrarCanil);
+                                  setState(() {
+                                    controller.canil = canil;
+                                  });
                                 },
                             ),
                           ],
@@ -70,13 +77,12 @@ class _CanilScreenState extends State<CanilScreen> {
     );
   }
 
-
-  _body(CanilModel canil) {
-  Size size = getSize(context);
+  _body(CanilViewModel canil) {
+    Size size = getSize(context);
     return Container(
       height: size.height,
       width: size.width,
-
+      child: Center(child: Text(canil.titulo),),
     );
   }
 }

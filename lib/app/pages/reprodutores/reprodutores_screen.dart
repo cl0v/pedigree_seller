@@ -7,6 +7,8 @@ import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
 
 //TODO: Implement PetController
 
+//TODO: Criar ReprodutorViewModel(Apenas o que é vizualizado do model ReprodutorModel)
+
 class ReprodutoresController {
   List<ReprodutorModel> petList = [];
 
