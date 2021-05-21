@@ -1,4 +1,4 @@
-class StoreModel {
+class CanilModel {
   //Lista de ninhadas
   String titulo;
   String contato;
@@ -7,7 +7,7 @@ class StoreModel {
   String donoReferencia;
   List<String> ninhadasReferencia;
   List<String> reprodutoresReferencia;
-  StoreModel({
+  CanilModel({
     required this.titulo,
     required this.contato,
     required this.cnpj,
@@ -17,3 +17,13 @@ class StoreModel {
     required this.reprodutoresReferencia,
   });
 }
+
+final CanilModel canilMocked = CanilModel(
+  titulo: 'titulo',
+  contato: 'contato',
+  cnpj: 'cnpj',
+  dataCadastro: 'dataCadastro',
+  donoReferencia: 'donoReferencia',
+  ninhadasReferencia: ['ninhadasReferencia'],
+  reprodutoresReferencia: ['reprodutoresReferencia'],
+);
