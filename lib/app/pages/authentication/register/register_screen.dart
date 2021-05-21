@@ -2,48 +2,22 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/components/custom_button_widget.dart';
 import 'package:pedigree_seller/app/components/text_input_field_widget.dart';
-import 'package:pedigree_seller/app/pages/authentication/login/login_screen.dart';
-import 'package:pedigree_seller/app/routes/routes.dart';
+import 'package:pedigree_seller/app/pages/authentication/register/register_controller.dart';
 import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
 import 'package:pedigree_seller/constants.dart';
-
-class RegisterController {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController nomeController = TextEditingController();
-  TextEditingController telefoneController = TextEditingController();
-  TextEditingController cpfController = TextEditingController();
-  TextEditingController senhaController = TextEditingController();
-  TextEditingController confirmarSenhaController = TextEditingController();
-
-  bool confirmed = false;
-  bool emailPreenchido = false;
-  bool nomePreenchido = false;
-  bool telefonePreenchido = false;
-  bool cpfPreenchido = false;
-  bool senhaPreenchido = false;
-  bool confirmarSenhaPreenchido = false;
-
-  register() {
-    emailPreenchido = emailController.text != '';
-    nomePreenchido = nomeController.text != '';
-    telefonePreenchido = telefoneController.text != '';
-    cpfPreenchido = cpfController.text != '';
-    senhaPreenchido = senhaController.text != '';
-    confirmarSenhaPreenchido = confirmarSenhaController.text != '';
-    confirmed = true;
-  }
-}
 
 class RegisterScreen extends StatefulWidget {
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
 }
 
-//TODO: A forma que estou pondo aqui é exatamente a forma de meu cel
-//Pode ser que de erro em outros celulares
-
 class _RegisterScreenState extends State<RegisterScreen> {
-  final controller = RegisterController();
+  late final controller;
+  @override
+  void initState() {
+    super.initState();
+    controller = RegisterController(context: context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -119,34 +93,38 @@ class _RegisterScreenState extends State<RegisterScreen> {
               SizedBox(
                 height: size.height * 0.05,
               ),
-              //TODO: Implement state button
+              //
               CustomButtonWidget(
-                  title: 'Register',
-                  onPressed: () => setState(() => controller.register())),
+                title: 'Register',
+                onPressed: ()async {
+                  var r = await controller.verifyRegister();
+                  setState(
+                  () => r,
+                );
+                },
+              ),
               SizedBox(
                 height: 10,
               ),
-              Center(child:
-              RichText(
-                text: TextSpan(
-                  style: kBodyTextStyle,
-                  children: [
-                    TextSpan(
-                      text: 'Já tem uma conta?',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    TextSpan(
-                      text: 'Entrar',
-                      style: TextStyle(color: Colors.blue),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          Navigator.pop(context);
-                        },
-                    ),
-                  ],
+              Center(
+                child: RichText(
+                  text: TextSpan(
+                    style: kBodyTextStyle,
+                    children: [
+                      TextSpan(
+                        text: 'Já tem uma conta?',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      TextSpan(
+                        text: ' Entrar',
+                        style: TextStyle(color: Colors.blue),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = controller.onAlreadyHasAccountPressed,
+                      ),
+                    ],
+                  ),
                 ),
-              ),),
-             
+              ),
             ],
           ),
         ),
