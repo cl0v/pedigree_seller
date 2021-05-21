@@ -17,29 +17,34 @@ class LoginController {
   bool emailPreenchido = false;
   bool senhaPreenchido = false;
 
-  final controller = StreamController()..sink.close();
+  final controller = StreamController();
   StreamSink get streamInput => controller.sink;
   Stream get output => controller.stream;
+
+  close() {
+    controller.close();
+  }
 
   _login() async {
     await Future.delayed(Duration(seconds: 2));
     //TODO: Connect login
+    streamInput.add(LoginState.Confirmed);
+    pushNamed(context, Routes.Home);
   }
 
   onRegisterPressed() {
     pushNamed(context, Routes.Register);
   }
 
-  verifyLogin() async {
+  verifyLogin() {
     confirmed = true;
     emailPreenchido = emailController.text != '';
     senhaPreenchido = senhaController.text != '';
 
-    if (!(emailPreenchido && senhaPreenchido)) return;
+    if (!(emailPreenchido && senhaPreenchido))
+      return streamInput.add(LoginState.Error);
 
     streamInput.add(LoginState.Loading);
-    await _login();
-    streamInput.add(LoginState.Confirmed);
-    pushNamed(context, Routes.Home);
+    _login();
   }
 }

@@ -11,8 +11,14 @@ push(BuildContext context, Widget page) => Navigator.push(
 pushNamed(BuildContext context, String route) =>
     Navigator.pushNamed(context, route);
 
-popUntil(BuildContext context, String route)=>Navigator.popUntil(
-                  context, ModalRoute.withName(route));
+pushReplacement(BuildContext context, String route) =>
+    Navigator.pushReplacementNamed(
+      context,
+      route
+    );
+
+popUntil(BuildContext context, String route) =>
+    Navigator.popUntil(context, ModalRoute.withName(route));
 
 back(BuildContext context, [result]) => Navigator.pop(context, result);
 
