@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:pedigree_seller/app/models/ninhada_model.dart';
 
 const canilPath = 'canil';
 

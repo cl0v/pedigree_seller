@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/components/custom_button_widget.dart';
 import 'package:pedigree_seller/app/components/text_input_field_widget.dart';
@@ -125,12 +126,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
               SizedBox(
                 height: 10,
               ),
-              TextButton(
-                child: Text('Já tem uma conta? Entrar'),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
+              Center(child:
+              RichText(
+                text: TextSpan(
+                  style: kBodyTextStyle,
+                  children: [
+                    TextSpan(
+                      text: 'Já tem uma conta?',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    TextSpan(
+                      text: 'Entrar',
+                      style: TextStyle(color: Colors.blue),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          Navigator.pop(context);
+                        },
+                    ),
+                  ],
+                ),
+              ),),
+             
             ],
           ),
         ),

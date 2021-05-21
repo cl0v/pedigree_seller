@@ -3,34 +3,31 @@ import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
-import 'package:pedigree_seller/constants.dart';
 
-/*
- - Recebe de um future o canil, caso não esteja cadastrado, aparecerá uma mensagem pedindo para cadastrar
- - Aqui dentro aparecerá a parte de adicionar reprodutores, pets etc...
-*/
-
-class CanilScreen extends StatefulWidget {
+class CanilRegisterScreen extends StatefulWidget {
   @override
-  _CanilScreenState createState() => _CanilScreenState();
+  _CanilRegisterScreenState createState() => _CanilRegisterScreenState();
 }
 
-class _CanilScreenState extends State<CanilScreen> {
+class _CanilRegisterScreenState extends State<CanilRegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ScaffoldCommonComponents.customAppBarWithoutIcons('Canil'),
+       appBar: ScaffoldCommonComponents.customAppBar(
+        'Cadastrar',
+        () => back(context),
+      ),
       body: Center(
         child: RichText(
           text: TextSpan(
-            style: kBodyTextStyle,
+            style: TextStyle(fontSize: 48),
             children: [
               TextSpan(
-                text: 'Você não criou uma loja ainda\n',
+                text: 'This is not a link, ',
                 style: TextStyle(color: Colors.black),
               ),
               TextSpan(
-                text: 'Clique aqui para criar',
+                text: 'but this is',
                 style: TextStyle(color: Colors.blue),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {

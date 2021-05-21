@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/components/custom_button_widget.dart';
+import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/constants.dart';
 
 class ScaffoldCommonComponents {
@@ -73,7 +74,7 @@ class ScaffoldCommonComponents {
     );
   }
 
-  static AppBar customAppBar(String title, VoidCallback onLeadingPressed) {
+  static AppBar customAppBar(String title, VoidCallback? onLeadingPressed) {
     return AppBar(
       brightness: Brightness.light,
       backgroundColor: Colors.transparent,
