@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/components/expanded_dropdown_widget.dart';
 import 'package:pedigree_seller/app/models/ninhada_model.dart';
 import 'package:pedigree_seller/app/models/reprodutores_model.dart';
+import 'package:pedigree_seller/app/pages/ninhada/viewmodel/ninhada_view_model.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
 import 'package:pedigree_seller/constants.dart';
@@ -33,7 +34,13 @@ class CadastrarNinhadaController {
         nascidos: nascidos,
       );
       await saveNinhada(ninhada);
-      back(context, ninhada);
+      pop(
+        context,
+        NinhadaViewModel(
+          especie: ninhada.especie,
+          titulo: ninhada.titulo,
+        ),
+      );
     } else {
       confirmed = true;
     }
@@ -41,7 +48,6 @@ class CadastrarNinhadaController {
 
   Future saveNinhada(NovaNinhadaModel ninhada) async {
     //TODO: Implement Salvar no banco
-    print(ninhada);
   }
 
   Future<List<String>> fetchMaes() async {
@@ -103,7 +109,7 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
       ),
       appBar: ScaffoldCommonComponents.customAppBar(
         'Cadastrar ninhada',
-        () => back(context),
+        () => pop(context),
       ),
       body: Container(
         height: MediaQuery.of(context).size.height,

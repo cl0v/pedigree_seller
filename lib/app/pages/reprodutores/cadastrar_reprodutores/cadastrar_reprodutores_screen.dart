@@ -53,7 +53,7 @@ class PetRegistrationController {
         isMacho: isMacho,
       );
       await saveReprodutor(reprodutor);
-      back(context, reprodutor);
+      pop(context, reprodutor);
     } else {
       isRequired = 'Campo necessário';
     }

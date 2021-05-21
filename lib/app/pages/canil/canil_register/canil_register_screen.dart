@@ -15,7 +15,7 @@ class _CanilRegisterScreenState extends State<CanilRegisterScreen> {
     return Scaffold(
        appBar: ScaffoldCommonComponents.customAppBar(
         'Cadastrar',
-        () => back(context),
+        () => pop(context),
       ),
       body: Center(
         child: RichText(

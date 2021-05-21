@@ -8,7 +8,7 @@ class MyApp extends StatelessWidget {
       title: 'Pedigree seller',
       debugShowCheckedModeBanner: false,
       // home: CategoryScreen(),
-      initialRoute: Routes.Canil,
+      initialRoute: Routes.Home,
       routes: routes,
     );
   }

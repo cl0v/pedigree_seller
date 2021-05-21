@@ -20,7 +20,7 @@ pushReplacement(BuildContext context, String route) =>
 popUntil(BuildContext context, String route) =>
     Navigator.popUntil(context, ModalRoute.withName(route));
 
-back(BuildContext context, [result]) => Navigator.pop(context, result);
+pop(BuildContext context, [result]) => Navigator.pop(context, result);
 
 backToHome(BuildContext context) => Navigator.pushAndRemoveUntil(
     context,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/components/custom_drawer_widget.dart';
 import 'package:pedigree_seller/app/models/ninhada_model.dart';
 import 'package:pedigree_seller/app/pages/ninhada/cadastrar_ninhada/cadastrar_ninhada_screen.dart';
+import 'package:pedigree_seller/app/pages/ninhada/viewmodel/ninhada_view_model.dart';
 import 'package:pedigree_seller/app/repositories/firebase_animal_repository.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
@@ -10,14 +11,14 @@ import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
 //Aprovado, Negado, Aguardando
 
 class NinhadaController {
-  List<NovaNinhadaModel> ninhadaList = [];
+  List<NinhadaViewModel> ninhadaList = [];
 
-  Future<List<NovaNinhadaModel>> fetchNinhadas() async {
+  Future<List<NinhadaViewModel>> fetchNinhadas() async {
     // FirebaseAnimalRepository.fetchNinhadas();
     return ninhadaList;
   }
 
-  viewNinhada(NovaNinhadaModel ninhada) {
+  onViewNinhadaPressed(NinhadaViewModel ninhada) {
     //TODO: Implement push to petScreen
   }
 }
@@ -36,7 +37,7 @@ class _NinhadasScreenState extends State<NinhadasScreen> {
       bottomNavigationBar: ScaffoldCommonComponents.customBottomAppBar(
         'Cadastrar ninhada',
         () async {
-          NovaNinhadaModel? ninhada = await Navigator.push(
+          NinhadaViewModel? ninhada = await Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => CadastrarNinhadaScreen(),
@@ -53,11 +54,9 @@ class _NinhadasScreenState extends State<NinhadasScreen> {
       ),
       appBar: ScaffoldCommonComponents.customAppBarWithDrawer(
           'Ninhada', Icons.add, () async {
-        NovaNinhadaModel? ninhada = await Navigator.push(
+        NinhadaViewModel? ninhada = await push(
           context,
-          MaterialPageRoute(
-            builder: (context) => CadastrarNinhadaScreen(),
-          ),
+          CadastrarNinhadaScreen(),
         );
         if (ninhada != null)
           setState(
@@ -70,7 +69,7 @@ class _NinhadasScreenState extends State<NinhadasScreen> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        child: FutureBuilder<List<NovaNinhadaModel>>(
+        child: FutureBuilder<List<NinhadaViewModel>>(
           future: controller.fetchNinhadas(),
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
@@ -95,7 +94,7 @@ class _NinhadasScreenState extends State<NinhadasScreen> {
                           IconButton(
                             icon: Icon(Icons.remove_red_eye),
                             onPressed: () {
-                              controller.viewNinhada(ninhada);
+                              controller.onViewNinhadaPressed(ninhada);
                             },
                           ), // icon-1
                           IconButton(
