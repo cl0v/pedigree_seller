@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/components/text_input_field_widget.dart';
-import 'package:pedigree_seller/app/models/canil_model.dart';
+import 'package:pedigree_seller/app/pages/canil/model/canil_model.dart';
 import 'package:pedigree_seller/app/pages/canil/viewmodel/canil_view_model.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';

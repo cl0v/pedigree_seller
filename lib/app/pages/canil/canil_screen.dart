@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:pedigree_seller/app/components/custom_drawer_widget.dart';
 import 'package:pedigree_seller/app/pages/canil/viewmodel/canil_view_model.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
@@ -12,7 +13,7 @@ import 'package:pedigree_seller/app/utils/screen_size.dart';
 */
 
 class CanilController {
-  CanilViewModel? canil ;
+  CanilViewModel? canil;
   // = CanilViewModel(titulo: 'Teste');
 
   Future<CanilViewModel?> fetchCanil() async {
@@ -31,7 +32,9 @@ class _CanilScreenState extends State<CanilScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ScaffoldCommonComponents.customAppBarWithoutIcons('Canil'),
+      appBar:
+          ScaffoldCommonComponents.customAppBarWithDrawerWithoutAction('Canil'),
+      drawer: CustomDrawer(),
       body: FutureBuilder<CanilViewModel?>(
         future: controller.fetchCanil(),
         builder: (context, snapshot) {
@@ -82,7 +85,9 @@ class _CanilScreenState extends State<CanilScreen> {
     return Container(
       height: size.height,
       width: size.width,
-      child: Center(child: Text(canil.titulo),),
+      child: Center(
+        child: Text(canil.titulo),
+      ),
     );
   }
 }

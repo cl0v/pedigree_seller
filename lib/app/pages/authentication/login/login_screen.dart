@@ -50,7 +50,6 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             SingleChildScrollView(
               child: Column(
-                // crossAxisAlignment: CrossAxisAlignment.,
                 children: [
                   TextInputFieldWidget(
                     hint: 'Email',

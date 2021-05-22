@@ -7,4 +7,6 @@ class UserModel {
     required this.nome,
     required this.email,
   });
+
+  
 }

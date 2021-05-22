@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pedigree_seller/app.dart';
+import 'package:pedigree_seller/app/services/shared_local_storage_service.dart';
+import 'package:pedigree_seller/pedigree.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 /*//TODO: O que fazer antes de ir para o servidor ou outro app
@@ -71,8 +72,10 @@ Map<String, dynamic> vendedor = {
   //TODO: Futuramente pedir cadastro de cnpj etc(Depois de entregar o basico do app, pois nao sei como fazer e n vou aprender)
 };
 
+
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  runApp(Pedigree());
 }

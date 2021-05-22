@@ -7,6 +7,7 @@ import 'package:pedigree_seller/app/pages/home/home_screen.dart';
 import 'package:pedigree_seller/app/pages/ninhada/ninhada_screen.dart';
 import 'package:pedigree_seller/app/pages/reprodutores/cadastrar_reprodutores/cadastrar_reprodutores_screen.dart';
 import 'package:pedigree_seller/app/pages/reprodutores/reprodutores_screen.dart';
+import 'package:pedigree_seller/app/pages/perfil/perfil_screen.dart';
 
 abstract class Routes {
   static const Home = '/home';
@@ -17,6 +18,7 @@ abstract class Routes {
   static const CadastrarReprodutor = '/reprodutores/cadastrar';
   static const Canil = '/canil';
   static const CadastrarCanil = '/canil/cadastrar';
+  static const Perfil = '/perfil';
   // static const Categoria = '/category';
 }
 
@@ -29,4 +31,5 @@ final routes = <String, WidgetBuilder>{
   Routes.CadastrarReprodutor: (context) => CadastrarReprodutoresScreen(),
   Routes.CadastrarCanil: (context) => CanilRegisterScreen(),
   Routes.Canil: (context) => CanilScreen(),
+  Routes.Perfil: (context) => PerfilScreen(),
 };

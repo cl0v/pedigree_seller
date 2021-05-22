@@ -41,7 +41,7 @@ class _ReprodutoresScreenState extends State<ReprodutoresScreen> {
         },
         context,
       ),
-      appBar: ScaffoldCommonComponents.customAppBarWithDrawer(
+      appBar: ScaffoldCommonComponents.customAppBarWithDrawerAndAction(
         'Reprodutores',
         Icons.add,
         () async {

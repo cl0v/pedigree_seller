@@ -40,8 +40,11 @@ class ScaffoldCommonComponents {
     );
   }
 
-  static AppBar customAppBarWithDrawer(String title, IconData actionButtonIcon,
-      VoidCallback onActionButtonPressed) {
+  static AppBar customAppBarWithDrawerAndAction(
+    String title,
+    IconData actionButtonIcon,
+    VoidCallback onActionButtonPressed,
+  ) {
     return AppBar(
       brightness: Brightness.light,
       backgroundColor: Colors.transparent,
@@ -72,6 +75,32 @@ class ScaffoldCommonComponents {
           ),
         ),
       ],
+    );
+  }
+
+  static AppBar customAppBarWithDrawerWithoutAction(
+    String title,
+  ) {
+    return AppBar(
+      brightness: Brightness.light,
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      title: Text(
+        title,
+        style: kTitleTextStyle,
+      ),
+      leading: Builder(
+        builder: (BuildContext context) {
+          return IconButton(
+            icon: Icon(
+              Icons.sort,
+              color: Colors.grey[800],
+            ),
+            onPressed: () => Scaffold.of(context).openDrawer(),
+            tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+          );
+        },
+      ),
     );
   }
 

@@ -52,7 +52,7 @@ class _NinhadasScreenState extends State<NinhadasScreen> {
         },
         context,
       ),
-      appBar: ScaffoldCommonComponents.customAppBarWithDrawer(
+      appBar: ScaffoldCommonComponents.customAppBarWithDrawerAndAction(
           'Ninhada', Icons.add, () async {
         NinhadaViewModel? ninhada = await push(
           context,

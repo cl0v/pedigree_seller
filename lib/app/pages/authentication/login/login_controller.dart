@@ -10,8 +10,8 @@ class LoginController {
   LoginController({required this.context});
   BuildContext context;
 
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController senhaController = TextEditingController();
+  final TextEditingController emailController = TextEditingController(text: 'marcelofv12@hotmail.com');
+  final TextEditingController senhaController = TextEditingController(text: '123456789');
 
   bool confirmed = false;
   bool emailPreenchido = false;

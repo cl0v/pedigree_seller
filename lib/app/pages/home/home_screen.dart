@@ -76,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ScaffoldCommonComponents.customAppBarWithDrawer(
+      appBar: ScaffoldCommonComponents.customAppBarWithDrawerAndAction(
         'Home',
         Icons.notifications_none,
         () {},
