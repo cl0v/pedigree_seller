@@ -10,7 +10,6 @@ import 'package:firebase_core/firebase_core.dart';
 - Pagina da lista de ninhada (botao (...) será criado como um menuButton)
 */
 
-
 //TODO: Criar cadastro do canil
 //TODO: Terminar o cadastro do usuário
 
@@ -18,6 +17,11 @@ import 'package:firebase_core/firebase_core.dart';
 
 //TODO: Fazer a splash screen do pedigree (logo) ser uma hero com a loginscreen
 
+//TODO: Posso verificar cnpj e cpf por aqui(alguma api)
+//ou posso fazer pelo cloud funcitons
+//Por aqui existem riscos 
+//TODO: Aguardar aprovação do canil (Fazer isso automaticamente mais tarde)
+// (Provavelmente com cloud functions)
 
 //Sellers pode ser uma extencao de users, porem com alguns provilegios
 
