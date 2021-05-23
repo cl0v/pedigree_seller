@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/pages/home/home_screen.dart';
 
-push(BuildContext context, Widget page) => Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => page,
-      ),
-    );
+push(BuildContext context, Widget page, {bool replace = true}) {
+  if (replace)
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => page));
+  else
+    Navigator.push(context, MaterialPageRoute(builder: (context) => page));
+}
 
-pushNamed(BuildContext context, String route) =>
+pushNamed(BuildContext context, String route, {bool replace = true}) {
+  if (replace)
+    Navigator.pushReplacementNamed(context, route);
+  else
     Navigator.pushNamed(context, route);
-
-pushReplacement(BuildContext context, String route) =>
-    Navigator.pushReplacementNamed(
-      context,
-      route
-    );
+}
 
 popUntil(BuildContext context, String route) =>
     Navigator.popUntil(context, ModalRoute.withName(route));

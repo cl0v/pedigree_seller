@@ -95,14 +95,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               //
               CustomButtonWidget(
-                title: 'Register',
-                onPressed: ()async {
-                  var r = await controller.verifyRegister();
-                  setState(
-                  () => r,
-                );
-                },
-              ),
+                  title: 'Register',
+                  onPressed: () async {
+                    var r = await controller.verifyRegister();
+                    setState(
+                      () => r,
+                    );
+                  }),
               SizedBox(
                 height: 10,
               ),

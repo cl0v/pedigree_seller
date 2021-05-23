@@ -3,10 +3,17 @@ import 'package:pedigree_seller/app/interfaces/authentication_interface.dart';
 
 class FirebaseAuthenticationRepository implements IAuthentication {
   FirebaseAuth auth = FirebaseAuth.instance;
-  
+
   @override
-  Future login(String email, String senha) async {
-    auth.signInWithEmailAndPassword(email: email, password: senha);
+  Future<String> login(String email, String senha) async {
+    try {
+      var user =
+          await auth.signInWithEmailAndPassword(email: email, password: senha);
+      return user.user!.uid;
+    } catch (e, exeption) {
+      print(e);
+      throw exeption;
+    }
   }
 
   @override
@@ -15,7 +22,8 @@ class FirebaseAuthenticationRepository implements IAuthentication {
   }
 
   @override
-  Future register(String email, String senha) async {
-    auth.createUserWithEmailAndPassword(email: email, password: senha);
+  Future<String> register(String email, String senha) async {
+    var c = await auth.createUserWithEmailAndPassword(email: email, password: senha,);
+    return c.user!.uid;
   }
 }

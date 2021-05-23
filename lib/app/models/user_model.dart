@@ -1,12 +1,81 @@
-class UserModel {
-  String id;
-  String nome;
-  String email;
-  UserModel({
-    required this.id,
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pedigree_seller/app/services/shared_local_storage_service.dart';
+
+class User {
+  late final String cpf;
+  late final String nome;
+  late final String email;
+  late final String contato;
+  String? id;
+
+  User({
+    required this.cpf,
     required this.nome,
     required this.email,
+    required this.contato,
+    this.id,
   });
 
-  
+  User.fromMap(Map<String, dynamic> json) {
+    cpf = json['cpf'];
+    nome = json['nome'];
+    email = json['email'];
+    contato = json['contato'];
+    id = json['id'];
+  }
+
+  Map<String, dynamic> toMap() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['cpf'] = this.cpf;
+    data['nome'] = this.nome;
+    data['email'] = this.email;
+    data['contato'] = this.contato;
+    data['id'] = this.id;
+    return data;
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory User.fromJson(String source) =>
+      User.fromMap(json.decode(source));
+
+  factory User.fromDocumentSnapshot(
+          DocumentSnapshot<Map<String, dynamic>> snapshot) =>
+      User.fromMap(
+        snapshot.data()!,
+      ).copyWith(
+        id: snapshot.reference.id,
+      );
+
+  static Future<User?> get() async {
+    String json = await Prefs.get('seller.prefs');
+    return json.isEmpty ? null : User.fromJson(json);
+  }
+
+  save() {
+    String json = toJson();
+    Prefs.put('seller.prefs', json);
+  }
+
+  static clear() {
+    Prefs.put('seller.prefs', '');
+  }
+
+  User copyWith({
+    String? cpf,
+    String? nome,
+    String? email,
+    String? contato,
+    String? id,
+  }) {
+    return User(
+      cpf: cpf ?? this.cpf,
+      nome: nome ?? this.nome,
+      email: email ?? this.email,
+      contato: contato ?? this.contato,
+      id: id ?? this.id,
+    );
+  }
 }

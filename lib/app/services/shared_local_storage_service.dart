@@ -49,17 +49,16 @@ class Prefs {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     switch (value.runtimeType) {
       case String:
-        print("é string po, bota aq sem dó");
-        break;
+        return prefs.setString(key, value);
       case bool:
-        print("é bool po, bota aq sem dó");
-        break;
+        return prefs.setBool(key, value);
+      case int:
+        return prefs.setInt(key, value);
+      case double:
+        return prefs.setDouble(key, value);
+      case List:
+        return prefs.setStringList(key, value);
     }
-    if (value.runtimeType is String) return prefs.setString(key, value);
-    if (value.runtimeType is int) return prefs.setInt(key, value);
-    if (value.runtimeType is bool) return prefs.setBool(key, value);
-    if (value.runtimeType is double) return prefs.setDouble(key, value);
-    if (value.runtimeType is List<String>)
-      return prefs.setStringList(key, value);
+    return null;
   }
 }

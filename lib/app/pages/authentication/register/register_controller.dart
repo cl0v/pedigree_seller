@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pedigree_seller/app/models/user_model.dart';
+import 'package:pedigree_seller/app/pages/authentication/register/register_api.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 
@@ -24,8 +26,24 @@ class RegisterController {
   bool confirmarSenhaPreenchido = false;
 
   _registrar() async {
-    //TODO: Connect registrar
-    pushReplacement(context, Routes.Home);
+    var email = emailController.text;
+    var nome = nomeController.text;
+    var telefone = telefoneController.text;
+    var cpf = cpfController.text;
+    var senha = senhaController.text;
+
+    var user = await RegisterApi.register(
+      email,
+      senha,
+      User(
+        cpf: cpf,
+        nome: nome,
+        email: email,
+        contato: telefone,
+      ),
+    );
+
+    if (user != null) pushNamed(context, Routes.Home, replace: true);
   }
 
   onAlreadyHasAccountPressed() {
@@ -40,6 +58,13 @@ class RegisterController {
     senhaPreenchido = senhaController.text != '';
     confirmarSenhaPreenchido = confirmarSenhaController.text != '';
     confirmed = true;
-    await _registrar();
+    if (senhaController.text ==
+        confirmarSenhaController
+            .text) if (emailPreenchido &&
+        nomePreenchido &&
+        telefonePreenchido &&
+        cpfPreenchido &&
+        senhaPreenchido &&
+        confirmarSenhaPreenchido) await _registrar();
   }
 }

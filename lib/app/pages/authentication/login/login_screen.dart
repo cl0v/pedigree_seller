@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pedigree_seller/app/components/text_input_field_widget.dart';
 import 'package:pedigree_seller/app/pages/authentication/login/login_controller.dart';
+import 'package:pedigree_seller/app/models/user_model.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/constants.dart';
@@ -20,6 +21,12 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     super.initState();
     controller = LoginController(context: context);
+    var future = User.get();
+    future.then((v) {
+      if (v != null) {
+        pushNamed(context, Routes.Home, replace: true);
+      }
+    });
   }
 
   @override
@@ -27,8 +34,6 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
     controller.close();
   }
-
-  
 
   @override
   Widget build(BuildContext context) {

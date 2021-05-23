@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pedigree_seller/app/models/user_model.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 
@@ -8,10 +9,26 @@ import 'package:pedigree_seller/app/utils/nav.dart';
 class CustomDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var future = User.get();
+
+    var fBuilder = FutureBuilder<User?>(
+      future: future,
+      builder: (context, snapshot) {
+        if (snapshot.hasData)
+          return UserAccountsDrawerHeader(
+            accountName: Text(snapshot.data!.nome),
+            accountEmail: Text(snapshot.data!.email),
+            // currentAccountPicture: ,
+          );
+        else
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+      },
+    );
+
     var children = [
-      DrawerHeader(
-        child: Text('Header'),
-      ),
+      fBuilder,
       ListTile(
         title: Text('Home'),
         leading: Icon(Icons.home),
@@ -55,7 +72,10 @@ class CustomDrawer extends StatelessWidget {
         title: Text('Sair'),
         leading: Icon(Icons.exit_to_app),
         onTap: () {
-          //TODO: Implement exit
+          User.clear();
+          pushNamed(context, Routes.Login, replace: true);
+
+          // Vendedor.clear();
         },
       ),
     ];
