@@ -17,10 +17,9 @@ class CanilModel {
     required this.cnpj,
     this.dataCadastro = '',
     this.donoID = '',
-    this.ninhadasReferencia  = const [],
-    this.reprodutoresReferencia  = const [],
+    this.ninhadasReferencia = const [],
+    this.reprodutoresReferencia = const [],
   });
-
 
   Map<String, dynamic> toMap() {
     return {
@@ -48,13 +47,13 @@ class CanilModel {
 
   String toJson() => json.encode(toMap());
 
-  factory CanilModel.fromJson(String source) => CanilModel.fromMap(json.decode(source));
-
-
+  factory CanilModel.fromJson(String source) =>
+      CanilModel.fromMap(json.decode(source));
 
   static Future<CanilModel?> get() async {
-    String json = await Prefs.get('canil.prefs');
-    return json.isEmpty ? null : CanilModel.fromJson(json);
+    final json = await Prefs.get('canil.prefs');
+    if (json != null) return json.isEmpty ? null : CanilModel.fromJson(json);
+    return null;
   }
 
   save() {
@@ -65,7 +64,6 @@ class CanilModel {
   static clear() {
     Prefs.put('canil.prefs', '');
   }
-
 }
 
 final CanilModel canilMocked = CanilModel(

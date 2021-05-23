@@ -17,14 +17,12 @@ class RegisterApi {
     //TODO: Testar quando ja existe user com esse email
     //TODO: Criar um ApiResponse
     try {
-      UserModel user =
-          UserModel(cpf: cpf, nome: nome, email: email, contato: contato);
-
       var id = await _auth.register(email, senha);
-      var u = user.copyWith(id: id);
-      var map = user.copyWith(id: id).toMap();
-      await _repository.put('sellers', map);
-      u.save();
+      UserModel user = UserModel(
+          cpf: cpf, nome: nome, email: email, contato: contato, id: id);
+
+      await _repository.put('sellers', user.toMap());
+      user.save();
       return true;
     } catch (e) {
       return false;

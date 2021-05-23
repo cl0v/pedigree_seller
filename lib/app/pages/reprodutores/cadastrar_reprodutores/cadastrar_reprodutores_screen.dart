@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/components/image_picker_tile_widget.dart';
 import 'package:pedigree_seller/app/components/category_screen.dart';
-import 'package:pedigree_seller/app/pages/canil/model/canil_model.dart';
+import 'package:pedigree_seller/app/pages/canil/canil_model.dart';
 import 'package:pedigree_seller/app/pages/reprodutores/reprodutores_api.dart';
 import 'package:pedigree_seller/app/pages/reprodutores/reprodutores_model.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';

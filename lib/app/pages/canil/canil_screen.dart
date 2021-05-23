@@ -1,26 +1,18 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/components/custom_drawer_widget.dart';
-import 'package:pedigree_seller/app/pages/canil/canil_api.dart';
-import 'package:pedigree_seller/app/pages/canil/model/canil_model.dart';
-import 'package:pedigree_seller/app/pages/canil/viewmodel/canil_view_model.dart';
+import 'package:pedigree_seller/app/pages/canil/canil_bloc.dart';
+import 'package:pedigree_seller/app/pages/canil/canil_model.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
 import 'package:pedigree_seller/constants.dart';
 import 'package:pedigree_seller/app/utils/screen_size.dart';
 /*
- - Recebe de um future o canil, caso não esteja cadastrado, aparecerá uma mensagem pedindo para cadastrar
  - Aqui dentro aparecerá a parte de adicionar reprodutores, pets etc...
 */
 
 //TODO: Quando voltar pra ca, ele precisa updatar automaticamente('Ou solicitar o aguardo da aprovação, sei la')
-
-class CanilController {
-  Future<CanilModel?> fetchCanil() async {
-    return CanilApi.get();
-  }
-}
 
 class CanilScreen extends StatefulWidget {
   @override
@@ -28,67 +20,81 @@ class CanilScreen extends StatefulWidget {
 }
 
 class _CanilScreenState extends State<CanilScreen> {
-  final controller = CanilController();
+  final _bloc = CanilBloc();
 
   @override
   void initState() {
     super.initState();
+    _bloc.fetchCanil();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _bloc.canil.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar:
-          ScaffoldCommonComponents.customAppBarWithDrawerWithoutAction('Canil'),
-      drawer: CustomDrawer(),
-      body: FutureBuilder<CanilModel?>(
-        future: controller.fetchCanil(),
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.done:
-              var canil = snapshot.data;
-              return canil != null
-                  ? _body(canil)
-                  : Center(
-                      child: RichText(
-                        text: TextSpan(
-                          style: kBodyTextStyle,
-                          children: [
-                            TextSpan(
-                              text: 'Você não criou uma loja ainda\n',
-                              style: TextStyle(color: Colors.black),
-                            ),
-                            TextSpan(
-                              text: 'Clique aqui para criar',
-                              style: TextStyle(color: Colors.blue),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () =>
-                                    pushNamed(context, Routes.CadastrarCanil),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-            case ConnectionState.waiting:
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            default:
-              return Text('Ocorreu um erro');
-          }
-        },
+    Size size = getSize(context);
+
+    var appBar =
+        ScaffoldCommonComponents.customAppBarWithDrawerWithoutAction('Canil');
+    var drawer = CustomDrawer();
+
+    var noData = Center(
+      child: RichText(
+        text: TextSpan(
+          style: kBodyTextStyle,
+          children: [
+            TextSpan(
+              text: 'Você não criou uma loja ainda\n',
+              style: TextStyle(color: Colors.black),
+            ),
+            TextSpan(
+              text: 'Clique aqui para criar',
+              style: TextStyle(color: Colors.blue),
+              recognizer: TapGestureRecognizer()
+                ..onTap = () => pushNamed(context, Routes.CadastrarCanil),
+            ),
+          ],
+        ),
       ),
     );
-  }
 
-  _body(CanilModel canil) {
-    Size size = getSize(context);
-    return Container(
-      height: size.height,
-      width: size.width,
-      child: Center(
-        child: Text(canil.titulo),
-      ),
+    var error = Center(child: Text('Ocorreu um erro'));
+
+    var loading = Center(
+      child: CircularProgressIndicator(),
+    );
+
+    var body = StreamBuilder<CanilModel?>(
+        stream: _bloc.canil.stream,
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.active:
+              var canil = snapshot.data;
+              if (canil != null) {
+                return Container(
+                  height: size.height,
+                  width: size.width,
+                  child: Center(
+                    child: Text(canil.titulo),
+                  ),
+                );
+              }
+              return noData;
+            case ConnectionState.waiting:
+              return loading;
+            default:
+              return error;
+          }
+        });
+
+    return Scaffold(
+      appBar: appBar,
+      drawer: drawer,
+      body: body,
     );
   }
 }

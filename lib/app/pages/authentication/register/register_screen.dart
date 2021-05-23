@@ -17,14 +17,20 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final _bloc = RegisterBloc();
-  final _tEmail = TextEditingController();//text: 'marcelo.ita.boss@gmail.com'
-  final _tNome = TextEditingController();//text: 'marcelo'
-  final _tContato = TextEditingController();//text: '73932146147'
-  final _tCpf = TextEditingController();//text: '09841232606'
-  final _tSenha = TextEditingController();//text: '..sdidasd..'
-  final _tConfSenha = TextEditingController();//text: '..sdidasd..'
+  final _tEmail = TextEditingController(text: 'marcelo.ita.boss@gmail.com'); //text: 'marcelo.ita.boss@gmail.com'
+  final _tNome = TextEditingController(text: 'marcelo'); //text: 'marcelo'
+  final _tContato = TextEditingController(text: '73932146147'); //text: '73932146147'
+  final _tCpf = TextEditingController(text: '09841232606'); //text: '09841232606'
+  final _tSenha = TextEditingController(text: '..sdidasd..'); //text: '..sdidasd..'
+  final _tConfSenha = TextEditingController(text: '..sdidasd..'); //text: '..sdidasd..'
 
   bool _showError = false;
+
+  @override
+  void dispose() {
+    super.dispose();
+    _bloc.dispose();
+  }
 
   _onRegisterPressed() async {
     if (!(_validateEmail() == null &&
@@ -42,10 +48,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
     });
 
     String email = _tEmail.text;
-    String nome = _tSenha.text;
-    String contato = _tSenha.text;
-    String cpf = _tSenha.text;
+    String nome = _tNome.text;
+    String contato = _tContato.text;
+    String cpf = _tCpf.text;
     String senha = _tSenha.text;
+
+    //TODO: Procurar uma forma de simplificar para nao cair em erros;
 
     var response = await _bloc.register(email, senha, cpf, nome, contato);
 
@@ -83,9 +91,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
       return "Digite o telefone";
     }
     return null;
- 
+  }
 
-}  String? _validateCpf() {
+  String? _validateCpf() {
     //TODO: Implement
     var text = _tCpf.text;
     if (text.isEmpty) {
