@@ -25,7 +25,7 @@ class CustomBottomAppBarWidget extends StatelessWidget {
           8,
         ),
         child: CustomButtonWidget(
-          title: title,
+          title,
           onPressed: onPressed,
         ),
       ),

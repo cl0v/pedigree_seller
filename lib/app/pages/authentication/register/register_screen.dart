@@ -1,8 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/components/custom_button_widget.dart';
+import 'package:pedigree_seller/app/components/form_error_text.dart';
 import 'package:pedigree_seller/app/components/text_input_field_widget.dart';
-import 'package:pedigree_seller/app/pages/authentication/register/register_controller.dart';
+import 'package:pedigree_seller/app/pages/authentication/register/register_bloc.dart';
+import 'package:pedigree_seller/app/routes/routes.dart';
+import 'package:pedigree_seller/app/utils/alert.dart';
+import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
 import 'package:pedigree_seller/constants.dart';
 
@@ -12,16 +16,112 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  late final controller;
-  @override
-  void initState() {
-    super.initState();
-    controller = RegisterController(context: context);
+  final _bloc = RegisterBloc();
+  final _tEmail = TextEditingController(text: 'marcelo.ita.boss@gmail.com');
+  final _tNome = TextEditingController(text: 'marcelo');
+  final _tContato = TextEditingController(text: '73932146147');
+  final _tCpf = TextEditingController(text: '09841232606');
+  final _tSenha = TextEditingController(text: '..sdidasd..');
+  final _tConfSenha = TextEditingController(text: '..sdidasd..');
+
+  _onRegisterPressed() async {
+    //TODO: Conferir a validação primeiro
+    String email = _tEmail.text;
+    String nome = _tSenha.text;
+    String contato = _tSenha.text;
+    String cpf = _tSenha.text;
+    String senha = _tSenha.text;
+
+    var response = await _bloc.register(email, senha, cpf, nome, contato);
+
+    if (response)
+      pushNamed(context, Routes.Home, replace: true);
+    else
+      alert(context, 'Error na criação de conta!');
+  }
+
+  _onBackToLoginPressed() {
+    pop(context);
+  }
+
+  String? _validateEmail() {
+    var text = _tEmail.text;
+    if (text.isEmpty) {
+      return "Digite o login";
+    }
+    return null;
+  }
+
+  String? _validateNome() {
+    //TODO: Implement
+    var text = _tNome.text;
+    if (text.isEmpty) {
+      return "Digite o login";
+    }
+    return null;
+  }
+
+  String? _validateContato() {
+    //TODO: Implement
+    var text = _tContato.text;
+    if (text.isEmpty) {
+      return "Digite o login";
+    }
+    return null;
+  }
+
+  String? _validateCpf() {
+    //TODO: Implement
+    var text = _tCpf.text;
+    if (text.isEmpty) {
+      return "Digite o login";
+    }
+    return null;
+  }
+
+  String? _validateSenha() {
+    var text = _tSenha.text;
+    var conf = _tConfSenha.text;
+    if (text.isEmpty || conf.isEmpty) {
+      return "Digite a senha";
+    }
+    if (text != conf) {
+      return "Precisam ser iguais";
+    }
+    if (text.length < 3) {
+      return "A senha precisa ter pelo menos 3 números";
+    }
+    return null;
   }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
+    var registerBtn = CustomButtonWidget(
+      'Register',
+      onPressed: _onRegisterPressed,
+    );
+
+    var backBtn = Center(
+      child: RichText(
+        text: TextSpan(
+          style: kBodyTextStyle,
+          children: [
+            TextSpan(
+              text: 'Já tem uma conta?',
+              style: TextStyle(color: Colors.black),
+            ),
+            TextSpan(
+                text: ' Entrar',
+                style: TextStyle(color: Colors.blue),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = _onBackToLoginPressed),
+          ],
+        ),
+      ),
+    );
+
     return Scaffold(
       appBar: ScaffoldCommonComponents.customAppBarWithoutIcons('Cadastrar'),
       body: Container(
@@ -36,94 +136,69 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 hint: 'Email',
                 inputAction: TextInputAction.next,
                 inputType: TextInputType.emailAddress,
-                controller: controller.emailController,
+                controller: _tEmail,
               ),
-              controller.confirmed && !controller.emailPreenchido
-                  ? errorText
+              _validateEmail() != null
+                  ? FormErrorText(_validateEmail()!)
                   : Container(),
               TextInputFieldWidget(
                 icon: Icons.person,
                 hint: 'Nome',
                 inputAction: TextInputAction.next,
-                controller: controller.nomeController,
+                controller: _tNome,
               ),
-              controller.confirmed && !controller.nomePreenchido
-                  ? errorText
+              _validateNome() != null
+                  ? FormErrorText(_validateNome()!)
                   : Container(),
               TextInputFieldWidget(
                 icon: Icons.phone,
                 hint: 'Telefone',
                 inputAction: TextInputAction.next,
                 inputType: TextInputType.phone,
-                controller: controller.telefoneController,
+                controller: _tContato,
               ),
-              controller.confirmed && !controller.telefonePreenchido
-                  ? errorText
+              _validateContato() != null
+                  ? FormErrorText(_validateContato()!)
                   : Container(),
               TextInputFieldWidget(
                 icon: Icons.credit_card,
                 hint: 'CPF',
                 inputType: TextInputType.number,
                 inputAction: TextInputAction.next,
-                controller: controller.cpfController,
+                controller: _tCpf,
               ),
-              controller.confirmed && !controller.cpfPreenchido
-                  ? errorText
+              _validateCpf() != null
+                  ? FormErrorText(_validateCpf()!)
                   : Container(),
               TextInputFieldWidget(
                 icon: Icons.lock,
                 hint: 'Senha',
                 inputAction: TextInputAction.next,
                 isObscure: true,
-                controller: controller.senhaController,
+                controller: _tSenha,
               ),
-              controller.confirmed && !controller.senhaPreenchido
-                  ? errorText
+              _validateSenha() != null
+                  ? FormErrorText(_validateSenha()!)
                   : Container(),
               TextInputFieldWidget(
                 icon: Icons.lock,
                 hint: 'Confirmar senha',
                 inputAction: TextInputAction.done,
                 isObscure: true,
-                controller: controller.confirmarSenhaController,
+                controller: _tConfSenha,
               ),
-              controller.confirmed && !controller.confirmarSenhaPreenchido
-                  ? errorText
+              _validateSenha() != null
+                  ? FormErrorText(_validateSenha()!)
                   : Container(),
               SizedBox(
                 height: size.height * 0.05,
               ),
               //
-              CustomButtonWidget(
-                  title: 'Register',
-                  onPressed: () async {
-                    var r = await controller.verifyRegister();
-                    setState(
-                      () => r,
-                    );
-                  }),
+              registerBtn,
               SizedBox(
                 height: 10,
               ),
-              Center(
-                child: RichText(
-                  text: TextSpan(
-                    style: kBodyTextStyle,
-                    children: [
-                      TextSpan(
-                        text: 'Já tem uma conta?',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                      TextSpan(
-                        text: ' Entrar',
-                        style: TextStyle(color: Colors.blue),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = controller.onAlreadyHasAccountPressed,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              backBtn,
             ],
           ),
         ),

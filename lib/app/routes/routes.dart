@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/pages/authentication/login/login_screen.dart';
+import 'package:pedigree_seller/app/pages/authentication/splash/splash_screen.dart';
 import 'package:pedigree_seller/app/pages/authentication/register/register_screen.dart';
 import 'package:pedigree_seller/app/pages/canil/canil_register/canil_register_screen.dart';
 import 'package:pedigree_seller/app/pages/canil/canil_screen.dart';
@@ -10,8 +11,9 @@ import 'package:pedigree_seller/app/pages/reprodutores/reprodutores_screen.dart'
 import 'package:pedigree_seller/app/pages/perfil/perfil_screen.dart';
 
 abstract class Routes {
+  static const Splash = '/';
   static const Home = '/home';
-  static const Login = '/';
+  static const Login = '/login';
   static const Register = '/register';
   static const Ninhada = '/ninhada';
   static const Reprodutores = '/reprodutores';
@@ -32,4 +34,5 @@ final routes = <String, WidgetBuilder>{
   Routes.CadastrarCanil: (context) => CanilRegisterScreen(),
   Routes.Canil: (context) => CanilScreen(),
   Routes.Perfil: (context) => PerfilScreen(),
+  Routes.Splash: (context) => SplashScreen(),
 };

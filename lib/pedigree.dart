@@ -7,7 +7,7 @@ class Pedigree extends StatelessWidget {
     return MaterialApp(
       title: 'Pedigree seller',
       debugShowCheckedModeBanner: false,
-      initialRoute: Routes.Login,
+      initialRoute: Routes.Splash,
       routes: routes,
     );
   }

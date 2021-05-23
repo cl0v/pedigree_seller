@@ -7,20 +7,22 @@ class LoginApi {
   static FirestoreRepository _repository = FirestoreRepository();
   static IAuthentication _auth = FirebaseAuthenticationRepository();
 
-  static login(String email, String senha) async {
-    var id = await _auth.login(email, senha);
+  
+//TODO: Refatorar o login
 
+
+  static Future<bool> login(String email, String senha) async {
     try {
+      var id = await _auth.login(email, senha);
       var map = await _repository.get('sellers', id);
-      if (map != null)
-        return UserModel.fromMap(map)..save();
-      else
-        print('Salvei o codigo mano');
-      //TODO: Ta rolando bug quando nao tem user salvo nas prefs(PRimeira vez que vai rodar o app quando troca de conta)
-    } catch (e, ex) {
-      print(e);
-      throw ex;
+      if (map != null) {
+        UserModel.fromMap(map)..save();
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
     }
-    //TODO: Acho que essa porra pode ser nula de alguma forma
   }
 }

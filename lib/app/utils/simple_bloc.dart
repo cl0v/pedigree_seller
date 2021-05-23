@@ -1,0 +1,22 @@
+import 'dart:async';
+
+class SimpleBloc<T> {
+  StreamController _controller = StreamController<T>();
+  get stream => _controller.stream;
+
+  add(T obj) {
+    if (!_controller.isClosed) {
+      _controller.add(obj);
+    }
+  }
+
+  addError(Object obj) {
+    if (!_controller.isClosed) {
+      _controller.addError(obj);
+    }
+  }
+
+  dispose() {
+    _controller.close();
+  }
+}

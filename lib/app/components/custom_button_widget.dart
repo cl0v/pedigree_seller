@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 
 class CustomButtonWidget extends StatelessWidget {
-  final String title;
-  final Function()? onPressed;
+  final String text;
+  final VoidCallback onPressed;
+  final bool showProgress;
 
-  const CustomButtonWidget({
-    Key? key,
-    required this.title,
-    required this.onPressed,
-  }) : super(key: key);
+  CustomButtonWidget(this.text,
+      {required this.onPressed, this.showProgress = false});
 
   @override
   Widget build(BuildContext context) {
@@ -21,14 +19,20 @@ class CustomButtonWidget extends StatelessWidget {
         color: Colors.blue,
       ),
       child: TextButton(
+        child: showProgress
+            ? Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
+              )
+            : Text(
+                text,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
         onPressed: onPressed,
-        child: Text(
-          title,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
       ),
     );
   }

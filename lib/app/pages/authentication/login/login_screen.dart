@@ -1,14 +1,14 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pedigree_seller/app/components/custom_button_widget.dart';
+import 'package:pedigree_seller/app/components/form_error_text.dart';
 import 'package:pedigree_seller/app/components/text_input_field_widget.dart';
-import 'package:pedigree_seller/app/pages/authentication/login/login_controller.dart';
-import 'package:pedigree_seller/app/models/user_model.dart';
+import 'package:pedigree_seller/app/pages/authentication/login/login_bloc.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
+import 'package:pedigree_seller/app/utils/alert.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/constants.dart';
-
-import 'components/login_button_widget.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -16,23 +16,54 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  late LoginController controller;
-  @override
-  void initState() {
-    super.initState();
-    controller = LoginController(context: context);
-    var future = UserModel.get();
-    future.then((v) {
-      if (v != null) {
-        pushNamed(context, Routes.Home, replace: true);
-      }
-    });
-  }
+  final _bloc = LoginBloc();
+  final _tEmail = TextEditingController(text: 'marcelo.ita.boss@gmail.com');
+  final _tSenha = TextEditingController(text: '..sdidasd..');
 
   @override
   void dispose() {
     super.dispose();
-    controller.close();
+    _bloc.dispose();
+  }
+
+  _onLoginPressed() async {
+    //TODO: Conferir a validação primeiro
+
+    if (!(_validateEmail() == null && _validateSenha() == null)) return;
+    String email = _tEmail.text;
+    String senha = _tSenha.text;
+
+    var response = await _bloc.login(email, senha);
+
+    if (response)
+      pushNamed(context, Routes.Home, replace: true);
+    else
+    //TODO: Criar uma ApiResponse para exibir o error
+      alert(context, 'Error no login');
+  }
+
+  _onRegisterPressed() {
+    pushNamed(context, Routes.Register);
+  }
+
+  String? _validateEmail() {
+    //TODO: Mostrar na tela o erro, definir um setState
+    var text = _tEmail.text;
+    if (text.isEmpty) {
+      return "Digite o login";
+    }
+    return null;
+  }
+
+  String? _validateSenha() {
+    var text = _tSenha.text;
+    if (text.isEmpty) {
+      return "Digite a senha";
+    }
+    if (text.length < 3) {
+      return "A senha precisa ter pelo menos 3 números";
+    }
+    return null;
   }
 
   @override
@@ -61,31 +92,34 @@ class _LoginScreenState extends State<LoginScreen> {
                     icon: Icons.email,
                     inputType: TextInputType.emailAddress,
                     inputAction: TextInputAction.next,
-                    controller: controller.emailController,
+                    controller: _tEmail,
                   ),
-                  controller.confirmed && !controller.emailPreenchido
-                      ? errorText
+                  _validateEmail() != null
+                      ? FormErrorText(_validateEmail()!)
                       : Container(),
                   TextInputFieldWidget(
                     hint: 'Senha',
                     icon: Icons.lock,
                     isObscure: true,
                     inputAction: TextInputAction.done,
-                    controller: controller.senhaController,
+                    controller: _tSenha,
                   ),
-                  controller.confirmed && !controller.senhaPreenchido
-                      ? errorText
+                  _validateSenha() != null
+                      ? FormErrorText(_validateSenha()!)
                       : Container(),
                   SizedBox(
                     height: 25,
                   ),
-                  LoginButton(
-                    onPressed: () {
-                      setState(() {
-                        controller.verifyLogin();
-                      });
+                  StreamBuilder(
+                    stream: _bloc.stream,
+                    builder: (BuildContext context,
+                        AsyncSnapshot<dynamic> snapshot) {
+                      return CustomButtonWidget(
+                        'Entrar',
+                        onPressed: _onLoginPressed,
+                        showProgress: snapshot.data ?? false,
+                      );
                     },
-                    stream: controller.output,
                   ),
                   SizedBox(
                     height: 25,
@@ -99,8 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 text: 'Criar conta',
                 style: kBodyTextStyle.copyWith(
                     fontSize: 16, decoration: TextDecoration.underline),
-                recognizer: TapGestureRecognizer()
-                  ..onTap = controller.onRegisterPressed,
+                recognizer: TapGestureRecognizer()..onTap = _onRegisterPressed,
               )),
             ),
             SizedBox(

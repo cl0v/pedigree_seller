@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pedigree_seller/app/components/form_error_text.dart';
 import 'package:pedigree_seller/app/components/text_input_field_widget.dart';
 import 'package:pedigree_seller/app/pages/canil/canil_api.dart';
 import 'package:pedigree_seller/app/pages/canil/model/canil_model.dart';
@@ -9,7 +10,7 @@ import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
 
 import '../../../../constants.dart';
 
-//TODO: Criar formulario para registro de 
+//TODO: Criar formulario para registro de
 
 //TODO: Adicionar reprodutores num banco local
 
@@ -67,7 +68,9 @@ class _CanilRegisterScreenState extends State<CanilRegisterScreen> {
   }
 
   showError(bool condition) {
-    return condition ? errorText : Container();
+    return condition
+        ? FormErrorText('Error') //TODO: Corrigir(Login example)
+        : Container();
   }
 
   @override
