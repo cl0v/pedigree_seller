@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:pedigree_seller/app/services/shared_local_storage_service.dart';
+
 class CanilModel {
   //Lista de ninhadas
   String titulo;
@@ -16,6 +20,51 @@ class CanilModel {
     this.ninhadasReferencia  = const [],
     this.reprodutoresReferencia  = const [],
   });
+
+
+  Map<String, dynamic> toMap() {
+    return {
+      'titulo': titulo,
+      'contato': contato,
+      'cnpj': cnpj,
+      'dataCadastro': dataCadastro,
+      'donoID': donoID,
+      'ninhadasReferencia': ninhadasReferencia,
+      'reprodutoresReferencia': reprodutoresReferencia,
+    };
+  }
+
+  factory CanilModel.fromMap(Map<String, dynamic> map) {
+    return CanilModel(
+      titulo: map['titulo'],
+      contato: map['contato'],
+      cnpj: map['cnpj'],
+      dataCadastro: map['dataCadastro'],
+      donoID: map['donoID'],
+      ninhadasReferencia: List<String>.from(map['ninhadasReferencia']),
+      reprodutoresReferencia: List<String>.from(map['reprodutoresReferencia']),
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory CanilModel.fromJson(String source) => CanilModel.fromMap(json.decode(source));
+
+
+
+  static Future<CanilModel?> get() async {
+    String json = await Prefs.get('canil.prefs');
+    return json.isEmpty ? null : CanilModel.fromJson(json);
+  }
+
+  save() {
+    String json = toJson();
+    Prefs.put('canil.prefs', json);
+  }
+
+  static clear() {
+    Prefs.put('canil.prefs', '');
+  }
 
 }
 

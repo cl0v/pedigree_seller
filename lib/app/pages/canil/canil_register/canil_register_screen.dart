@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/components/text_input_field_widget.dart';
+import 'package:pedigree_seller/app/pages/canil/canil_api.dart';
 import 'package:pedigree_seller/app/pages/canil/model/canil_model.dart';
 import 'package:pedigree_seller/app/pages/canil/viewmodel/canil_view_model.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
@@ -8,7 +9,9 @@ import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
 
 import '../../../../constants.dart';
 
-//TODO: Criar formulario para registro de canil
+//TODO: Criar formulario para registro de 
+
+//TODO: Adicionar reprodutores num banco local
 
 class CanilController {
   BuildContext context;
@@ -26,21 +29,27 @@ class CanilController {
   bool isContatoPreenchido = false;
   bool isCnpjPreenchido = false;
 
-  onCadastrarPressed() {
+  onCadastrarPressed() async {
     isConfirmed = true;
     isNomePreenchido = nomeController.text != '';
     isContatoPreenchido = contatoController.text != '';
     isCnpjPreenchido = cnpjController.text != '';
-    CanilModel canil = CanilModel(
-      titulo: nomeController.text,
-      contato: contatoController.text,
-      cnpj: cnpjController.text,
-    );
-    if (isNomePreenchido && isContatoPreenchido && isCnpjPreenchido)
-      pop(
-        context,
-        CanilViewModel(titulo: canil.titulo),
+    if (isNomePreenchido && isContatoPreenchido && isCnpjPreenchido) {
+      CanilModel canil = CanilModel(
+        titulo: nomeController.text,
+        contato: contatoController.text,
+        cnpj: cnpjController.text,
       );
+      try {
+        await CanilApi.register(canil);
+        pop(
+          context,
+          CanilViewModel(titulo: canil.titulo),
+        );
+      } catch (e) {
+        print(e);
+      }
+    }
   }
 }
 
@@ -67,7 +76,6 @@ class _CanilRegisterScreenState extends State<CanilRegisterScreen> {
       appBar: ScaffoldCommonComponents.customAppBar(
         'Cadastrar',
         () {
-          
           popUntil(context, Routes.Canil);
         },
       ),

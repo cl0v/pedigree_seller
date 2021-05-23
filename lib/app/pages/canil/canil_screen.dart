@@ -1,6 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/components/custom_drawer_widget.dart';
+import 'package:pedigree_seller/app/pages/canil/canil_api.dart';
+import 'package:pedigree_seller/app/pages/canil/model/canil_model.dart';
 import 'package:pedigree_seller/app/pages/canil/viewmodel/canil_view_model.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
@@ -12,12 +14,11 @@ import 'package:pedigree_seller/app/utils/screen_size.dart';
  - Aqui dentro aparecerá a parte de adicionar reprodutores, pets etc...
 */
 
-class CanilController {
-  CanilViewModel? canil;
+//TODO: Quando voltar pra ca, ele precisa updatar automaticamente('Ou solicitar o aguardo da aprovação, sei la')
 
-  Future<CanilViewModel?> fetchCanil() async {
-    //TODO: Implement fetchCanil
-    return canil;
+class CanilController {
+  Future<CanilModel?> fetchCanil() async {
+    return CanilApi.get();
   }
 }
 
@@ -29,6 +30,10 @@ class CanilScreen extends StatefulWidget {
 class _CanilScreenState extends State<CanilScreen> {
   final controller = CanilController();
 
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +41,7 @@ class _CanilScreenState extends State<CanilScreen> {
       appBar:
           ScaffoldCommonComponents.customAppBarWithDrawerWithoutAction('Canil'),
       drawer: CustomDrawer(),
-      body: FutureBuilder<CanilViewModel?>(
+      body: FutureBuilder<CanilModel?>(
         future: controller.fetchCanil(),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
@@ -57,13 +62,8 @@ class _CanilScreenState extends State<CanilScreen> {
                               text: 'Clique aqui para criar',
                               style: TextStyle(color: Colors.blue),
                               recognizer: TapGestureRecognizer()
-                                ..onTap = () async {
-                                  var canil = await pushNamed(
-                                      context, Routes.CadastrarCanil);
-                                  setState(() {
-                                    controller.canil = canil;
-                                  });
-                                },
+                                ..onTap = () =>
+                                    pushNamed(context, Routes.CadastrarCanil),
                             ),
                           ],
                         ),
@@ -81,7 +81,7 @@ class _CanilScreenState extends State<CanilScreen> {
     );
   }
 
-  _body(CanilViewModel canil) {
+  _body(CanilModel canil) {
     Size size = getSize(context);
     return Container(
       height: size.height,
