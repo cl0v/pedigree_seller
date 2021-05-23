@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/components/custom_drawer_widget.dart';
-import 'package:pedigree_seller/app/models/reprodutores_model.dart';
+import 'package:pedigree_seller/app/pages/reprodutores/reprodutores_api.dart';
+import 'package:pedigree_seller/app/pages/reprodutores/reprodutores_model.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
 
 //TODO: Implement PetController
 
-//TODO: Criar ReprodutorViewModel(Apenas o que é vizualizado do model ReprodutorModel)
+//TODO: Criar ReprodutorViewModel (Apenas o que é vizualizado do model ReprodutorModel)
 
 class ReprodutoresController {
-  List<ReprodutorModel> petList = [];
-
   Future<List<ReprodutorModel>> fetchReprodutores() async {
-    //TODO: Implement fetchReprodutores
-    return petList;
+    return ReprodutoresApi.get(); //Atualizar quando volta pra cá
   }
 }
 
@@ -27,30 +25,26 @@ class _ReprodutoresScreenState extends State<ReprodutoresScreen> {
   final controller = ReprodutoresController();
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: ScaffoldCommonComponents.customBottomAppBar(
         'Cadastrar um Pet',
-        () async {
-          ReprodutorModel? valor =
-              await pushNamed(context, Routes.CadastrarReprodutor);
-          if (valor != null)
-            setState(() {
-              controller.petList.add(valor);
-            });
+        () {
+          pushNamed(context, Routes.CadastrarReprodutor);
         },
         context,
       ),
       appBar: ScaffoldCommonComponents.customAppBarWithDrawerAndAction(
         'Reprodutores',
         Icons.add,
-        () async {
-          ReprodutorModel? valor =
-              await pushNamed(context, Routes.CadastrarReprodutor);
-          if (valor != null)
-            setState(() {
-              controller.petList.add(valor);
-            });
+        () {
+          pushNamed(context, Routes.CadastrarReprodutor);
         },
       ),
       drawer: CustomDrawer(),

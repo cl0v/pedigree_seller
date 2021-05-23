@@ -1,5 +1,5 @@
 import 'package:pedigree_seller/app/models/animal_model.dart';
-import 'package:pedigree_seller/app/models/reprodutores_model.dart';
+import 'package:pedigree_seller/app/pages/reprodutores/reprodutores_model.dart';
 
 class Filhote {
   bool isMacho;

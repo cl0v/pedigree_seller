@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/components/expanded_dropdown_widget.dart';
 import 'package:pedigree_seller/app/models/ninhada_model.dart';
-import 'package:pedigree_seller/app/models/reprodutores_model.dart';
+import 'package:pedigree_seller/app/pages/reprodutores/reprodutores_model.dart';
 import 'package:pedigree_seller/app/pages/ninhada/viewmodel/ninhada_view_model.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';

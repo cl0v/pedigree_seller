@@ -26,4 +26,18 @@ class FirestoreRepository implements ICloudDataBase {
   Future<DocumentReference<Map<String, dynamic>>> put(
           String path, Map<String, dynamic> map) async =>
       firestore.collection(path).add(map);
+
+  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> getAll(
+      String path, String id, String whereField) async {
+    try {
+      var query = await firestore
+          .collection(path)
+          .where(whereField, isEqualTo: id)
+          .get();
+      print('Chega ate aq');
+      return query.docs;
+    } catch (e) {
+      return [];
+    }
+  }
 }
