@@ -4,14 +4,13 @@ import 'package:pedigree_seller/app/models/user_model.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 
-//TODO: Corrigir bug de rotas
 
 class CustomDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var future = User.get();
+    var future = UserModel.get();
 
-    var fBuilder = FutureBuilder<User?>(
+    var fBuilder = FutureBuilder<UserModel?>(
       future: future,
       builder: (context, snapshot) {
         if (snapshot.hasData)
@@ -64,7 +63,6 @@ class CustomDrawer extends StatelessWidget {
         leading: Icon(Icons.person),
         onTap: () {
           pushNamed(context, Routes.Perfil);
-          //TODO: Create PerfilPage
           //TODO: Implement onTap
         },
       ),
@@ -72,7 +70,7 @@ class CustomDrawer extends StatelessWidget {
         title: Text('Sair'),
         leading: Icon(Icons.exit_to_app),
         onTap: () {
-          User.clear();
+          UserModel.clear();
           pushNamed(context, Routes.Login, replace: true);
 
           // Vendedor.clear();

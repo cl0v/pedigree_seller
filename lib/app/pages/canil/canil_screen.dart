@@ -14,7 +14,6 @@ import 'package:pedigree_seller/app/utils/screen_size.dart';
 
 class CanilController {
   CanilViewModel? canil;
-  // = CanilViewModel(titulo: 'Teste');
 
   Future<CanilViewModel?> fetchCanil() async {
     //TODO: Implement fetchCanil
@@ -29,6 +28,8 @@ class CanilScreen extends StatefulWidget {
 
 class _CanilScreenState extends State<CanilScreen> {
   final controller = CanilController();
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

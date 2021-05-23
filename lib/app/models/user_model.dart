@@ -3,14 +3,14 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pedigree_seller/app/services/shared_local_storage_service.dart';
 
-class User {
+class UserModel {
   late final String cpf;
   late final String nome;
   late final String email;
   late final String contato;
   String? id;
 
-  User({
+  UserModel({
     required this.cpf,
     required this.nome,
     required this.email,
@@ -18,7 +18,7 @@ class User {
     this.id,
   });
 
-  User.fromMap(Map<String, dynamic> json) {
+  UserModel.fromMap(Map<String, dynamic> json) {
     cpf = json['cpf'];
     nome = json['nome'];
     email = json['email'];
@@ -38,20 +38,20 @@ class User {
 
   String toJson() => json.encode(toMap());
 
-  factory User.fromJson(String source) =>
-      User.fromMap(json.decode(source));
+  factory UserModel.fromJson(String source) =>
+      UserModel.fromMap(json.decode(source));
 
-  factory User.fromDocumentSnapshot(
+  factory UserModel.fromDocumentSnapshot(
           DocumentSnapshot<Map<String, dynamic>> snapshot) =>
-      User.fromMap(
+      UserModel.fromMap(
         snapshot.data()!,
       ).copyWith(
         id: snapshot.reference.id,
       );
 
-  static Future<User?> get() async {
+  static Future<UserModel?> get() async {
     String json = await Prefs.get('seller.prefs');
-    return json.isEmpty ? null : User.fromJson(json);
+    return json.isEmpty ? null : UserModel.fromJson(json);
   }
 
   save() {
@@ -63,14 +63,14 @@ class User {
     Prefs.put('seller.prefs', '');
   }
 
-  User copyWith({
+  UserModel copyWith({
     String? cpf,
     String? nome,
     String? email,
     String? contato,
     String? id,
   }) {
-    return User(
+    return UserModel(
       cpf: cpf ?? this.cpf,
       nome: nome ?? this.nome,
       email: email ?? this.email,

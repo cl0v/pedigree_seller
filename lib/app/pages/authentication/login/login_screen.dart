@@ -21,7 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     super.initState();
     controller = LoginController(context: context);
-    var future = User.get();
+    var future = UserModel.get();
     future.then((v) {
       if (v != null) {
         pushNamed(context, Routes.Home, replace: true);

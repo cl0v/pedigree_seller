@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/components/text_input_field_widget.dart';
 import 'package:pedigree_seller/app/pages/canil/model/canil_model.dart';
 import 'package:pedigree_seller/app/pages/canil/viewmodel/canil_view_model.dart';
+import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
 
@@ -15,9 +16,10 @@ class CanilController {
     required this.context,
   });
 
-  TextEditingController nomeController = TextEditingController();
-  TextEditingController contatoController = TextEditingController();
-  TextEditingController cnpjController = TextEditingController();
+  TextEditingController nomeController = TextEditingController(text: 'Canil');
+  TextEditingController contatoController =
+      TextEditingController(text: 'Canil');
+  TextEditingController cnpjController = TextEditingController(text: 'Canil');
 
   bool isConfirmed = false;
   bool isNomePreenchido = false;
@@ -49,7 +51,6 @@ class CanilRegisterScreen extends StatefulWidget {
 
 class _CanilRegisterScreenState extends State<CanilRegisterScreen> {
   late final controller;
-
   @override
   void initState() {
     super.initState();
@@ -65,7 +66,10 @@ class _CanilRegisterScreenState extends State<CanilRegisterScreen> {
     return Scaffold(
       appBar: ScaffoldCommonComponents.customAppBar(
         'Cadastrar',
-        () => pop(context),
+        () {
+          
+          popUntil(context, Routes.Canil);
+        },
       ),
       bottomNavigationBar:
           ScaffoldCommonComponents.customBottomAppBar('Cadastrar', () {
@@ -91,7 +95,8 @@ class _CanilRegisterScreenState extends State<CanilRegisterScreen> {
               inputType: TextInputType.phone,
               controller: controller.contatoController,
             ),
-            showError(controller.isConfirmed && !controller.isContatoPreenchido),
+            showError(
+                controller.isConfirmed && !controller.isContatoPreenchido),
             TextInputFieldWidget(
               icon: Icons.document_scanner,
               hint: 'CNPJ',

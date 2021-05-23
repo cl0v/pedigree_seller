@@ -14,9 +14,9 @@ class LoginController {
   BuildContext context;
 
   final TextEditingController emailController =
-      TextEditingController(text: 'marcelofv12@hotmail.com');
+      TextEditingController(text: 'marcelo.ita.boss@gmail.com');
   final TextEditingController senhaController =
-      TextEditingController(text: '123456789');
+      TextEditingController(text: '..sdidasd..');
 
   bool confirmed = false;
   bool emailPreenchido = false;
@@ -42,7 +42,7 @@ class LoginController {
   }
 
   onRegisterPressed() {
-    pushNamed(context, Routes.Register, replace: true);
+    pushNamed(context, Routes.Register);
   }
 
   verifyLogin() {

@@ -12,7 +12,8 @@ class LoginApi {
 
     try {
       var map = await _repository.get('sellers', id);
-      return User.fromMap(map)..save();
+      return UserModel.fromMap(map)..save();
+      //TODO: Ta rolando bug quando nao tem user salvo nas prefs(PRimeira vez que vai rodar o app quando troca de conta)
     } catch (e, ex) {
       print(e);
       throw ex;

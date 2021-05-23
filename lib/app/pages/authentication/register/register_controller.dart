@@ -10,12 +10,12 @@ class RegisterController {
     required this.context,
   });
 
-  TextEditingController emailController = TextEditingController();
-  TextEditingController nomeController = TextEditingController();
-  TextEditingController telefoneController = TextEditingController();
-  TextEditingController cpfController = TextEditingController();
-  TextEditingController senhaController = TextEditingController();
-  TextEditingController confirmarSenhaController = TextEditingController();
+  TextEditingController emailController = TextEditingController(text: 'marcelo.ita.boss@gmail.com');
+  TextEditingController nomeController = TextEditingController(text: 'marcelo');
+  TextEditingController telefoneController = TextEditingController(text: '73932146147');
+  TextEditingController cpfController = TextEditingController(text: '09841232606');
+  TextEditingController senhaController = TextEditingController(text: '..sdidasd..');
+  TextEditingController confirmarSenhaController = TextEditingController(text: '..sdidasd..');
 
   bool confirmed = false;
   bool emailPreenchido = false;
@@ -35,7 +35,7 @@ class RegisterController {
     var user = await RegisterApi.register(
       email,
       senha,
-      User(
+      UserModel(
         cpf: cpf,
         nome: nome,
         email: email,
@@ -47,7 +47,7 @@ class RegisterController {
   }
 
   onAlreadyHasAccountPressed() {
-    popUntil(context, Routes.Login);
+    pop(context);
   }
 
   verifyRegister() async {

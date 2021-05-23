@@ -4,6 +4,8 @@ import 'package:pedigree_seller/app/interfaces/authentication_interface.dart';
 class FirebaseAuthenticationRepository implements IAuthentication {
   FirebaseAuth auth = FirebaseAuth.instance;
 
+
+//TODO: Ta rolando bug de quando erra login
   @override
   Future<String> login(String email, String senha) async {
     try {
@@ -24,6 +26,6 @@ class FirebaseAuthenticationRepository implements IAuthentication {
   @override
   Future<String> register(String email, String senha) async {
     var c = await auth.createUserWithEmailAndPassword(email: email, password: senha,);
-    return c.user!.uid;
+    return c.user!.uid;//TODO: Futuramente parar de retornar o ID(nao preciso dele nos users)
   }
 }

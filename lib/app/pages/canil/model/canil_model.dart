@@ -4,7 +4,7 @@ class CanilModel {
   String contato;
   String cnpj;
   String dataCadastro;
-  String donoReferencia;
+  String donoID; //Trocar mais tarde por referencia
   List<String> ninhadasReferencia;
   List<String> reprodutoresReferencia;
   CanilModel({
@@ -12,15 +12,11 @@ class CanilModel {
     required this.contato,
     required this.cnpj,
     this.dataCadastro = '',
-    this.donoReferencia = '',
+    this.donoID = '',
     this.ninhadasReferencia  = const [],
     this.reprodutoresReferencia  = const [],
   });
 
-  @override
-  String toString() {
-    return 'CanilModel(titulo: $titulo, contato: $contato, cnpj: $cnpj, dataCadastro: $dataCadastro, donoReferencia: $donoReferencia, ninhadasReferencia: $ninhadasReferencia, reprodutoresReferencia: $reprodutoresReferencia)';
-  }
 }
 
 final CanilModel canilMocked = CanilModel(
@@ -28,7 +24,7 @@ final CanilModel canilMocked = CanilModel(
   contato: 'contato',
   cnpj: 'cnpj',
   dataCadastro: 'dataCadastro',
-  donoReferencia: 'donoReferencia',
+  donoID: 'donoID',
   ninhadasReferencia: ['ninhadasReferencia'],
   reprodutoresReferencia: ['reprodutoresReferencia'],
 );

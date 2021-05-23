@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/pages/home/home_screen.dart';
 
-push(BuildContext context, Widget page, {bool replace = true}) {
+push(BuildContext context, Widget page, {bool replace = false}) {
   if (replace)
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => page));
@@ -9,7 +9,7 @@ push(BuildContext context, Widget page, {bool replace = true}) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => page));
 }
 
-pushNamed(BuildContext context, String route, {bool replace = true}) {
+pushNamed(BuildContext context, String route, {bool replace = false}) {
   if (replace)
     Navigator.pushReplacementNamed(context, route);
   else

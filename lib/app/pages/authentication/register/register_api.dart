@@ -10,7 +10,7 @@ class RegisterApi {
   static FirestoreRepository _repository = FirestoreRepository();
   static IAuthentication _auth = FirebaseAuthenticationRepository();
 
-  static register(String email, String senha, User user) async {
+  static register(String email, String senha, UserModel user) async {
     var id = await _auth.register(email, senha);
     var u = user.copyWith(id: id);
     var map = user.copyWith(id: id).toMap();
