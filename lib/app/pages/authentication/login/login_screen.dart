@@ -19,6 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _bloc = LoginBloc();
   final _tEmail = TextEditingController(text: 'marcelo.ita.boss@gmail.com');
   final _tSenha = TextEditingController(text: '..sdidasd..');
+  bool _showError = false;
 
   @override
   void dispose() {
@@ -29,7 +30,15 @@ class _LoginScreenState extends State<LoginScreen> {
   _onLoginPressed() async {
     //TODO: Conferir a validação primeiro
 
-    if (!(_validateEmail() == null && _validateSenha() == null)) return;
+    if (!(_validateEmail() == null && _validateSenha() == null)) {
+      setState(() {
+        _showError = true;
+      });
+      return;
+    }
+    setState(() {
+      _showError = false;
+    });
     String email = _tEmail.text;
     String senha = _tSenha.text;
 
@@ -38,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (response)
       pushNamed(context, Routes.Home, replace: true);
     else
-    //TODO: Criar uma ApiResponse para exibir o error
+      //TODO: Criar uma ApiResponse para exibir o error
       alert(context, 'Error no login');
   }
 
@@ -94,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     inputAction: TextInputAction.next,
                     controller: _tEmail,
                   ),
-                  _validateEmail() != null
+                  _validateEmail() != null && _showError
                       ? FormErrorText(_validateEmail()!)
                       : Container(),
                   TextInputFieldWidget(
@@ -104,7 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     inputAction: TextInputAction.done,
                     controller: _tSenha,
                   ),
-                  _validateSenha() != null
+                  _validateSenha() != null && _showError
                       ? FormErrorText(_validateSenha()!)
                       : Container(),
                   SizedBox(

@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pedigree_seller/app/services/shared_local_storage_service.dart';
 
-
 //MEU USUARIO NAO PRECISA DA REFERENCIA DO CANIL, BASTA EU USAR MEU UID PARA PESQUISAR NOS CANILS
 //JUNTAR USUARIOS COM SELLERS
 class UserModel {
@@ -53,8 +52,11 @@ class UserModel {
       );
 
   static Future<UserModel?> get() async {
-    String json = await Prefs.get('seller.prefs');
-    return json.isEmpty ? null : UserModel.fromJson(json);
+    final json = await Prefs.get('seller.prefs');
+    if (json != null)
+      return json.isEmpty ? null : UserModel.fromJson(json);
+    else
+      return null;
   }
 
   save() {

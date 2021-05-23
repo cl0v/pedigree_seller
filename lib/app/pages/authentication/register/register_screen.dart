@@ -17,15 +17,30 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final _bloc = RegisterBloc();
-  final _tEmail = TextEditingController(text: 'marcelo.ita.boss@gmail.com');
-  final _tNome = TextEditingController(text: 'marcelo');
-  final _tContato = TextEditingController(text: '73932146147');
-  final _tCpf = TextEditingController(text: '09841232606');
-  final _tSenha = TextEditingController(text: '..sdidasd..');
-  final _tConfSenha = TextEditingController(text: '..sdidasd..');
+  final _tEmail = TextEditingController();//text: 'marcelo.ita.boss@gmail.com'
+  final _tNome = TextEditingController();//text: 'marcelo'
+  final _tContato = TextEditingController();//text: '73932146147'
+  final _tCpf = TextEditingController();//text: '09841232606'
+  final _tSenha = TextEditingController();//text: '..sdidasd..'
+  final _tConfSenha = TextEditingController();//text: '..sdidasd..'
+
+  bool _showError = false;
 
   _onRegisterPressed() async {
-    //TODO: Conferir a validação primeiro
+    if (!(_validateEmail() == null &&
+        _validateNome() == null &&
+        _validateContato() == null &&
+        _validateCpf() == null &&
+        _validateSenha() == null)) {
+      setState(() {
+        _showError = true;
+      });
+      return;
+    }
+    setState(() {
+      _showError = false;
+    });
+
     String email = _tEmail.text;
     String nome = _tSenha.text;
     String contato = _tSenha.text;
@@ -56,7 +71,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     //TODO: Implement
     var text = _tNome.text;
     if (text.isEmpty) {
-      return "Digite o login";
+      return "Digite o nome";
     }
     return null;
   }
@@ -65,16 +80,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
     //TODO: Implement
     var text = _tContato.text;
     if (text.isEmpty) {
-      return "Digite o login";
+      return "Digite o telefone";
     }
     return null;
-  }
+ 
 
-  String? _validateCpf() {
+}  String? _validateCpf() {
     //TODO: Implement
     var text = _tCpf.text;
     if (text.isEmpty) {
-      return "Digite o login";
+      return "Digite o cpf";
     }
     return null;
   }
@@ -98,10 +113,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    var registerBtn = CustomButtonWidget(
-      'Register',
-      onPressed: _onRegisterPressed,
-    );
+    var registerBtn = StreamBuilder(
+        stream: _bloc.stream,
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          return CustomButtonWidget(
+            'Register',
+            onPressed: _onRegisterPressed,
+            showProgress: snapshot.data ?? false,
+          );
+        });
 
     var backBtn = Center(
       child: RichText(
@@ -138,7 +158,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 inputType: TextInputType.emailAddress,
                 controller: _tEmail,
               ),
-              _validateEmail() != null
+              _validateEmail() != null && _showError
                   ? FormErrorText(_validateEmail()!)
                   : Container(),
               TextInputFieldWidget(
@@ -147,7 +167,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 inputAction: TextInputAction.next,
                 controller: _tNome,
               ),
-              _validateNome() != null
+              _validateNome() != null && _showError
                   ? FormErrorText(_validateNome()!)
                   : Container(),
               TextInputFieldWidget(
@@ -157,7 +177,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 inputType: TextInputType.phone,
                 controller: _tContato,
               ),
-              _validateContato() != null
+              _validateContato() != null && _showError
                   ? FormErrorText(_validateContato()!)
                   : Container(),
               TextInputFieldWidget(
@@ -167,7 +187,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 inputAction: TextInputAction.next,
                 controller: _tCpf,
               ),
-              _validateCpf() != null
+              _validateCpf() != null && _showError
                   ? FormErrorText(_validateCpf()!)
                   : Container(),
               TextInputFieldWidget(
@@ -177,7 +197,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 isObscure: true,
                 controller: _tSenha,
               ),
-              _validateSenha() != null
+              _validateSenha() != null && _showError
                   ? FormErrorText(_validateSenha()!)
                   : Container(),
               TextInputFieldWidget(
@@ -187,7 +207,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 isObscure: true,
                 controller: _tConfSenha,
               ),
-              _validateSenha() != null
+              _validateSenha() != null && _showError
                   ? FormErrorText(_validateSenha()!)
                   : Container(),
               SizedBox(

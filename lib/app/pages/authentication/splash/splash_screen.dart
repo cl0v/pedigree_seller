@@ -13,7 +13,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-    UserModel.get().then((UserModel? user) {
+    UserModel.get().then((user) {
       if (user != null) {
         pushNamed(context, Routes.Home, replace: true);
       } else {
@@ -24,10 +24,11 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.blue[200],
-      child: Center(
-        child: CircularProgressIndicator(),
+    return Scaffold(
+      body: Container(
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
       ),
     );
   }
