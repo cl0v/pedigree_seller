@@ -3,27 +3,24 @@ import 'package:pedigree_seller/app/interfaces/authentication_interface.dart';
 import 'package:pedigree_seller/app/pages/authentication/user_model.dart';
 import 'package:pedigree_seller/app/repositories/firebase_authentication_repository.dart';
 
-class RegisterApi {
+class LoginFirestore {
   static FirestoreRepository _repository = FirestoreRepository();
   static IAuthentication _auth = FirebaseAuthenticationRepository();
 
-  static Future<bool> register(
-    String email,
-    String senha,
-    String cpf,
-    String nome,
-    String contato,
-  ) async {
-    //TODO: Testar quando ja existe user com esse email
-    //TODO: Criar um ApiResponse
-    try {
-      var id = await _auth.register(email, senha);
-      UserModel user = UserModel(
-          cpf: cpf, nome: nome, email: email, contato: contato, id: id);
+  
+//TODO: Refatorar o login
 
-      await _repository.put('sellers', user.toMap());
-      user.save();
-      return true;
+
+  static Future<bool> login(String email, String senha) async {
+    try {
+      var id = await _auth.login(email, senha);
+      var map = await _repository.get('sellers', id);
+      if (map != null) {
+        UserModel.fromMap(map)..save();
+        return true;
+      } else {
+        return false;
+      }
     } catch (e) {
       return false;
     }

@@ -2,7 +2,7 @@ import 'package:pedigree_seller/app/pages/authentication/user_model.dart';
 import 'package:pedigree_seller/app/pages/canil/canil_model.dart';
 import 'package:pedigree_seller/app/repositories/firestore_repository.dart';
 
-class CanilApi {
+class CanilFirestore {
   static FirestoreRepository _repository = FirestoreRepository();
 
   static Future<CanilModel?> get() async {

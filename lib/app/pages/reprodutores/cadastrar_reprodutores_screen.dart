@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/components/category_screen.dart';
 import 'package:pedigree_seller/app/components/image_picker_tile_widget.dart';
 import 'package:pedigree_seller/app/pages/canil/canil_model.dart';
-import 'package:pedigree_seller/app/pages/reprodutores/reprodutores_api.dart';
+import 'package:pedigree_seller/app/pages/reprodutores/reprodutores_firestore.dart';
 import 'package:pedigree_seller/app/pages/reprodutores/reprodutor_model.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
@@ -62,7 +62,7 @@ class PetRegistrationController {
 
   Future saveReprodutor(ReprodutorModel reprodutor) async {
     CanilModel canil = (await CanilModel.get())!;
-    ReprodutoresApi.register(reprodutor.copyWith(donoId:canil.donoID ));
+    ReprodutoresFirestore.register(reprodutor.copyWith(donoId:canil.donoID ));
   }
 }
 

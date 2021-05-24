@@ -5,8 +5,8 @@ import 'package:pedigree_seller/app/pages/reprodutores/reprodutor_model.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
-
-
+//TODO: Remover os _api e colocar service ou repository pois estou trabalhando com firebase
+// reprodutores_firestore.dart;
 
 class ReprodutoresScreen extends StatefulWidget {
   @override

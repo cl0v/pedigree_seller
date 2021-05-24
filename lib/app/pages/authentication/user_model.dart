@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pedigree_seller/app/services/shared_local_storage_service.dart';
 

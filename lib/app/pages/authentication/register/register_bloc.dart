@@ -1,4 +1,4 @@
-import 'package:pedigree_seller/app/pages/authentication/register/register_api.dart';
+import 'package:pedigree_seller/app/pages/authentication/register/register_firestore.dart';
 import 'package:pedigree_seller/app/utils/simple_bloc.dart';
 
 class RegisterBloc extends SimpleBloc<bool> {
@@ -11,7 +11,7 @@ class RegisterBloc extends SimpleBloc<bool> {
   ) async {
     add(true);
 
-    var response = await RegisterApi.register(email, senha, cpf, nome, contato);
+    var response = await RegisterFirestore.register(email, senha, cpf, nome, contato);
 
     add(false);
 
