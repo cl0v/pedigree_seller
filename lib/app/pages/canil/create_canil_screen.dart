@@ -25,7 +25,7 @@ class _CreateCanilScreenState extends State<CreateCanilScreen> {
   @override
   void dispose() {
     super.dispose();
-    _bloc.canilCreate.dispose();
+    _bloc.createBtn.dispose();
   }
 
   _onCreatePressed() async {
@@ -102,7 +102,7 @@ class _CreateCanilScreenState extends State<CreateCanilScreen> {
           8,
         ),
         child: StreamBuilder(
-          stream: _bloc.canilCreate.stream,
+          stream: _bloc.createBtn.stream,
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             return CustomButtonWidget(
               'Register',

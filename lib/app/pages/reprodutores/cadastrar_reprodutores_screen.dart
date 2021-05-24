@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/components/category_screen.dart';
 import 'package:pedigree_seller/app/components/custom_button_widget.dart';
+import 'package:pedigree_seller/app/components/form_error_text.dart';
 import 'package:pedigree_seller/app/components/image_picker_tile_widget.dart';
 import 'package:pedigree_seller/app/pages/reprodutores/reprodutor_model.dart';
 import 'package:pedigree_seller/app/pages/reprodutores/reprodutores_bloc.dart';
@@ -60,13 +61,50 @@ class _CadastrarReprodutoresScreenState
 
   final _bloc = ReprodutoresBloc();
 
-  String title = 'Selecione a categoria';
-
   final _tNome = TextEditingController(text: 'Reprodutor');
   String _tCategoria = '';
   String _tEspecie = 'Selecione a categoria';
 
+  bool _showError = false;
+
+  bool _isMacho = true;
+
+  String? _validateNome() {
+    //TODO: Implement
+    var text = _tNome.text;
+    if (text.isEmpty) {
+      return "Digite um nome";
+    }
+    return null;
+  }
+
+  String? _validateCategory() {
+    var c = _tCategoria;
+    var e = _tEspecie;
+    if (c.isEmpty || e == 'Selecione a categoria' || e.isEmpty) {
+      return "Especifique uma categoria";
+    }
+    return null;
+  }
+
+  String? _validateCertificado() {
+    //TODO: Implement
+    var text = _tNome.text;
+    if (text.isEmpty) {
+      return "Digite o nome";
+    }
+    //Mostra caso nao exista erros
+    return null;
+  }
+
   _onSavePressed() async {
+    if (!(_validateNome() == null && _validateCategory() == null)) {
+      setState(() {
+        _showError = true;
+      });
+      return;
+    }
+
     String nome = _tNome.text;
     bool isMacho = true;
     EspecificacoesAnimalModel categoria =
@@ -102,9 +140,6 @@ class _CadastrarReprodutoresScreenState
             // fileSetter: fileSetter,
           ),
           TextFormField(
-            onChanged: (val) {
-              controller.nome = val;
-            },
             controller: _tNome,
             decoration: InputDecoration(
               hintText: 'Nome',
@@ -115,6 +150,9 @@ class _CadastrarReprodutoresScreenState
               ),
             ),
           ),
+          _validateNome() != null && _showError
+              ? FormErrorText(_validateNome()!)
+              : Container(),
           ListTile(
             //TODO: Tentar colocar em forma de widget reutilizavel
             title: Text(_tEspecie),
@@ -131,20 +169,17 @@ class _CadastrarReprodutoresScreenState
               );
             },
           ),
-          controller.isRequired != null
-              ? Text(
-                  controller.isRequired!,
-                  style: kErrorTextStyle,
-                )
+          _validateCategory() != null && _showError
+              ? FormErrorText(_validateCategory()!)
               : Container(),
           ListTile(
-            title: Text(controller.isMacho ? 'Macho' : 'Fêmea'),
+            title: Text(_isMacho ? 'Macho' : 'Fêmea'),
             subtitle: Text('*Selecione o gênero'),
             trailing: Switch(
-              value: !controller.isMacho,
+              value: !_isMacho,
               onChanged: (val) {
                 setState(() {
-                  controller.isMacho = !val;
+                  _isMacho = !val;
                 });
               },
               activeColor: Colors.red,
@@ -154,7 +189,7 @@ class _CadastrarReprodutoresScreenState
             ),
             onTap: () {
               setState(() {
-                controller.isMacho = !controller.isMacho;
+                _isMacho = !_isMacho;
               });
             },
           ),

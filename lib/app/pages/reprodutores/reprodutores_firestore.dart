@@ -19,7 +19,8 @@ class ReprodutoresFirestore {
   static Future<List<ReprodutorModel>> get() async {
     var canil = (await CanilModel.get())!;
 
-    var a = await _repository.getAll('reprodutores', canil.donoID, 'donoId');
+    var a = await _repository.getAll('reprodutores', canil.referenceId, 'referenceId');
+    //TODO: Alterar para jogar o firestoreinstance aqui
     var list = a.map((e) => ReprodutorModel.fromMap(e.data())).toList();
     return list;
   }

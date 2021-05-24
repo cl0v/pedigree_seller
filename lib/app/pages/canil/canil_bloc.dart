@@ -3,18 +3,19 @@ import 'package:pedigree_seller/app/pages/canil/canil_model.dart';
 import 'package:pedigree_seller/app/utils/simple_bloc.dart';
 
 class CanilBloc {
+  var createBtn = SimpleBloc<bool>();
+  Future<bool> create(titulo, contato, cnpj) async {
+    createBtn.add(true);
+    var response = await CanilFirestore.register(titulo, contato, cnpj);
+    createBtn.add(false);
+
+      return response;
+  }
+
   var canil = SimpleBloc<CanilModel?>();
-  var canilCreate = SimpleBloc<bool>();
 
   fetchCanil() async {
-    canil.add(await CanilFirestore.get());
+    var c = await CanilFirestore.get();
+    canil.add(c);
   }
-
-  Future<bool> create(titulo, contato, cnpj) async {
-    canilCreate.add(true);
-    var response = await CanilFirestore.register(titulo, contato, cnpj);
-    canilCreate.add(false);
-    return response;
-  }
-
 }
