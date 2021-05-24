@@ -4,7 +4,7 @@ import '../interfaces/cloud_data_base_interface.dart';
 
 //TODO: Testar quando um id errado é informado
 
-class FirestoreRepository implements ICloudDataBase {
+class FirestoreRepository implements ICloudDataBase { //TODO: Renomeadar para ICloudNoSql
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   @override
   Future<Map<String, dynamic>?> get(String path, String id,
@@ -34,7 +34,6 @@ class FirestoreRepository implements ICloudDataBase {
           .collection(path)
           .where(whereField, isEqualTo: id)
           .get();
-      print('Chega ate aq');
       return query.docs;
     } catch (e) {
       return [];

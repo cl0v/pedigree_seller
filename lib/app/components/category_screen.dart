@@ -5,68 +5,83 @@ import 'package:pedigree_seller/app/utils/nav.dart';
 
 import '../../constants.dart';
 
+class ValoresCategorias {
+  String text;
+  List<ValoresCategorias> list;
+  ValoresCategorias({
+    required this.text,
+    this.list = const [],
+  });
+}
+
 class CategoryScreen extends StatelessWidget {
-  final PetRegistrationController controller;
-  final VoidCallback onUpdate;
-  final int stepCount;
+  final List<ValoresCategorias> valores;
+  final String title;
+  final Function(String, String) settaValores;
 
   CategoryScreen({
-    Key? key,
-    required this.controller,
-    required this.onUpdate,
-    this.stepCount = 0,
-  }) : super(key: key);
+    required this.title,
+    required this.settaValores,
+    this.valores = const [],
+  });
 
   @override
   Widget build(BuildContext context) {
-    var list = controller.fetchCategoryStringList(stepCount);
+    var appBar = AppBar(
+      brightness: Brightness.light,
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      title: Text(
+        title,
+        style: kTitleTextStyle,
+      ),
+      leading: Builder(
+        builder: (BuildContext context) {
+          return IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.grey[800],
+            ),
+            onPressed: () => Navigator.pop(context),
+          );
+        },
+      ),
+    );
+    var body = ListView.builder(
+        itemCount: valores.length,
+        itemBuilder: (context, idx) {
+          var val = valores[idx];
+          return ListTile(
+            title: Text(
+              val.text,
+            ),
+            trailing:
+                val.list.length > 0 ? Icon(Icons.arrow_forward_ios) : null,
+            onTap: () {
+              print(val.list);
+              if (val.list.length > 0)
+                push(
+                  context,
+                  CategoryScreen(
+                    settaValores: settaValores,
+                    title: val.text,
+                    valores: val.list,
+                  ),
+                );
+              else //TODO: Enviar o valor para a pagina anterior
+              //TODO: Enviar o title e o text do val
+              {
+                settaValores(title, val.text);
+                popUntil(context, Routes.CadastrarReprodutor);
+                //TODO: Posso passar as parada por aq tb
+              }
+
+            },
+          );
+        });
     return Scaffold(
-      appBar: AppBar(
-        brightness: Brightness.light,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Text(
-          'Categorias',
-          style: kTitleTextStyle,
-        ),
-        leading: Builder(
-          builder: (BuildContext context) {
-            return IconButton(
-              icon: Icon(
-                Icons.arrow_back_ios,
-                color: Colors.grey[800],
-              ),
-              onPressed: () => Navigator.pop(context),
-            );
-          },
-        ),
-      ),
-      body: ListView.builder(
-        itemCount: list.length,
-        itemBuilder: (context, idx) => ListTile(
-          title: Text(
-            list[idx],
-          ),
-          trailing: Icon(Icons.arrow_forward_ios),
-          onTap: () {
-            if (stepCount == 0) {
-              controller.categoria = list[idx];
-              push(
-                context,
-                CategoryScreen(
-                  controller: controller,
-                  onUpdate: onUpdate,
-                  stepCount: stepCount + 1,
-                ),
-              );
-            } else {
-              controller.especie = list[idx];
-              popUntil(context, Routes.CadastrarReprodutor);
-            }
-            onUpdate.call();
-          },
-        ),
-      ),
+      appBar: appBar,
+      body: body,
     );
   }
 }

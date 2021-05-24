@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/components/custom_drawer_widget.dart';
-import 'package:pedigree_seller/app/models/ninhada_model.dart';
 import 'package:pedigree_seller/app/pages/ninhada/cadastrar_ninhada/cadastrar_ninhada_screen.dart';
 import 'package:pedigree_seller/app/pages/ninhada/viewmodel/ninhada_view_model.dart';
-import 'package:pedigree_seller/app/repositories/firebase_animal_repository.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
+//TODO: Quando for cadastrar ninhada, usar o dropdown das ultimas aulas do curso
+//aula 225
 
 //TODO: Colocar indicador avisando o status do anuncio
 //Aprovado, Negado, Aguardando

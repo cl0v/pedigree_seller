@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:pedigree_seller/pedigree.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+//TODO: ADICIONAR REFERENCE EM TODOS E REFAZER A _FIRESTORE PORRA
+
+
 /*//TODO: O que fazer antes de ir para o servidor ou outro app
 ->> Materiais de estudo flutter/gallery no github
 - Corrigir ImagePicker

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/components/custom_drawer_widget.dart';
-import 'package:pedigree_seller/app/pages/reprodutores/reprodutores_bloc.dart';
 import 'package:pedigree_seller/app/pages/reprodutores/reprodutor_model.dart';
+import 'package:pedigree_seller/app/pages/reprodutores/reprodutores_firestore.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
-//TODO: Remover os _api e colocar service ou repository pois estou trabalhando com firebase
-// reprodutores_firestore.dart;
 
 class ReprodutoresScreen extends StatefulWidget {
   @override
@@ -14,12 +12,9 @@ class ReprodutoresScreen extends StatefulWidget {
 }
 
 class _ReprodutoresScreenState extends State<ReprodutoresScreen> {
-  final _bloc = ReprodutoresBloc();
-
   @override
   void dispose() {
     super.dispose();
-    _bloc.reprodutorBloc.dispose();
   }
 
   @override
@@ -31,25 +26,18 @@ class _ReprodutoresScreenState extends State<ReprodutoresScreen> {
         pushNamed(context, Routes.CadastrarReprodutor);
       },
     );
-    var bottomNavigationBar = ScaffoldCommonComponents.customBottomAppBar(
-      'Cadastrar um Pet',
-      () {
-        pushNamed(context, Routes.CadastrarReprodutor);
-      },
-      context,
-    );
 
     var drawer = CustomDrawer();
 
     var body = StreamBuilder<List<ReprodutorModel>>(
-        stream: _bloc.reprodutorBloc.stream,
+        stream: ReprodutoresFirestore().stream,
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.active:
               var petList = snapshot.data!;
               if (petList.isEmpty)
                 return Center(
-                  child: Text('Nenhum cadastrado ainda'),
+                  child: Text('Nenhum cadastrado ainda\nToque para cadastrar'),
                 );
               else
                 return ListView.builder(
@@ -82,7 +70,6 @@ class _ReprodutoresScreenState extends State<ReprodutoresScreen> {
         });
 
     return Scaffold(
-      bottomNavigationBar: bottomNavigationBar,
       appBar: appBar,
       drawer: drawer,
       body: body,

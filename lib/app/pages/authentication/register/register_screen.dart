@@ -121,7 +121,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    var registerBtn = StreamBuilder(
+    var registerBtn = BottomAppBar(
+      color: Colors.transparent,
+      elevation: 0,
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(
+          size.width * 0.1,
+          0,
+          size.width * 0.1,
+          8,
+        ),
+        child: StreamBuilder(
         stream: _bloc.stream,
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           return CustomButtonWidget(
@@ -129,7 +139,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             onPressed: _onRegisterPressed,
             showProgress: snapshot.data ?? false,
           );
-        });
+        })));
 
     var backBtn = Center(
       child: RichText(

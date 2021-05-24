@@ -1,14 +1,15 @@
-
-
 //TODO: Recriar a pagina para deixar bem claro como vai ficar na hora de adicionar(Quadrado grandao pra enviar foto, setinha pra botar nome, etc)
 //TODO: Permitir que a página que cria é a mesma que edita
 
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/components/category_screen.dart';
+import 'package:pedigree_seller/app/components/custom_button_widget.dart';
 import 'package:pedigree_seller/app/components/image_picker_tile_widget.dart';
-import 'package:pedigree_seller/app/pages/canil/canil_model.dart';
-import 'package:pedigree_seller/app/pages/reprodutores/reprodutores_firestore.dart';
 import 'package:pedigree_seller/app/pages/reprodutores/reprodutor_model.dart';
+import 'package:pedigree_seller/app/pages/reprodutores/reprodutores_bloc.dart';
+import 'package:pedigree_seller/app/pages/reprodutores/reprodutores_firestore.dart';
+import 'package:pedigree_seller/app/routes/routes.dart';
+import 'package:pedigree_seller/app/utils/alert.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
 
@@ -17,7 +18,7 @@ import '../../../constants.dart';
 ///Página de triagem, para facilitar o preenchimento dos dados mais comuns(Especie, titulo e categoria, macho femea etc))
 ///Cadastrar os animais reprodutores (Pai e Mae)
 ///Para agilizar o cadastro da ninhada
-
+///
 
 class PetRegistrationController {
   bool isMacho = true;
@@ -26,45 +27,20 @@ class PetRegistrationController {
 
   String categoria = '';
   String especie = '';
-
-  List<String> fetchCategoryStringList(int val) {
-    switch (val) {
-      case 0:
-        return fetchCategorias();
-      case 1:
-        return fetchEspecies(categoria);
-    }
-    return fetchCategorias();
-  }
-
-  List<String> fetchCategorias() {
-    return racas.keys.toList();
-  }
-
-  List<String> fetchEspecies(String categoria) {
-    return racas[categoria]!;
-  }
-
-  Future onRegisterPressed(context) async {
-    if (categoria != '' && especie != '') {
-      ReprodutorModel reprodutor = ReprodutorModel(
-        nome: nome,
-        categoria:
-            EspecificacoesAnimalModel(categoria: categoria, especie: especie),
-        isMacho: isMacho,
-      );
-      await saveReprodutor(reprodutor);
-      pop(context, reprodutor);
-    } else {
-      isRequired = 'Campo necessário';
-    }
-  }
-
-  Future saveReprodutor(ReprodutorModel reprodutor) async {
-    CanilModel canil = (await CanilModel.get())!;
-    ReprodutoresFirestore.register(reprodutor.copyWith(donoId:canil.donoID ));
-  }
 }
+
+List<ValoresCategorias> listaDeValores = [
+  ValoresCategorias(text: 'Cachorro', list: [
+    ValoresCategorias(text: 'Rotwailer'),
+    ValoresCategorias(text: 'Poodle'),
+    ValoresCategorias(text: 'Fila')
+  ]),
+  ValoresCategorias(text: 'Gato', list: [
+    ValoresCategorias(text: 'Persa'),
+    ValoresCategorias(text: 'Chaninha'),
+  ]),
+  ValoresCategorias(text: 'Coelho'),
+];
 
 class CadastrarReprodutoresScreen extends StatefulWidget {
   @override
@@ -76,54 +52,48 @@ class _CadastrarReprodutoresScreenState
     extends State<CadastrarReprodutoresScreen> {
   final controller = PetRegistrationController();
 
+  @override
+  void dispose() {
+    super.dispose();
+    _bloc.dispose();
+  }
+
+  final _bloc = ReprodutoresBloc();
+
   String title = 'Selecione a categoria';
+
+  final _tNome = TextEditingController(text: 'Reprodutor');
+  String _tCategoria = '';
+  String _tEspecie = 'Selecione a categoria';
+
+  _onSavePressed() async {
+    String nome = _tNome.text;
+    bool isMacho = true;
+    EspecificacoesAnimalModel categoria =
+        EspecificacoesAnimalModel(categoria: _tCategoria, especie: _tEspecie);
+
+    var response = await _bloc.register(nome, categoria, isMacho);
+
+    if (response)
+      popUntil(context, Routes.Reprodutores);
+    else
+      alert(context, 'Error na criação de reprodutor!');
+  }
+
+  _setCategory(String categoria, String especie) {
+    setState(() {
+      _tCategoria = categoria;
+      _tEspecie = especie;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-
-// var bottomButton = BottomAppBar(
-//       color: Colors.transparent,
-//       elevation: 0,
-//       child: Padding(
-//         padding: EdgeInsets.fromLTRB(
-//           size.width * 0.1,
-//           0,
-//           size.width * 0.1,
-//           8,
-//         ),
-//         child: StreamBuilder(
-//           stream: _bloc.canilCreate.stream,
-//           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-//             return CustomButtonWidget(
-//               'Register',
-//               onPressed: _onCreatePressed,
-//               showProgress: snapshot.data ?? false,
-//             );
-//           },
-//         ),
-//       ),
-//     );
-
-    return Scaffold(
-      body: _body(),
-      appBar: ScaffoldCommonComponents.customAppBar(
-        'Registrar',
-        () => Navigator.pop(context),
-      ),
-      bottomNavigationBar: ScaffoldCommonComponents.customBottomAppBar(
-        'Cadastrar',
-        () async {
-          setState(() {
-            controller.onRegisterPressed(context);
-          });
-        },
-        context,
-      ),
+    var appBar = ScaffoldCommonComponents.customAppBar(
+      'Registrar',
+      () => Navigator.pop(context),
     );
-  }
-
-  Widget _body() {
-    return Padding(
+    var body = Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: ListView(
         children: [
@@ -135,6 +105,7 @@ class _CadastrarReprodutoresScreenState
             onChanged: (val) {
               controller.nome = val;
             },
+            controller: _tNome,
             decoration: InputDecoration(
               hintText: 'Nome',
               border: OutlineInputBorder(
@@ -144,23 +115,18 @@ class _CadastrarReprodutoresScreenState
               ),
             ),
           ),
-
-          //TODO: Criar uma bordinha pra ficar file
           ListTile(
             //TODO: Tentar colocar em forma de widget reutilizavel
-            title: Text(title),
+            title: Text(_tEspecie),
             subtitle: Text('*Selecione a categoria'),
             trailing: Icon(Icons.arrow_forward_ios),
             onTap: () {
               push(
                 context,
                 CategoryScreen(
-                  controller: controller,
-                  onUpdate: () {
-                    setState(() {
-                      title = controller.especie;
-                    });
-                  },
+                  title: 'Categorias',
+                  settaValores: _setCategory,
+                  valores: listaDeValores,
                 ),
               );
             },
@@ -198,6 +164,23 @@ class _CadastrarReprodutoresScreenState
           )
         ],
       ),
+    );
+
+    var bottomNavBar = StreamBuilder(
+      stream: _bloc.stream,
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        return CustomButtonWidget(
+          'Register',
+          onPressed: _onSavePressed,
+          showProgress: snapshot.data ?? false,
+        );
+      },
+    );
+
+    return Scaffold(
+      body: body,
+      appBar: appBar,
+      bottomNavigationBar: bottomNavBar,
     );
   }
 }

@@ -16,6 +16,7 @@ class RegisterFirestore {
   ) async {
     //TODO: Testar quando ja existe user com esse email
     //TODO: Criar um ApiResponse
+    //TODO: Implementar tratamento de exception para erros especificos
     try {
       var id = await _auth.register(email, senha);
       UserModel user = UserModel(

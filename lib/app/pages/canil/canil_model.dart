@@ -7,6 +7,7 @@ class CanilModel {
   String contato;
   String cnpj;
   String donoID;
+  // DocumentReference? reference; //TODO: Implementar e testar referencia;
   CanilModel({
     required this.titulo,
     required this.contato,
@@ -28,7 +29,8 @@ class CanilModel {
       titulo: map['titulo'],
       contato: map['contato'],
       cnpj: map['cnpj'],
-      donoID: map['donoID'],);
+      donoID: map['donoID'],
+    );
   }
 
   String toJson() => json.encode(toMap());

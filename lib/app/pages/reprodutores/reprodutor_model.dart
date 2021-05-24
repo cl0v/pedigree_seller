@@ -1,11 +1,11 @@
 import 'dart:convert';
-//TODO: Deverá ser um DropDownMenuItem aula 225
+//TODO: Deverá extender um DropDownMenuItem(aula 255* de dropdown button)
+//Lembrando q o unico objetivo desse cara é ser um facilitador para cadastrar a ninhada 
 class ReprodutorModel {
   String file;
   String certificado;
   String nome;
   bool isMacho;
-  String? donoId; //TAlvez nao seja bom expor esse id nos dados 'publicos'
   EspecificacoesAnimalModel categoria;
 
   ReprodutorModel({
@@ -14,7 +14,6 @@ class ReprodutorModel {
     required this.nome,
     required this.categoria,
     required this.isMacho,
-    this.donoId,
   });
 
   Map<String, dynamic> toMap() {
@@ -23,7 +22,6 @@ class ReprodutorModel {
       'certificado': certificado,
       'nome': nome,
       'isMacho': isMacho,
-      'donoId': donoId,
       'categoria': categoria.toMap(),
     };
   }
@@ -34,7 +32,6 @@ class ReprodutorModel {
       certificado: map['certificado'],
       nome: map['nome'],
       isMacho: map['isMacho'],
-      donoId: map['donoId'],
       categoria: EspecificacoesAnimalModel.fromMap(map['categoria']),
     );
   }
@@ -43,23 +40,6 @@ class ReprodutorModel {
 
   factory ReprodutorModel.fromJson(String source) => ReprodutorModel.fromMap(json.decode(source));
 
-  ReprodutorModel copyWith({
-    String? file,
-    String? certificado,
-    String? nome,
-    bool? isMacho,
-    String? donoId,
-    EspecificacoesAnimalModel? categoria,
-  }) {
-    return ReprodutorModel(
-      file: file ?? this.file,
-      certificado: certificado ?? this.certificado,
-      nome: nome ?? this.nome,
-      isMacho: isMacho ?? this.isMacho,
-      donoId: donoId ?? this.donoId,
-      categoria: categoria ?? this.categoria,
-    );
-  }
 }
 
 class EspecificacoesAnimalModel {
@@ -102,6 +82,8 @@ Map<String, List<String>> racas = {
   'Hamster': [],
   'Coelho': [],
 };
+
+
 
 final m1 = ReprodutorModel(
   nome: 'Vagabunda',
