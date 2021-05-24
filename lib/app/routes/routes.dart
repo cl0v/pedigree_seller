@@ -5,7 +5,7 @@ import 'package:pedigree_seller/app/pages/authentication/register/register_scree
 import 'package:pedigree_seller/app/pages/canil/canil_screen.dart';
 import 'package:pedigree_seller/app/pages/canil/create_canil_screen.dart';
 import 'package:pedigree_seller/app/pages/ninhada/ninhada_screen.dart';
-import 'package:pedigree_seller/app/pages/reprodutores/cadastrar_reprodutores/cadastrar_reprodutores_screen.dart';
+import 'package:pedigree_seller/app/pages/reprodutores/cadastrar_reprodutores_screen.dart';
 import 'package:pedigree_seller/app/pages/reprodutores/reprodutores_screen.dart';
 import 'package:pedigree_seller/app/pages/perfil/perfil_screen.dart';
 

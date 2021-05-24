@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pedigree_seller/app/models/user_model.dart';
+import 'package:pedigree_seller/app/pages/authentication/user_model.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 

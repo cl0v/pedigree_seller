@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pedigree_seller/app/pages/reprodutores/cadastrar_reprodutores/cadastrar_reprodutores_screen.dart';
+import 'package:pedigree_seller/app/pages/reprodutores/cadastrar_reprodutores_screen.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 

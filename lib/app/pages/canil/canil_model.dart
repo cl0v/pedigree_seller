@@ -3,22 +3,15 @@ import 'dart:convert';
 import 'package:pedigree_seller/app/services/shared_local_storage_service.dart';
 
 class CanilModel {
-  //Lista de ninhadas
   String titulo;
   String contato;
   String cnpj;
-  String dataCadastro;
-  String donoID; //Trocar mais tarde por referencia
-  List<String> ninhadasReferencia;
-  List<String> reprodutoresReferencia;
+  String donoID;
   CanilModel({
     required this.titulo,
     required this.contato,
     required this.cnpj,
-    this.dataCadastro = '',
     this.donoID = '',
-    this.ninhadasReferencia = const [],
-    this.reprodutoresReferencia = const [],
   });
 
   Map<String, dynamic> toMap() {
@@ -26,10 +19,7 @@ class CanilModel {
       'titulo': titulo,
       'contato': contato,
       'cnpj': cnpj,
-      'dataCadastro': dataCadastro,
       'donoID': donoID,
-      'ninhadasReferencia': ninhadasReferencia,
-      'reprodutoresReferencia': reprodutoresReferencia,
     };
   }
 
@@ -38,11 +28,7 @@ class CanilModel {
       titulo: map['titulo'],
       contato: map['contato'],
       cnpj: map['cnpj'],
-      dataCadastro: map['dataCadastro'],
-      donoID: map['donoID'],
-      ninhadasReferencia: List<String>.from(map['ninhadasReferencia']),
-      reprodutoresReferencia: List<String>.from(map['reprodutoresReferencia']),
-    );
+      donoID: map['donoID'],);
   }
 
   String toJson() => json.encode(toMap());
@@ -65,13 +51,3 @@ class CanilModel {
     Prefs.put('canil.prefs', '');
   }
 }
-
-final CanilModel canilMocked = CanilModel(
-  titulo: 'titulo',
-  contato: 'contato',
-  cnpj: 'cnpj',
-  dataCadastro: 'dataCadastro',
-  donoID: 'donoID',
-  ninhadasReferencia: ['ninhadasReferencia'],
-  reprodutoresReferencia: ['reprodutoresReferencia'],
-);

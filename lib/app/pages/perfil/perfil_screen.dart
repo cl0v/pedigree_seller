@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/components/custom_drawer_widget.dart';
-import 'package:pedigree_seller/app/models/user_model.dart';
+import 'package:pedigree_seller/app/pages/authentication/user_model.dart';
 import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
 
 class PerfilScreen extends StatefulWidget {

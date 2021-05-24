@@ -1,4 +1,4 @@
-import 'package:pedigree_seller/app/models/user_model.dart';
+import 'package:pedigree_seller/app/pages/authentication/user_model.dart';
 import 'package:pedigree_seller/app/pages/canil/canil_model.dart';
 import 'package:pedigree_seller/app/repositories/firestore_repository.dart';
 
@@ -15,7 +15,12 @@ class CanilApi {
         user.id!,
         whereField: 'donoID',
       );
-      if (response != null) return CanilModel.fromMap(response)..save();
+      //TODO: Futuramente adicionar o dateTime
+      if (response != null) {
+        var canil = CanilModel.fromMap(response);
+        canil.save();
+        return canil;
+      }
       return null;
     } catch (e) {
       return null;
@@ -26,7 +31,11 @@ class CanilApi {
     try {
       UserModel user = (await UserModel.get())!;
       CanilModel canil = CanilModel(
-          titulo: titulo, contato: contato, cnpj: cnpj, donoID: user.id!);
+        titulo: titulo,
+        contato: contato,
+        cnpj: cnpj,
+        donoID: user.id!,
+      );
       await _repository.put('canil', canil.toMap());
       canil.save();
       return true;

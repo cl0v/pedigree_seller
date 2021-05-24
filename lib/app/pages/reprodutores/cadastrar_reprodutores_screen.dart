@@ -1,31 +1,29 @@
-import 'package:flutter/material.dart';
-import 'package:pedigree_seller/app/components/image_picker_tile_widget.dart';
-import 'package:pedigree_seller/app/components/category_screen.dart';
-import 'package:pedigree_seller/app/pages/canil/canil_model.dart';
-import 'package:pedigree_seller/app/pages/reprodutores/reprodutores_api.dart';
-import 'package:pedigree_seller/app/pages/reprodutores/reprodutores_model.dart';
-import 'package:pedigree_seller/app/utils/nav.dart';
-import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
-import 'package:pedigree_seller/constants.dart';
+
 
 //TODO: Recriar a pagina para deixar bem claro como vai ficar na hora de adicionar(Quadrado grandao pra enviar foto, setinha pra botar nome, etc)
 //TODO: Permitir que a página que cria é a mesma que edita
+
+import 'package:flutter/material.dart';
+import 'package:pedigree_seller/app/components/category_screen.dart';
+import 'package:pedigree_seller/app/components/image_picker_tile_widget.dart';
+import 'package:pedigree_seller/app/pages/canil/canil_model.dart';
+import 'package:pedigree_seller/app/pages/reprodutores/reprodutores_api.dart';
+import 'package:pedigree_seller/app/pages/reprodutores/reprodutor_model.dart';
+import 'package:pedigree_seller/app/utils/nav.dart';
+import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
+
+import '../../../constants.dart';
 
 ///Página de triagem, para facilitar o preenchimento dos dados mais comuns(Especie, titulo e categoria, macho femea etc))
 ///Cadastrar os animais reprodutores (Pai e Mae)
 ///Para agilizar o cadastro da ninhada
 
-enum CategorySteps {
-  Categoria,
-  Especie,
-}
 
 class PetRegistrationController {
   bool isMacho = true;
   String nome = 'Reprodutor';
   String? isRequired;
 
-  CategorySteps steps = CategorySteps.Categoria;
   String categoria = '';
   String especie = '';
 
@@ -82,6 +80,30 @@ class _CadastrarReprodutoresScreenState
 
   @override
   Widget build(BuildContext context) {
+
+// var bottomButton = BottomAppBar(
+//       color: Colors.transparent,
+//       elevation: 0,
+//       child: Padding(
+//         padding: EdgeInsets.fromLTRB(
+//           size.width * 0.1,
+//           0,
+//           size.width * 0.1,
+//           8,
+//         ),
+//         child: StreamBuilder(
+//           stream: _bloc.canilCreate.stream,
+//           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+//             return CustomButtonWidget(
+//               'Register',
+//               onPressed: _onCreatePressed,
+//               showProgress: snapshot.data ?? false,
+//             );
+//           },
+//         ),
+//       ),
+//     );
+
     return Scaffold(
       body: _body(),
       appBar: ScaffoldCommonComponents.customAppBar(

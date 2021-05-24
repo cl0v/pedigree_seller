@@ -1,6 +1,6 @@
 import 'package:pedigree_seller/app/repositories/firestore_repository.dart';
 import 'package:pedigree_seller/app/interfaces/authentication_interface.dart';
-import 'package:pedigree_seller/app/models/user_model.dart';
+import 'package:pedigree_seller/app/pages/authentication/user_model.dart';
 import 'package:pedigree_seller/app/repositories/firebase_authentication_repository.dart';
 
 class RegisterApi {

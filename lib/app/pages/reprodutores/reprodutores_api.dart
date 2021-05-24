@@ -1,7 +1,7 @@
 //Se voce chegou até aqui é certeza que ja possui um user e um canil cadastrados
 
 import 'package:pedigree_seller/app/pages/canil/canil_model.dart';
-import 'package:pedigree_seller/app/pages/reprodutores/reprodutores_model.dart';
+import 'package:pedigree_seller/app/pages/reprodutores/reprodutor_model.dart';
 import 'package:pedigree_seller/app/repositories/firestore_repository.dart';
 
 //TODO: Adicionar os dogs no banco de dados depois que estiver pronto a conexao c o server;
