@@ -35,7 +35,7 @@ class _NinhadasScreenState extends State<NinhadasScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: ScaffoldCommonComponents.customBottomAppBar(
-        'Cadastrar ninhada',
+            'Cadastrar ninhada',
         () async {
           NinhadaViewModel? ninhada = await Navigator.push(
             context,

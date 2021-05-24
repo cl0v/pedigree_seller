@@ -18,18 +18,14 @@ class CanilBloc {
 
   sub() async {
     var user = await UserModel.get();
-    if (user != null) {
-      print('Entrou aq');
+    var c = await CanilModel.get();
+    if (c != null) {
+      canil.add(c);
+    } else if (user != null) {
       canil.subscribe(CanilFirestore.stream(user.referenceId));
     } else {
       print('Nenhum user cadastrado, deu erro');
     }
-
-    //TODO: Se inscrever para canil e ficar aguardando o retorno
   }
 
-  fetchCanil() async {
-    var c = await CanilFirestore.get();
-    canil.add(c);
-  }
 }

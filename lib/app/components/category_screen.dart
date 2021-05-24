@@ -4,17 +4,17 @@ import 'package:pedigree_seller/app/utils/nav.dart';
 
 import '../../constants.dart';
 
-class ValoresCategorias {
+class CategoriasEspecies {
   String text;
-  List<ValoresCategorias> list;
-  ValoresCategorias({
+  List<CategoriasEspecies> list;
+  CategoriasEspecies({
     required this.text,
     this.list = const [],
   });
 }
 
 class CategoryScreen extends StatelessWidget {
-  final List<ValoresCategorias> valores;
+  final List<CategoriasEspecies> valores;
   final String title;
   final Function(String, String) settaValores;
 
@@ -57,7 +57,6 @@ class CategoryScreen extends StatelessWidget {
             trailing:
                 val.list.length > 0 ? Icon(Icons.arrow_forward_ios) : null,
             onTap: () {
-              print(val.list);
               if (val.list.length > 0)
                 push(
                   context,
@@ -67,14 +66,11 @@ class CategoryScreen extends StatelessWidget {
                     valores: val.list,
                   ),
                 );
-              else //TODO: Enviar o valor para a pagina anterior
-              //TODO: Enviar o title e o text do val
-              {
+              else {
                 settaValores(title, val.text);
                 popUntil(context, Routes.CadastrarReprodutor);
                 //TODO: Posso passar as parada por aq tb
               }
-
             },
           );
         });

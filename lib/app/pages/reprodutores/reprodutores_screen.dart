@@ -18,13 +18,13 @@ class _ReprodutoresScreenState extends State<ReprodutoresScreen> {
   @override
   void initState() {
     super.initState();
-    _bloc.subToStream();
+    _bloc.sub();
   }
 
   @override
   void dispose() {
     super.dispose();
-    _bloc.list.dispose();
+    _bloc.reprodutores.dispose();
   }
 
   @override
@@ -40,7 +40,7 @@ class _ReprodutoresScreenState extends State<ReprodutoresScreen> {
     var drawer = CustomDrawer();
 
     var body = StreamBuilder<List<ReprodutorModel>>(
-        stream: _bloc.list.stream,
+        stream: _bloc.reprodutores.stream,
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.active:

@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/components/custom_drawer_widget.dart';
 import 'package:pedigree_seller/app/pages/canil/canil_bloc.dart';
-import 'package:pedigree_seller/app/pages/canil/canil_firestore.dart';
 import 'package:pedigree_seller/app/pages/canil/canil_model.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
@@ -10,10 +9,10 @@ import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
 import 'package:pedigree_seller/constants.dart';
 import 'package:pedigree_seller/app/utils/screen_size.dart';
 /*
+ - Essa página será a dashboard
  - Aqui dentro aparecerá a parte de adicionar reprodutores, pets etc...
 */
 
-//TODO: Quando voltar pra ca, ele precisa updatar automaticamente('Ou solicitar o aguardo da aprovação, sei la')
 
 class CanilScreen extends StatefulWidget {
   @override
@@ -32,7 +31,6 @@ class _CanilScreenState extends State<CanilScreen> {
   @override
   void initState() {
     super.initState();
-    // _bloc.fetchCanil();
     _bloc.sub();
   }
 
@@ -40,10 +38,8 @@ class _CanilScreenState extends State<CanilScreen> {
   Widget build(BuildContext context) {
     Size size = getSize(context);
 
-    var appBar = ScaffoldCommonComponents.customAppBarWithDrawerAndAction(
-        'Canil', Icons.refresh, () {
-      _bloc.fetchCanil();
-    });
+    var appBar =
+        ScaffoldCommonComponents.customAppBarWithDrawerWithoutAction('Canil');
     var drawer = CustomDrawer();
 
     var noData = Center(
@@ -60,12 +56,6 @@ class _CanilScreenState extends State<CanilScreen> {
               style: TextStyle(color: Colors.blue),
               recognizer: TapGestureRecognizer()
                 ..onTap = () => pushNamed(context, Routes.CadastrarCanil),
-            ),
-            TextSpan(
-              text: 'Se ja criou, atualize a página',
-              style: TextStyle(color: Colors.blue),
-              recognizer: TapGestureRecognizer()
-                ..onTap = () => _bloc.fetchCanil(),
             ),
           ],
         ),

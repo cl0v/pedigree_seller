@@ -6,6 +6,7 @@ class CanilFirestore {
   static CollectionReference<Map<String, dynamic>> get canilCollection =>
       FirebaseFirestore.instance.collection('canil');
 
+//TODO: Remover assim que tiver tudo certo
   static Future<CanilModel?> get() async {
     //TODO: Com o get eu tenho essa possibilidade de salvar no banco de dados
     try {
@@ -22,7 +23,10 @@ class CanilFirestore {
 
       var reference = query.docs.first;
 
+      print('referencia $reference');
+
       if (reference.exists) {
+        print('entoru aq');
         canil = CanilModel.fromDocumentSnapshot(reference);
         canil.save();
         return canil;
@@ -38,7 +42,7 @@ class CanilFirestore {
       .snapshots()
       .map(
         (query) => query.docs
-            .map((snap) => CanilModel.fromDocumentSnapshot(snap))
+            .map((snap) => CanilModel.fromDocumentSnapshot(snap)..save())
             .first,
       );
 

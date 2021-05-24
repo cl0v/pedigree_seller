@@ -4,13 +4,13 @@ import 'package:pedigree_seller/app/pages/reprodutores/reprodutores_firestore.da
 import 'package:pedigree_seller/app/utils/simple_bloc.dart';
 
 class ReprodutoresBloc {
-  final list = SimpleBloc<List<ReprodutorModel>>();
+  final reprodutores = SimpleBloc<List<ReprodutorModel>>();
   final registerBtn = SimpleBloc<bool>();
 
-  subToStream() async {
+  sub() async {
     var canil = await CanilModel.get();
     if (canil != null)
-      list.subscribe(ReprodutoresFirestore.getStream(canil.referenceId));
+      reprodutores.subscribe(ReprodutoresFirestore.getStream(canil.referenceId));
     else {
       print('Canil nao registrado, algo deu errado!');
     }

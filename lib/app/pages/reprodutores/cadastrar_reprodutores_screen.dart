@@ -20,17 +20,17 @@ import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
 ///
 
 
-List<ValoresCategorias> listaDeValores = [
-  ValoresCategorias(text: 'Cachorro', list: [
-    ValoresCategorias(text: 'Rotwailer'),
-    ValoresCategorias(text: 'Poodle'),
-    ValoresCategorias(text: 'Fila')
+List<CategoriasEspecies> listaDeValores = [
+  CategoriasEspecies(text: 'Cachorro', list: [
+    CategoriasEspecies(text: 'Rotwailer'),
+    CategoriasEspecies(text: 'Poodle'),
+    CategoriasEspecies(text: 'Fila')
   ]),
-  ValoresCategorias(text: 'Gato', list: [
-    ValoresCategorias(text: 'Persa'),
-    ValoresCategorias(text: 'Chaninha'),
+  CategoriasEspecies(text: 'Gato', list: [
+    CategoriasEspecies(text: 'Persa'),
+    CategoriasEspecies(text: 'Chaninha'),
   ]),
-  ValoresCategorias(text: 'Coelho'),
+  CategoriasEspecies(text: 'Coelho'),
 ];
 
 class CadastrarReprodutoresScreen extends StatefulWidget {

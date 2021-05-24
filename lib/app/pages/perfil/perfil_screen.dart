@@ -63,10 +63,10 @@ class _PerfilScreenState extends State<PerfilScreen> {
           UserModel user = snapshot.data!;
           return ListView(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: CircleImage(),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.all(10.0),
+              //   child: CircleImage(),
+              // ),
               ListTile(
                 title: Text('Nome:'),
                 subtitle: Text(
