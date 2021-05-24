@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pedigree_seller/app/services/shared_local_storage_service.dart';
 
-
 class CanilModel {
   String titulo;
   String contato;
@@ -75,7 +74,6 @@ class CanilModel {
   save() {
     String json = jsonEncode(toMapWithReference());
     Prefs.put('canil.prefs', json);
-    print('CANIL SAVED: > $json');
   }
 
   static clear() {

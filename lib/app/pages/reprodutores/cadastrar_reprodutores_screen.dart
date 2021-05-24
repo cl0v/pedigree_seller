@@ -8,27 +8,17 @@ import 'package:pedigree_seller/app/components/form_error_text.dart';
 import 'package:pedigree_seller/app/components/image_picker_tile_widget.dart';
 import 'package:pedigree_seller/app/pages/reprodutores/reprodutor_model.dart';
 import 'package:pedigree_seller/app/pages/reprodutores/reprodutores_bloc.dart';
-import 'package:pedigree_seller/app/pages/reprodutores/reprodutores_firestore.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/alert.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
 
-import '../../../constants.dart';
 
 ///Página de triagem, para facilitar o preenchimento dos dados mais comuns(Especie, titulo e categoria, macho femea etc))
 ///Cadastrar os animais reprodutores (Pai e Mae)
 ///Para agilizar o cadastro da ninhada
 ///
 
-class PetRegistrationController {
-  bool isMacho = true;
-  String nome = 'Reprodutor';
-  String? isRequired;
-
-  String categoria = '';
-  String especie = '';
-}
 
 List<ValoresCategorias> listaDeValores = [
   ValoresCategorias(text: 'Cachorro', list: [
@@ -51,12 +41,11 @@ class CadastrarReprodutoresScreen extends StatefulWidget {
 
 class _CadastrarReprodutoresScreenState
     extends State<CadastrarReprodutoresScreen> {
-  final controller = PetRegistrationController();
 
   @override
   void dispose() {
     super.dispose();
-    _bloc.dispose();
+    _bloc.registerBtn.dispose();
   }
 
   final _bloc = ReprodutoresBloc();
@@ -202,7 +191,7 @@ class _CadastrarReprodutoresScreenState
     );
 
     var bottomNavBar = StreamBuilder(
-      stream: _bloc.stream,
+      stream: _bloc.registerBtn.stream,
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         return CustomButtonWidget(
           'Register',

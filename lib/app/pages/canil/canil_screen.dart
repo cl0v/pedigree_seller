@@ -32,7 +32,8 @@ class _CanilScreenState extends State<CanilScreen> {
   @override
   void initState() {
     super.initState();
-    _bloc.fetchCanil();
+    // _bloc.fetchCanil();
+    _bloc.sub();
   }
 
   @override
@@ -80,7 +81,6 @@ class _CanilScreenState extends State<CanilScreen> {
     var body = StreamBuilder<CanilModel?>(
         stream: _bloc.canil.stream,
         builder: (context, snapshot) {
-          print(snapshot);
           switch (snapshot.connectionState) {
             case ConnectionState.active:
               var canil = snapshot.data;

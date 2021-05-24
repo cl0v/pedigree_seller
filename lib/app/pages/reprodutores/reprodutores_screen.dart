@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/components/custom_drawer_widget.dart';
 import 'package:pedigree_seller/app/pages/reprodutores/reprodutor_model.dart';
+import 'package:pedigree_seller/app/pages/reprodutores/reprodutores_bloc.dart';
 import 'package:pedigree_seller/app/pages/reprodutores/reprodutores_firestore.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
@@ -12,9 +13,18 @@ class ReprodutoresScreen extends StatefulWidget {
 }
 
 class _ReprodutoresScreenState extends State<ReprodutoresScreen> {
+  final _bloc = ReprodutoresBloc();
+
+  @override
+  void initState() {
+    super.initState();
+    _bloc.subToStream();
+  }
+
   @override
   void dispose() {
     super.dispose();
+    _bloc.list.dispose();
   }
 
   @override
@@ -30,7 +40,7 @@ class _ReprodutoresScreenState extends State<ReprodutoresScreen> {
     var drawer = CustomDrawer();
 
     var body = StreamBuilder<List<ReprodutorModel>>(
-        stream: ReprodutoresFirestore().stream,
+        stream: _bloc.list.stream,
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.active:

@@ -7,10 +7,10 @@ class CanilFirestore {
       FirebaseFirestore.instance.collection('canil');
 
   static Future<CanilModel?> get() async {
+    //TODO: Com o get eu tenho essa possibilidade de salvar no banco de dados
     try {
       var canil = await CanilModel.get();
       if (canil != null) {
-        print('Canil>> $canil');
         return canil;
       }
       var user = (await UserModel.get())!;
@@ -27,12 +27,20 @@ class CanilFirestore {
         canil.save();
         return canil;
       }
-
       return null;
     } catch (e) {
       return null;
     }
   }
+
+  static Stream<CanilModel?> stream(String userReferenceId) => canilCollection
+      .where('donoReferencia', isEqualTo: userReferenceId)
+      .snapshots()
+      .map(
+        (query) => query.docs
+            .map((snap) => CanilModel.fromDocumentSnapshot(snap))
+            .first,
+      );
 
   static Future<bool> register(titulo, contato, cnpj) async {
     try {

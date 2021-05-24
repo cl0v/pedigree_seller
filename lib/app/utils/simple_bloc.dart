@@ -10,6 +10,10 @@ class SimpleBloc<T> {
     }
   }
 
+  subscribe(Stream<T> s) {
+    _controller.addStream(s);
+  }
+
   addError(Object obj) {
     if (!_controller.isClosed) {
       _controller.addError(obj);
