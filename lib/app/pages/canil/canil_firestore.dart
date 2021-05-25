@@ -6,37 +6,6 @@ class CanilFirestore {
   static CollectionReference<Map<String, dynamic>> get canilCollection =>
       FirebaseFirestore.instance.collection('canil');
 
-//TODO: Remover assim que tiver tudo certo
-  static Future<CanilModel?> get() async {
-    //TODO: Com o get eu tenho essa possibilidade de salvar no banco de dados
-    try {
-      var canil = await CanilModel.get();
-      if (canil != null) {
-        return canil;
-      }
-      var user = (await UserModel.get())!;
-
-      var query = await canilCollection
-          .where('donoReferencia', isEqualTo: user.referenceId)
-          .limit(1)
-          .get();
-
-      var reference = query.docs.first;
-
-      print('referencia $reference');
-
-      if (reference.exists) {
-        print('entoru aq');
-        canil = CanilModel.fromDocumentSnapshot(reference);
-        canil.save();
-        return canil;
-      }
-      return null;
-    } catch (e) {
-      return null;
-    }
-  }
-
   static Stream<CanilModel?> stream(String userReferenceId) => canilCollection
       .where('donoReferencia', isEqualTo: userReferenceId)
       .snapshots()
@@ -46,21 +15,19 @@ class CanilFirestore {
             .first,
       );
 
-  static Future<bool> register(titulo, contato, cnpj) async {
+  static Future<bool> register(titulo, contato, cnpj, userReferenceId) async {
     try {
-      UserModel? user = await UserModel.get();
-      if (user != null) {
+      
         CanilModel canil = CanilModel(
           titulo: titulo,
           contato: contato,
           cnpj: cnpj,
-          donoReferencia: user.referenceId,
+          donoReferencia: userReferenceId,
         );
 
         var reference = await canilCollection.add(canil.toMap());
         canil = canil.copyWith(referenceId: reference.id)..save();
         return true;
-      } else
         return true;
     } catch (e) {
       return false;

@@ -68,22 +68,7 @@ class EspecificacoesAnimalModel {
 
   factory EspecificacoesAnimalModel.fromJson(String source) => EspecificacoesAnimalModel.fromMap(json.decode(source));
 }
-
-Map<String, List<String>> racas = {
-  'Cachorro': [
-    'Rotwailer',
-    'Poodle',
-    'Fila',
-  ],
-  'Gato': [
-    'Persa',
-    'Chaninha',
-  ],
-  'Hamster': [],
-  'Coelho': [],
-};
-
-
+//TODO: Remover esses mocks
 
 final m1 = ReprodutorModel(
   nome: 'Vagabunda',

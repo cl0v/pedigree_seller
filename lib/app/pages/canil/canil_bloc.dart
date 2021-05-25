@@ -8,7 +8,10 @@ class CanilBloc {
 
   Future<bool> create(titulo, contato, cnpj) async {
     createBtn.add(true);
-    var response = await CanilFirestore.register(titulo, contato, cnpj);
+    UserModel? user = await UserModel.get();
+    var response = false;
+    if (user != null)
+      response = await CanilFirestore.register(titulo, contato, cnpj, user.referenceId);
     createBtn.add(false);
 
     return response;
@@ -27,5 +30,4 @@ class CanilBloc {
       print('Nenhum user cadastrado, deu erro');
     }
   }
-
 }

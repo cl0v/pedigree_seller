@@ -86,15 +86,16 @@ class _PerfilScreenState extends State<PerfilScreen> {
                 ),
               ),
               ListTile(
-                title: Text('Endereço:'),
+                title: Text('CPF:'),
                 subtitle: Text(
-                  user.cpf.replaceAll('47031606', '********'),
+                  '${user.cpf.substring(0, 3)}********',
                 ),
               ),
               const ListTile(
                 title: Text('Sair'),
                 subtitle: Text("Sair da minha conta"),
                 trailing: Icon(Icons.exit_to_app),
+                //TODO: Passar o sair para cá futuramente(Sair da drawer)
               ),
             ],
           );

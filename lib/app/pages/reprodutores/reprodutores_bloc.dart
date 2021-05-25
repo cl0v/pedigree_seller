@@ -10,7 +10,8 @@ class ReprodutoresBloc {
   sub() async {
     var canil = await CanilModel.get();
     if (canil != null)
-      reprodutores.subscribe(ReprodutoresFirestore.getStream(canil.referenceId));
+      reprodutores
+          .subscribe(ReprodutoresFirestore.getStream(canil.referenceId));
     else {
       print('Canil nao registrado, algo deu errado!');
     }
@@ -21,13 +22,18 @@ class ReprodutoresBloc {
 
     var canil = await CanilModel.get();
     if (canil != null) {
+      ReprodutorModel reprodutorModel = ReprodutorModel(
+        nome: nome,
+        categoria: categoria,
+        isMacho: isMacho,
+      );
       var response = await ReprodutoresFirestore.register(
-          nome, categoria, isMacho, canil.referenceId);
+          reprodutorModel, canil.referenceId);
 
       registerBtn.add(false);
       return response;
     }
+    print('Nao foi possivel cadastrar');
     return false;
   }
-
 }

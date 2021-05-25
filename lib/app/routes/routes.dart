@@ -5,6 +5,7 @@ import 'package:pedigree_seller/app/pages/authentication/register/register_scree
 import 'package:pedigree_seller/app/pages/canil/canil_screen.dart';
 import 'package:pedigree_seller/app/pages/canil/create_canil_screen.dart';
 import 'package:pedigree_seller/app/pages/ninhada/ninhada_screen.dart';
+import 'package:pedigree_seller/app/pages/ninhada/cadastrar_ninhada_screen.dart';
 import 'package:pedigree_seller/app/pages/reprodutores/cadastrar_reprodutores_screen.dart';
 import 'package:pedigree_seller/app/pages/reprodutores/reprodutores_screen.dart';
 import 'package:pedigree_seller/app/pages/perfil/perfil_screen.dart';
@@ -15,6 +16,7 @@ abstract class Routes {
   static const Login = '/login';
   static const Register = '/register';
   static const Ninhada = '/ninhada';
+  static const CadastrarNinhada = '/ninhada/cadastrar';
   static const Reprodutores = '/reprodutores';
   static const CadastrarReprodutor = '/reprodutores/cadastrar';
   static const Canil = '/canil';
@@ -26,6 +28,7 @@ abstract class Routes {
 final routes = <String, WidgetBuilder>{
   //TODO: Troquei a home com canil pra facilitar
   Routes.Home: (context) => CanilScreen(),
+  Routes.CadastrarNinhada: (context) => CadastrarNinhadaScreen(),
   Routes.Login: (context) => LoginScreen(),
   Routes.Register: (context) => RegisterScreen(),
   Routes.Ninhada: (context) => NinhadasScreen(),

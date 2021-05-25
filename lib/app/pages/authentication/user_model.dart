@@ -80,7 +80,6 @@ class UserModel {
   save() {
     String json = jsonEncode(toMapWithReference());
     Prefs.put('seller.prefs', json);
-    print('USER SAVED: > $json');
   }
 
   static clear() {
