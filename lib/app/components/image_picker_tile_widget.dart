@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-//TODO: Fazer o imagePicker pegar imagens;
+//TODO: Implementar o imagePicker onde precisa enviar fotos
 
 class ImagePickerTileWidget extends StatelessWidget {
   final String title;

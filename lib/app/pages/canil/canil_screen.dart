@@ -13,7 +13,6 @@ import 'package:pedigree_seller/app/utils/screen_size.dart';
  - Aqui dentro aparecerá a parte de adicionar reprodutores, pets etc...
 */
 
-
 class CanilScreen extends StatefulWidget {
   @override
   _CanilScreenState createState() => _CanilScreenState();
@@ -38,9 +37,7 @@ class _CanilScreenState extends State<CanilScreen> {
   Widget build(BuildContext context) {
     Size size = getSize(context);
 
-    var appBar =
-        ScaffoldCommonComponents.customAppBarWithDrawerWithoutAction('Canil');
-    var drawer = CustomDrawer();
+    var appBar = ScaffoldCommonComponents.customAppBarWithoutIcons('Canil');
 
     var noData = Center(
       child: RichText(
@@ -105,7 +102,6 @@ class _CanilScreenState extends State<CanilScreen> {
 
     return Scaffold(
       appBar: appBar,
-      drawer: drawer,
       body: body,
     );
   }

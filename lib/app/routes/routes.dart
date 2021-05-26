@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/pages/authentication/login/login_screen.dart';
 import 'package:pedigree_seller/app/pages/authentication/splash/splash_screen.dart';
 import 'package:pedigree_seller/app/pages/authentication/register/register_screen.dart';
-import 'package:pedigree_seller/app/pages/canil/canil_screen.dart';
 import 'package:pedigree_seller/app/pages/canil/create_canil_screen.dart';
+import 'package:pedigree_seller/app/pages/home/canil_profile_screen.dart';
+import 'package:pedigree_seller/app/pages/main_screen.dart';
 import 'package:pedigree_seller/app/pages/ninhada/ninhada_screen.dart';
 import 'package:pedigree_seller/app/pages/ninhada/cadastrar_ninhada_screen.dart';
 import 'package:pedigree_seller/app/pages/reprodutores/cadastrar_reprodutores_screen.dart';
@@ -27,7 +28,7 @@ abstract class Routes {
 
 final routes = <String, WidgetBuilder>{
   //TODO: Troquei a home com canil pra facilitar
-  Routes.Home: (context) => CanilScreen(),
+  Routes.Canil: (context) => CanilProfileScreen(),
   Routes.CadastrarNinhada: (context) => CadastrarNinhadaScreen(),
   Routes.Login: (context) => LoginScreen(),
   Routes.Register: (context) => RegisterScreen(),
@@ -35,7 +36,7 @@ final routes = <String, WidgetBuilder>{
   Routes.Reprodutores: (context) => ReprodutoresScreen(),
   Routes.CadastrarReprodutor: (context) => CadastrarReprodutoresScreen(),
   Routes.CadastrarCanil: (context) => CreateCanilScreen(),
-  Routes.Canil: (context) => CanilScreen(),
+  Routes.Home: (context) => MainScreen(),
   Routes.Perfil: (context) => PerfilScreen(),
   Routes.Splash: (context) => SplashScreen(),
 };

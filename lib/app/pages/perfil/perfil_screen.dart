@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/components/custom_drawer_widget.dart';
 import 'package:pedigree_seller/app/pages/authentication/user_model.dart';
+import 'package:pedigree_seller/app/pages/canil/canil_model.dart';
+import 'package:pedigree_seller/app/routes/routes.dart';
+import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
 
 class PerfilScreen extends StatefulWidget {
@@ -9,6 +12,8 @@ class PerfilScreen extends StatefulWidget {
 }
 
 class _PerfilScreenState extends State<PerfilScreen> {
+  var future = UserModel.get();
+
   @override
   void initState() {
     super.initState();
@@ -16,45 +21,9 @@ class _PerfilScreenState extends State<PerfilScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var future = UserModel.get();
-
-    // var body = ListView(
-    //   children: [
-    //     Padding(
-    //       padding: const EdgeInsets.all(10.0),
-    //       child: CircleImage(),
-    //     ),
-    //     ListTile(
-    //       title: Text('Nome:'),
-    //       subtitle: Text(
-    //         "Renato Ikeuchi",
-    //       ),
-    //     ),
-    //     ListTile(
-    //       title: Text('Email:'),
-    //       subtitle: Text(
-    //         'rntcursos@gmail.com',
-    //       ),
-    //     ),
-    //     ListTile(
-    //       title: Text('Contato:'),
-    //       subtitle: Text(
-    //         "+55 35 9 8416-4756",
-    //       ),
-    //     ),
-    //     ListTile(
-    //       title: Text('Endereço:'),
-    //       subtitle: Text(
-    //         "Rua Benjamin Constate 70 B - Centro - Cambuquira",
-    //       ),
-    //     ),
-    //     const ListTile(
-    //       title: Text('Sair'),
-    //       subtitle: Text("Sair da minha conta"),
-    //       trailing: Icon(Icons.exit_to_app),
-    //     ),
-    //   ],
-    // );
+    var appBar = ScaffoldCommonComponents.customAppBarWithoutIcons(
+      'Perfil',
+    );
 
     var fBuilder = FutureBuilder<UserModel?>(
       future: future,
@@ -74,6 +43,15 @@ class _PerfilScreenState extends State<PerfilScreen> {
                 ),
               ),
               ListTile(
+                title: Text('Dados da loja:'),
+                subtitle: Text(
+                  'Acessar loja',
+                ),
+                onTap: () {
+                  pushNamed(context, Routes.Canil);
+                },
+              ),
+              ListTile(
                 title: Text('Email:'),
                 subtitle: Text(
                   user.email,
@@ -91,10 +69,15 @@ class _PerfilScreenState extends State<PerfilScreen> {
                   '${user.cpf.substring(0, 3)}********',
                 ),
               ),
-              const ListTile(
+              ListTile(
                 title: Text('Sair'),
                 subtitle: Text("Sair da minha conta"),
                 trailing: Icon(Icons.exit_to_app),
+                onTap: () {
+                  UserModel.clear();
+                  CanilModel.clear();
+                  pushNamed(context, Routes.Login, replace: true);
+                },
                 //TODO: Passar o sair para cá futuramente(Sair da drawer)
               ),
             ],
@@ -107,10 +90,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
     );
 
     var result = Scaffold(
-      appBar: ScaffoldCommonComponents.customAppBarWithDrawerWithoutAction(
-        'Perfil',
-      ),
-      drawer: CustomDrawer(),
+      appBar: appBar,
       body: fBuilder,
     );
 

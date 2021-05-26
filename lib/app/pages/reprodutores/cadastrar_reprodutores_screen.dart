@@ -60,16 +60,6 @@ class _CadastrarReprodutoresScreenState
     return null;
   }
 
-  String? _validateCertificado() {
-    //TODO: Implement
-    var text = _tNome.text;
-    if (text.isEmpty) {
-      return "Digite o nome";
-    }
-    //Mostra caso nao exista erros
-    return null;
-  }
-
   _onSavePressed() async {
     if (!(_validateNome() == null && _validateCategory() == null)) {
       setState(() {
@@ -80,8 +70,10 @@ class _CadastrarReprodutoresScreenState
 
     String nome = _tNome.text;
     bool isMacho = _isMacho;
-    EspecificacoesAnimalModel categoria =
-        EspecificacoesAnimalModel(categoria: _tCategoria, especie: _tEspecie,);
+    EspecificacoesAnimalModel categoria = EspecificacoesAnimalModel(
+      categoria: _tCategoria,
+      especie: _tEspecie,
+    );
 
     var response = await _bloc.register(nome, categoria, isMacho);
 
@@ -100,9 +92,11 @@ class _CadastrarReprodutoresScreenState
 
   @override
   Widget build(BuildContext context) {
+
+    
     var appBar = ScaffoldCommonComponents.customAppBar(
       'Registrar',
-      () => Navigator.pop(context),
+      () => pop(context),
     );
     var body = Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -126,7 +120,7 @@ class _CadastrarReprodutoresScreenState
           _validateNome() != null && _showError
               ? FormErrorText(_validateNome()!)
               : Container(),
-            //TODO: Tentar colocar em forma de widget reutilizavel
+          //TODO: Tentar colocar em forma de widget reutilizavel
           ListTile(
             title: Text(_tEspecie),
             subtitle: Text('*Selecione a categoria'),
@@ -134,12 +128,11 @@ class _CadastrarReprodutoresScreenState
             onTap: () {
               push(
                 context,
-                CategoryScreen(
-                  title: 'Categorias',
-                  settaValores: _setCategory,
-                  valores: listaDeValores,
-                  route: Routes.CadastrarReprodutor
-                ),
+                CategorySelectorScreen(
+                    title: 'Categorias',
+                    settaValores: _setCategory,
+                    valores: listaDeValores,
+                    route: Routes.CadastrarReprodutor),
               );
             },
           ),
@@ -178,12 +171,20 @@ class _CadastrarReprodutoresScreenState
     var bottomNavBar = StreamBuilder(
       stream: _bloc.registerBtn.stream,
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        return CustomButtonWidget(
+        return ScaffoldCommonComponents.customBottomAppBar(
           'Register',
-          onPressed: _onSavePressed,
-          showProgress: snapshot.data ?? false,
+          _onSavePressed,
+          context,
+          snapshot.data ?? false,
         );
       },
+    );
+
+    var bottomNavigationBar = ScaffoldCommonComponents.customBottomAppBar(
+      'Cadastrar',
+      _onSavePressed,
+      context,
+      true
     );
 
     return Scaffold(

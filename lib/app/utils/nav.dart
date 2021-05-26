@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pedigree_seller/app/pages/home/home_screen.dart';
 
 push(BuildContext context, Widget page, {bool replace = false}) {
   if (replace)
@@ -21,7 +20,3 @@ popUntil(BuildContext context, String route) =>
 
 pop(BuildContext context, [result]) => Navigator.pop(context, result);
 
-backToHome(BuildContext context) => Navigator.pushAndRemoveUntil(
-    context,
-    MaterialPageRoute(builder: (context) => HomeScreen()),
-    ModalRoute.withName('/'));

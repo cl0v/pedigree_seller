@@ -28,12 +28,11 @@ class _ReprodutoresScreenState extends State<ReprodutoresScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var appBar = ScaffoldCommonComponents.customAppBarWithDrawerAndAction(
+    var appBar = ScaffoldCommonComponents.customAppBarWithBackAndAction(
       'Reprodutores',
+      () => pop(context),
       Icons.add,
-      () {
-        pushNamed(context, Routes.CadastrarReprodutor);
-      },
+      ()=> pushNamed(context, Routes.CadastrarReprodutor)
     );
 
     var drawer = CustomDrawer();
@@ -46,7 +45,8 @@ class _ReprodutoresScreenState extends State<ReprodutoresScreen> {
               var petList = snapshot.data!;
               if (petList.isEmpty)
                 return Center(
-                  child: Text('Nenhum cadastrado ainda\nToque para cadastrar'),
+                  child: Text(
+                      "Nenhum cadastrado ainda. Toque no '+' para cadastrar"),
                 );
               else
                 return ListView.builder(

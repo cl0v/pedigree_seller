@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/pages/authentication/user_model.dart';
-import 'package:pedigree_seller/app/pages/canil/canil_model.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
+
+//TODO: Substituir para bottomNavBar
 
 class CustomDrawer extends StatelessWidget {
   @override
@@ -64,17 +65,6 @@ class CustomDrawer extends StatelessWidget {
         onTap: () {
           pushNamed(context, Routes.Perfil);
           //TODO: Implement onTap
-        },
-      ),
-      ListTile(
-        title: Text('Sair'),
-        leading: Icon(Icons.exit_to_app),
-        onTap: () {
-          UserModel.clear();
-          CanilModel.clear();
-          pushNamed(context, Routes.Login, replace: true);
-
-          // Vendedor.clear();
         },
       ),
     ];

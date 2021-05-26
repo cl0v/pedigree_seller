@@ -1,11 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/components/category_screen.dart';
 import 'package:pedigree_seller/app/components/drop_down_button_widget.dart';
 import 'package:pedigree_seller/app/pages/ninhada/ninhada_bloc.dart';
 import 'package:pedigree_seller/app/pages/ninhada/ninhada_model.dart';
-import 'package:pedigree_seller/app/pages/reprodutores/cadastrar_reprodutores_screen.dart';
 import 'package:pedigree_seller/app/pages/reprodutores/reprodutor_model.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
@@ -92,10 +89,17 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var bottomNavigationBar = ScaffoldCommonComponents.customBottomAppBar(
-      'Cadastrar',
-      _onCreatePressed,
-      context,
+
+    var bottomNavBar = StreamBuilder(
+      stream: _bloc.createBtn.stream,
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        return ScaffoldCommonComponents.customBottomAppBar(
+          'Register',
+          _onCreatePressed,
+          context,
+          snapshot.data ?? false,
+        );
+      },
     );
     var appBar = ScaffoldCommonComponents.customAppBar(
       'Cadastrar ninhada',
@@ -127,7 +131,7 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
               onTap: () {
                 push(
                   context,
-                  CategoryScreen(
+                  CategorySelectorScreen(
                     title: 'Categorias',
                     settaValores: _setCategory,
                     valores: listaDeValores,
@@ -255,7 +259,7 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
     );
 
     return Scaffold(
-      bottomNavigationBar: bottomNavigationBar,
+      bottomNavigationBar: bottomNavBar,
       appBar: appBar,
       body: body,
     );

@@ -12,13 +12,13 @@ class CategoriasEspecies {
   });
 }
 
-class CategoryScreen extends StatelessWidget {
+class CategorySelectorScreen extends StatelessWidget {
   final List<CategoriasEspecies> valores;
   final String title;
   final Function(String, String) settaValores;
   final String route;
 
-  CategoryScreen({
+  CategorySelectorScreen({
     required this.title,
     required this.settaValores,
     required this.route,
@@ -61,7 +61,7 @@ class CategoryScreen extends StatelessWidget {
               if (val.list.length > 0)
                 push(
                   context,
-                  CategoryScreen(
+                  CategorySelectorScreen(
                     settaValores: settaValores,
                     title: val.text,
                     valores: val.list,

@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pedigree_seller/app/pages/ninhada/ninhada_model.dart';
 import 'package:pedigree_seller/app/pages/reprodutores/reprodutor_model.dart';
 
-import 'cadastrar_ninhada_screen.dart';
 
 class NinhadaFirestore {
   static CollectionReference<Map<String, dynamic>> get collection =>

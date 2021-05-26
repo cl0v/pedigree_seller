@@ -40,6 +40,7 @@ class NinhadaBloc {
   //TODO: Implement createBrn bloc
   Future<bool> create(
       String titulo, String fotoUrl, categoria, String pai, String mae) async {
+    createBtn.add(true);
     var canil = await CanilModel.get();
     if (canil != null) {
       NinhadaModel ninhada = NinhadaModel(
@@ -50,6 +51,7 @@ class NinhadaBloc {
         canilReferenceId: canil.referenceId,
       );
       var response = await NinhadaFirestore.register(ninhada);
+      createBtn.add(false);
       return response;
     }
     return false;

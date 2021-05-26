@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:pedigree_seller/app/pages/authentication/user_model.dart';
 import 'package:pedigree_seller/app/pages/canil/canil_model.dart';
 
 class CanilFirestore {
@@ -27,7 +26,6 @@ class CanilFirestore {
 
         var reference = await canilCollection.add(canil.toMap());
         canil = canil.copyWith(referenceId: reference.id)..save();
-        return true;
         return true;
     } catch (e) {
       return false;
