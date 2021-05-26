@@ -13,25 +13,10 @@ import 'package:pedigree_seller/app/utils/alert.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
 
-
 ///Página de triagem, para facilitar o preenchimento dos dados mais comuns(Especie, titulo e categoria, macho femea etc))
 ///Cadastrar os animais reprodutores (Pai e Mae)
 ///Para agilizar o cadastro da ninhada
 ///
-
-
-List<CategoriasEspecies> listaDeValores = [
-  CategoriasEspecies(text: 'Cachorro', list: [
-    CategoriasEspecies(text: 'Rotwailer'),
-    CategoriasEspecies(text: 'Poodle'),
-    CategoriasEspecies(text: 'Fila')
-  ]),
-  CategoriasEspecies(text: 'Gato', list: [
-    CategoriasEspecies(text: 'Persa'),
-    CategoriasEspecies(text: 'Chaninha'),
-  ]),
-  CategoriasEspecies(text: 'Coelho'),
-];
 
 class CadastrarReprodutoresScreen extends StatefulWidget {
   @override
@@ -41,7 +26,6 @@ class CadastrarReprodutoresScreen extends StatefulWidget {
 
 class _CadastrarReprodutoresScreenState
     extends State<CadastrarReprodutoresScreen> {
-
   @override
   void dispose() {
     super.dispose();
@@ -50,14 +34,11 @@ class _CadastrarReprodutoresScreenState
 
   final _bloc = ReprodutoresBloc();
 
-  final _tNome = TextEditingController(text: 'Reprodutor');
-  String _tCategoria = '';
-  String _tEspecie = 'Selecione a categoria';
-
   bool _showError = false;
 
   bool _isMacho = true;
 
+  final _tNome = TextEditingController(text: 'Reprodutor');
   String? _validateNome() {
     //TODO: Implement
     var text = _tNome.text;
@@ -66,6 +47,9 @@ class _CadastrarReprodutoresScreenState
     }
     return null;
   }
+
+  String _tCategoria = '';
+  String _tEspecie = 'Selecione a categoria';
 
   String? _validateCategory() {
     var c = _tCategoria;
@@ -95,14 +79,14 @@ class _CadastrarReprodutoresScreenState
     }
 
     String nome = _tNome.text;
-    bool isMacho = true;
+    bool isMacho = _isMacho;
     EspecificacoesAnimalModel categoria =
-        EspecificacoesAnimalModel(categoria: _tCategoria, especie: _tEspecie);
+        EspecificacoesAnimalModel(categoria: _tCategoria, especie: _tEspecie,);
 
     var response = await _bloc.register(nome, categoria, isMacho);
 
     if (response)
-      popUntil(context, Routes.Reprodutores);
+      pop(context);
     else
       alert(context, 'Error na criação de reprodutor!');
   }
@@ -142,8 +126,8 @@ class _CadastrarReprodutoresScreenState
           _validateNome() != null && _showError
               ? FormErrorText(_validateNome()!)
               : Container(),
-          ListTile(
             //TODO: Tentar colocar em forma de widget reutilizavel
+          ListTile(
             title: Text(_tEspecie),
             subtitle: Text('*Selecione a categoria'),
             trailing: Icon(Icons.arrow_forward_ios),
@@ -154,6 +138,7 @@ class _CadastrarReprodutoresScreenState
                   title: 'Categorias',
                   settaValores: _setCategory,
                   valores: listaDeValores,
+                  route: Routes.CadastrarReprodutor
                 ),
               );
             },

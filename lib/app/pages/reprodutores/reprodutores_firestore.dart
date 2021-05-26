@@ -4,7 +4,7 @@ import 'package:pedigree_seller/app/pages/reprodutores/reprodutor_model.dart';
 class ReprodutoresFirestore {
   static CollectionReference<Map<String, dynamic>> get collection => FirebaseFirestore.instance.collection('canil');
 
-  static Stream<List<ReprodutorModel>> getStream(String canilReferenceId) =>
+  static Stream<List<ReprodutorModel>> stream(String canilReferenceId) =>
       collection
           .doc(canilReferenceId)
           .collection('reprodutores')

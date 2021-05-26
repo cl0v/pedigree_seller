@@ -1,4 +1,6 @@
 import 'dart:convert';
+
+import 'package:pedigree_seller/app/components/category_screen.dart';
 //TODO: Deverá extender um DropDownMenuItem(aula 255* de dropdown button)
 //Lembrando q o unico objetivo desse cara é ser um facilitador para cadastrar a ninhada 
 class ReprodutorModel {
@@ -68,32 +70,17 @@ class EspecificacoesAnimalModel {
 
   factory EspecificacoesAnimalModel.fromJson(String source) => EspecificacoesAnimalModel.fromMap(json.decode(source));
 }
-//TODO: Remover esses mocks
 
-final m1 = ReprodutorModel(
-  nome: 'Vagabunda',
-  categoria:
-      EspecificacoesAnimalModel(categoria: 'Cachorro', especie: 'Hamster'),
-  isMacho: false,
-);
 
-final m2 = ReprodutorModel(
-  nome: 'Lora',
-  categoria:
-      EspecificacoesAnimalModel(categoria: 'Cachorro', especie: 'Hamster'),
-  isMacho: false,
-);
-
-final p1 = ReprodutorModel(
-  nome: 'Vagabund',
-  categoria:
-      EspecificacoesAnimalModel(categoria: 'Cachorro', especie: 'Hamster'),
-  isMacho: true,
-);
-
-final p2 = ReprodutorModel(
-  nome: 'Popo',
-  categoria:
-      EspecificacoesAnimalModel(categoria: 'Cachorro', especie: 'Hamster'),
-  isMacho: true,
-);
+List<CategoriasEspecies> listaDeValores = [
+  CategoriasEspecies(text: 'Cachorro', list: [
+    CategoriasEspecies(text: 'Rotwailer'),
+    CategoriasEspecies(text: 'Poodle'),
+    CategoriasEspecies(text: 'Fila')
+  ]),
+  CategoriasEspecies(text: 'Gato', list: [
+    CategoriasEspecies(text: 'Persa'),
+    CategoriasEspecies(text: 'Chaninha'),
+  ]),
+  CategoriasEspecies(text: 'Coelho'),
+];

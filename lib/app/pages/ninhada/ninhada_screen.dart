@@ -9,10 +9,6 @@ import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
 //TODO: Quando for cadastrar ninhada, usar o dropdown das ultimas aulas do curso
 //aula 225
 
-//TODO: Colocar indicador avisando o status do anuncio
-//Aprovado, Negado, Aguardando
-
-
 class NinhadasScreen extends StatefulWidget {
   @override
   _NinhadasScreenState createState() => _NinhadasScreenState();
@@ -21,6 +17,17 @@ class NinhadasScreen extends StatefulWidget {
 class _NinhadasScreenState extends State<NinhadasScreen> {
   final _bloc = NinhadaBloc();
 
+  @override
+  void dispose() {
+    super.dispose();
+    _bloc.list.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _bloc.subscribe();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +38,10 @@ class _NinhadasScreenState extends State<NinhadasScreen> {
     );
 
     var appBar = ScaffoldCommonComponents.customAppBarWithDrawerAndAction(
-        'Ninhada', Icons.add, () => pushNamed(context, Routes.CadastrarNinhada),);
+      'Ninhada',
+      Icons.add,
+      () => pushNamed(context, Routes.CadastrarNinhada),
+    );
 
     var drawer = CustomDrawer();
 
@@ -41,8 +51,9 @@ class _NinhadasScreenState extends State<NinhadasScreen> {
       child: StreamBuilder<List<NinhadaModel>>(
         stream: _bloc.list.stream,
         builder: (context, snapshot) {
+          print(snapshot);
           switch (snapshot.connectionState) {
-            case ConnectionState.done:
+            case ConnectionState.active:
               var ninhadas = snapshot.data!;
               if (ninhadas.isEmpty)
                 return Center(
@@ -53,14 +64,14 @@ class _NinhadasScreenState extends State<NinhadasScreen> {
                 itemBuilder: (context, index) {
                   var ninhada = ninhadas[index];
                   return ListTile(
-                    subtitle: Text('Status: Aguardando aprovação'),
+                    subtitle: Text(ninhada.categoria.especie),
                     trailing: Wrap(
                       spacing: 12, // space between two icons
                       children: [
                         IconButton(
                           icon: Icon(Icons.remove_red_eye),
                           onPressed: () {
-                           //TODO: Implement ninhada view
+                            //TODO: Implement ninhada view
                           },
                         ), // icon-1
                         IconButton(
@@ -76,7 +87,7 @@ class _NinhadasScreenState extends State<NinhadasScreen> {
                       ninhada.titulo,
                     ),
                     leading: Text(
-                      ninhada.categoria.especie,
+                      'ATIVO'
                     ),
                   );
                 },

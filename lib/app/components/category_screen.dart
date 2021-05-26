@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 
 import '../../constants.dart';
@@ -17,10 +16,12 @@ class CategoryScreen extends StatelessWidget {
   final List<CategoriasEspecies> valores;
   final String title;
   final Function(String, String) settaValores;
+  final String route;
 
   CategoryScreen({
     required this.title,
     required this.settaValores,
+    required this.route,
     this.valores = const [],
   });
 
@@ -64,11 +65,12 @@ class CategoryScreen extends StatelessWidget {
                     settaValores: settaValores,
                     title: val.text,
                     valores: val.list,
+                    route: route,
                   ),
                 );
               else {
                 settaValores(title, val.text);
-                popUntil(context, Routes.CadastrarReprodutor);
+                popUntil(context, route);
                 //TODO: Posso passar as parada por aq tb
               }
             },

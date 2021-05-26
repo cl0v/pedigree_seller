@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:pedigree_seller/pedigree.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-//TODO: ADICIONAR REFERENCE EM TODOS E REFAZER A _FIRESTORE PORRA
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(Pedigree());
+}
 
 
 /*//TODO: O que fazer antes de ir para o servidor ou outro app
@@ -74,10 +78,3 @@ Map<String, dynamic> vendedor = {
   //TODO: Futuramente pedir cadastro de cnpj etc(Depois de entregar o basico do app, pois nao sei como fazer e n vou aprender)
 };
 
-
-
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(Pedigree());
-}

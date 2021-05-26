@@ -11,7 +11,7 @@ class ReprodutoresBloc {
     var canil = await CanilModel.get();
     if (canil != null)
       reprodutores
-          .subscribe(ReprodutoresFirestore.getStream(canil.referenceId));
+          .subscribe(ReprodutoresFirestore.stream(canil.referenceId));
     else {
       print('Canil nao registrado, algo deu errado!');
     }
