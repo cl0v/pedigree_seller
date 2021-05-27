@@ -8,18 +8,18 @@ import 'package:image_picker/image_picker.dart';
 class ImagePickerTileWidget extends StatelessWidget {
   final String title;
   final File? file;
-  // final Function(File) fileSetter;
+  final ValueChanged<File?>? onChanged;
   const ImagePickerTileWidget({
     Key? key,
     required this.title,
     this.file,
-    // required this.fileSetter,
+    this.onChanged,
   }) : super(key: key);
 
-  Future<File?> getImage() async {
+  _getImage() async {
     final picker = ImagePicker();
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
-    if (pickedFile != null) return File(pickedFile.path);
+    if (pickedFile != null) return onChanged?.call(File(pickedFile.path));
   }
 
   @override
@@ -31,10 +31,7 @@ class ImagePickerTileWidget extends StatelessWidget {
       ),
       trailing:
           file != null ? Image.file(file!) : Text('Toque para enviar foto'),
-      onTap: () async {
-        // var img = await getImage();
-        // if (img != null) fileSetter(img);
-      },
+      onTap: _getImage,
     );
   }
 }

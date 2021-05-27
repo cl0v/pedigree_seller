@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pedigree_seller/app/components/custom_drawer_widget.dart';
 import 'package:pedigree_seller/app/pages/authentication/user_model.dart';
 import 'package:pedigree_seller/app/pages/canil/canil_model.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
@@ -42,8 +41,34 @@ class _PerfilScreenState extends State<PerfilScreen> {
                   user.nome,
                 ),
               ),
+              Divider(),
+              
               ListTile(
+                title: Text('Email:'),
+                subtitle: Text(
+                  user.email,
+                ),
+              ),
+              Divider(),
+              ListTile(
+                
+                title: Text('Contato:'),
+                subtitle: Text(
+                  user.contato,
+                ),
+              ),
+              Divider(),
+              ListTile(
+                title: Text('CPF:'),
+                subtitle: Text(
+                  '${user.cpf.substring(0, 3)}********',
+                ),
+              ),
+              Divider(),
+              ListTile(
+                leading: Icon(Icons.store),
                 title: Text('Dados da loja:'),
+                trailing: Icon(Icons.arrow_forward_ios),
                 subtitle: Text(
                   'Acessar loja',
                 ),
@@ -51,28 +76,12 @@ class _PerfilScreenState extends State<PerfilScreen> {
                   pushNamed(context, Routes.Canil);
                 },
               ),
-              ListTile(
-                title: Text('Email:'),
-                subtitle: Text(
-                  user.email,
-                ),
-              ),
-              ListTile(
-                title: Text('Contato:'),
-                subtitle: Text(
-                  user.contato,
-                ),
-              ),
-              ListTile(
-                title: Text('CPF:'),
-                subtitle: Text(
-                  '${user.cpf.substring(0, 3)}********',
-                ),
-              ),
+              Divider(),
               ListTile(
                 title: Text('Sair'),
                 subtitle: Text("Sair da minha conta"),
-                trailing: Icon(Icons.exit_to_app),
+                leading: Icon(Icons.exit_to_app),
+                trailing: Icon(Icons.arrow_forward_ios),
                 onTap: () {
                   UserModel.clear();
                   CanilModel.clear();

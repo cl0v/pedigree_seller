@@ -1,9 +1,10 @@
 //TODO: Recriar a pagina para deixar bem claro como vai ficar na hora de adicionar(Quadrado grandao pra enviar foto, setinha pra botar nome, etc)
 //TODO: Permitir que a página que cria é a mesma que edita
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/components/category_screen.dart';
-import 'package:pedigree_seller/app/components/custom_button_widget.dart';
 import 'package:pedigree_seller/app/components/form_error_text.dart';
 import 'package:pedigree_seller/app/components/image_picker_tile_widget.dart';
 import 'package:pedigree_seller/app/pages/reprodutores/reprodutor_model.dart';
@@ -75,7 +76,7 @@ class _CadastrarReprodutoresScreenState
       especie: _tEspecie,
     );
 
-    var response = await _bloc.register(nome, categoria, isMacho);
+    var response = await _bloc.register(nome, categoria, isMacho, pedigreeFile!);
 
     if (response)
       pop(context);
@@ -90,10 +91,16 @@ class _CadastrarReprodutoresScreenState
     });
   }
 
+  File? pedigreeFile;
+
+  _onPedigreeChanged(File? file) {
+    pedigreeFile = file;
+    print('tudo bugado');
+    // print(file?.isAbsolute);
+  }
+
   @override
   Widget build(BuildContext context) {
-
-    
     var appBar = ScaffoldCommonComponents.customAppBar(
       'Registrar',
       () => pop(context),
@@ -162,7 +169,7 @@ class _CadastrarReprodutoresScreenState
           ),
           ImagePickerTileWidget(
             title: 'Certificado de Pedigree',
-            // fileSetter: fileSetter,
+            onChanged: _onPedigreeChanged,
           )
         ],
       ),
@@ -178,13 +185,6 @@ class _CadastrarReprodutoresScreenState
           snapshot.data ?? false,
         );
       },
-    );
-
-    var bottomNavigationBar = ScaffoldCommonComponents.customBottomAppBar(
-      'Cadastrar',
-      _onSavePressed,
-      context,
-      true
     );
 
     return Scaffold(

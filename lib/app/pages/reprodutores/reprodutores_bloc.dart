@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:pedigree_seller/app/pages/canil/canil_model.dart';
 import 'package:pedigree_seller/app/pages/reprodutores/reprodutor_model.dart';
 import 'package:pedigree_seller/app/pages/reprodutores/reprodutores_firestore.dart';
@@ -17,7 +19,7 @@ class ReprodutoresBloc {
     }
   }
 
-  Future<bool> register(nome, categoria, isMacho) async {
+  Future<bool> register(nome, categoria, isMacho, File file) async {
     registerBtn.add(true);
 
     var canil = await CanilModel.get();
@@ -28,7 +30,7 @@ class ReprodutoresBloc {
         isMacho: isMacho,
       );
       var response = await ReprodutoresFirestore.register(
-          reprodutorModel, canil.referenceId);
+          reprodutorModel, canil.referenceId, file);
 
       registerBtn.add(false);
       return response;

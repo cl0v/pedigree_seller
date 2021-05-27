@@ -1,13 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:pedigree_seller/app/components/custom_drawer_widget.dart';
+import 'package:pedigree_seller/app/commons/commons.dart';
 import 'package:pedigree_seller/app/pages/canil/canil_bloc.dart';
 import 'package:pedigree_seller/app/pages/canil/canil_model.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
 import 'package:pedigree_seller/constants.dart';
-import 'package:pedigree_seller/app/utils/screen_size.dart';
 /*
  - Essa página será a dashboard
  - Aqui dentro aparecerá a parte de adicionar reprodutores, pets etc...
@@ -35,7 +34,6 @@ class _CanilScreenState extends State<CanilScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = getSize(context);
 
     var appBar = ScaffoldCommonComponents.customAppBarWithoutIcons('Canil');
 
@@ -59,26 +57,19 @@ class _CanilScreenState extends State<CanilScreen> {
       ),
     );
 
-    var error = Center(child: Text('Ocorreu um erro'));
-
-    var loading = Center(
-      child: CircularProgressIndicator(),
+    final msg = Center(
+      child: Text(
+          'Funcionalidade ainda não está pronta, aguarde mais um pouco...'),
     );
 
-    var body = StreamBuilder<CanilModel?>(
+    final body = StreamBuilder<CanilModel?>(
         stream: _bloc.canil.stream,
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.active:
               var canil = snapshot.data;
               if (canil != null) {
-                return Container(
-                  height: size.height,
-                  width: size.width,
-                  child: Center(
-                    child: Text(canil.titulo),
-                  ),
-                );
+                return msg;
               }
               return noData;
             case ConnectionState.waiting:
@@ -88,15 +79,9 @@ class _CanilScreenState extends State<CanilScreen> {
               if (canil == null)
                 return noData;
               else
-                return Container(
-                  height: size.height,
-                  width: size.width,
-                  child: Center(
-                    child: Text(canil.titulo),
-                  ),
-                );
+                return msg;
             default:
-              return error;
+              return loadingError;
           }
         });
 

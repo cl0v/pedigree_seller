@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pedigree_seller/app/pages/home/canil_profile_screen.dart';
 import 'package:pedigree_seller/app/pages/perfil/perfil_screen.dart';
 import 'package:pedigree_seller/app/pages/store/store_screen.dart';
 
@@ -11,7 +10,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int pageIndex = 0;
+  int pageIndex = 1;
   List<Widget> pages = [
     CanilScreen(),
     StoreScreen(),
@@ -21,7 +20,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: pages[pageIndex],
+      body: IndexedStack(children: pages, index: pageIndex,),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: pageIndex,
         onTap: (i) {
@@ -29,8 +28,9 @@ class _MainScreenState extends State<MainScreen> {
             pageIndex = i;
           });
         },
+        
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.dashboard), label: 'Dashboard'),
           BottomNavigationBarItem(icon: Icon(Icons.store), label: 'Loja'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
         ],

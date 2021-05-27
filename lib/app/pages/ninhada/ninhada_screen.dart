@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/pages/ninhada/ninhada_bloc.dart';
 import 'package:pedigree_seller/app/pages/ninhada/ninhada_model.dart';
-import 'package:pedigree_seller/app/routes/routes.dart';
-import 'package:pedigree_seller/app/utils/nav.dart';
-import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
 import 'package:pedigree_seller/app/utils/screen_size.dart';
 
 class NinhadasScreen extends StatefulWidget {
@@ -11,8 +8,12 @@ class NinhadasScreen extends StatefulWidget {
   _NinhadasScreenState createState() => _NinhadasScreenState();
 }
 
-class _NinhadasScreenState extends State<NinhadasScreen> {
+class _NinhadasScreenState extends State<NinhadasScreen>
+    with AutomaticKeepAliveClientMixin<NinhadasScreen> {
   final _bloc = NinhadaBloc();
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void dispose() {
@@ -24,12 +25,16 @@ class _NinhadasScreenState extends State<NinhadasScreen> {
   void initState() {
     super.initState();
     _bloc.subscribe();
+    //TODO: Ta dando algum bug quando entra na página, ai nao ta carregando
   }
 
   ListTile ninhadaTile(NinhadaModel ninhada) {
     return ListTile(
       subtitle: Text(ninhada.categoria.especie),
-
+      title: Text(
+        ninhada.titulo,
+      ),
+      leading: Text('ATIVO'),
       // trailing: Wrap(
       //   spacing: 12,
       //   children: [
@@ -48,24 +53,14 @@ class _NinhadasScreenState extends State<NinhadasScreen> {
 
       //   ],
       // ),
-      title: Text(
-        ninhada.titulo,
-      ),
-      leading: Text('ATIVO'),
     );
   }
 
   //TODO: Quando o canil nao está cadastrado fica no loading eterno
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     Size size = getSize(context);
-
-    var appBar = ScaffoldCommonComponents.customAppBarWithBackAndAction(
-      'Ninhada',
-      () => pop(context),
-      Icons.add,
-      () => pushNamed(context, Routes.CadastrarNinhada),
-    );
 
     final noData = Center(
       child: Text('Nenhuma ninhada cadastrada'),
@@ -109,7 +104,7 @@ class _NinhadasScreenState extends State<NinhadasScreen> {
     );
 
     return Scaffold(
-      appBar: appBar,
+      // appBar: appBar,
       body: body,
     );
   }

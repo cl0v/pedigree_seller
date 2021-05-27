@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:pedigree_seller/app/components/custom_drawer_widget.dart';
+import 'package:pedigree_seller/app/commons/commons.dart';
 import 'package:pedigree_seller/app/pages/reprodutores/reprodutor_model.dart';
 import 'package:pedigree_seller/app/pages/reprodutores/reprodutores_bloc.dart';
-import 'package:pedigree_seller/app/routes/routes.dart';
-import 'package:pedigree_seller/app/utils/nav.dart';
-import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
 
 class ReprodutoresScreen extends StatefulWidget {
   @override
   _ReprodutoresScreenState createState() => _ReprodutoresScreenState();
 }
 
-class _ReprodutoresScreenState extends State<ReprodutoresScreen> {
+class _ReprodutoresScreenState extends State<ReprodutoresScreen>
+    with AutomaticKeepAliveClientMixin<ReprodutoresScreen> {
   final _bloc = ReprodutoresBloc();
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -26,61 +27,51 @@ class _ReprodutoresScreenState extends State<ReprodutoresScreen> {
     _bloc.reprodutores.dispose();
   }
 
+  _buildPetTile(ReprodutorModel pet) => ListTile(
+        // leading: Icon(Icons.mars),
+        trailing: IconButton(
+          icon: Icon(Icons.adaptive.more),
+          onPressed: () {
+            //TODO: OnTap para editar
+            //Mostrar um popupmenubutton com as opçoes de editar, deletar, (Add arquivar), etc;
+          },
+        ),
+        subtitle: Text(pet.categoria.especie),
+        title: Text(pet.nome),
+      );
+
   @override
   Widget build(BuildContext context) {
-    var appBar = ScaffoldCommonComponents.customAppBarWithBackAndAction(
-      'Reprodutores',
-      () => pop(context),
-      Icons.add,
-      ()=> pushNamed(context, Routes.CadastrarReprodutor)
-    );
-
-    var drawer = CustomDrawer();
+    super.build(context);
 
     var body = StreamBuilder<List<ReprodutorModel>>(
         stream: _bloc.reprodutores.stream,
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.active:
-              var petList = snapshot.data!;
-              if (petList.isEmpty)
-                return Center(
-                  child: Text(
-                      "Nenhum cadastrado ainda. Toque no '+' para cadastrar"),
-                );
-              else
-                return ListView.builder(
-                  itemCount: petList.length,
-                  itemBuilder: (context, index) {
-                    var pet = petList[index];
-                    return ListTile(
-                      // leading: Icon(Icons.mars),
-                      trailing: IconButton(
-                        icon: Icon(Icons.adaptive.more),
-                        onPressed: () {
-                          //TODO: OnTap para editar
-                          //Mostrar um popupmenubutton com as opçoes de editar, deletar, (Add arquivar), etc;
-                        },
-                      ),
-                      subtitle: Text(pet.categoria.especie),
-                      title: Text(pet.nome),
-                    );
-                  },
-                );
+              var petList = snapshot.data;
+              if (petList != null) {
+                if (petList.isEmpty)
+                  return noData;
+                else
+                  return ListView.builder(
+                    itemCount: petList.length,
+                    itemBuilder: (context, index) {
+                      var pet = petList[index];
+                      return _buildPetTile(pet);
+                    },
+                  );
+              }
+              return loadingError;
             case ConnectionState.waiting:
-              return Center(
-                child: CircularProgressIndicator(),
-              );
+              return loading;
             default:
-              return Center(
-                child: Text('Ocorreu um erro, tente novamente mais tarde'),
-              );
+              return loadingError;
           }
         });
 
     return Scaffold(
-      appBar: appBar,
-      drawer: drawer,
+      // appBar: appBar,
       body: body,
     );
   }
