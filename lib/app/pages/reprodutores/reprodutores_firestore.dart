@@ -1,7 +1,10 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
+import 'package:path/path.dart' as p;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:pedigree_seller/app/components/image_picker_tile_widget.dart';
 import 'package:pedigree_seller/app/pages/reprodutores/reprodutor_model.dart';
 
 class ReprodutoresFirestore {
@@ -18,7 +21,7 @@ class ReprodutoresFirestore {
   static Future<bool> register({
     required Reprodutor reprodutor,
     required String canilReferenceId,
-    required File pedigreeFile,
+    required Foto pedigreeFile,
   }) async {
     try {
       final docRef = await collection
@@ -26,40 +29,30 @@ class ReprodutoresFirestore {
           .collection('reprodutores')
           .add(reprodutor.toMap());
 
-//TDOO:Criar o path dentro do storage, depois que existir, tentar salvar, se nao vai continuar bugando
-      List<String> allowedExtensions = ['.jpg', '.jpeg', '.png'];
-      var suffix = '.jpg';
-      allowedExtensions.any((ext) {
-        if (pedigreeFile.path.endsWith(ext)) suffix = ext;
-        return pedigreeFile.path.endsWith(ext);
-      });
+      var suffix = p.extension(pedigreeFile.nome);
+
+      SettableMetadata metadata = SettableMetadata(contentType: 'image/jpeg');
 
       String path =
+          // 'canil/$canilReferenceId/reprodutores/${docRef.id}/pedigree_certificate';
           'canil/$canilReferenceId/reprodutores/${docRef.id}/pedigree_certificate$suffix';
       var ref = FirebaseStorage.instance.ref(path);
-      ref.putFile(pedigreeFile).whenComplete(() async => await docRef.update({'certificado': await ref.getDownloadURL()}));
-      //     .child('canil/$canilReferenceId/reprodutores/${docRef.id}');
 
-      // var ref = FirebaseStorage.instance.ref(path).child(path).putFile(pedigreeFile);
-      // print('MEtadata $ref');
-      // await ref.putFile(pedigreeFile);
-
-      //Testar se ele é o donwload url
+      //https://pub.dev/packages/file_picker
+      if (kIsWeb) {
+        await ref.putData(pedigreeFile.fileUnit!, metadata).whenComplete(
+            () async => await docRef
+                .update({'certificado': await ref.getDownloadURL()}));
+      } else {
+        await ref.putFile(File(pedigreeFile.path!), metadata).whenComplete(
+            () async => await docRef
+                .update({'certificado': await ref.getDownloadURL()}));
+      }
 
       return true;
     } catch (e, ex) {
       print(ex);
       return false;
-    }
-  }
-
-  static Future<String?> _fileUpload(File file, String path) async {
-    //TODO: Corrigir error que faz retornar nulo
-    try {
-      FirebaseStorage.instance.ref(path).putFile(file);
-      return path;
-    } on FirebaseException catch (e, ex) {
-      print('Expection : $ex');
     }
   }
 }

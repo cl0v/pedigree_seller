@@ -1,6 +1,6 @@
 //TODO: Minha tarefa de hoje é enviar a foto do bixo e do certificado para o servidor
-
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/components/category_screen.dart';
@@ -86,18 +86,18 @@ class _CadastrarReprodutoresScreenState
     });
   }
 
-  late File? pedigreeFile;
+  late Foto? pedigreeFile;
 //TODO: Validar pedigree
 
-  _onPedigreeChanged(File file) {
-    pedigreeFile = file;
+  _onPedigreeChanged(Foto foto) {
+    pedigreeFile = foto;
     // print(file?.isAbsolute);
   }
-  _onFotoChanged(File file) {
-    pedigreeFile = file;
-    print('tudo bugado');
-    // print(file?.isAbsolute);
-  }
+  // _onFotoChanged(File file) {
+  //   pedigreeFile = file;
+  //   print('tudo bugado');
+  //   // print(file?.isAbsolute);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -122,11 +122,11 @@ class _CadastrarReprodutoresScreenState
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: ListView(
         children: [
-          ImagePickerTileWidget(
-            title: 'Foto',
-            onChanged: _onFotoChanged,
-            // fileSetter: fileSetter,
-          ),
+          // ImagePickerTileWidget(
+          //   title: 'Foto',
+          //   onChanged: _onFotoChanged,
+          //   // fileSetter: fileSetter,
+          // ),
           TextFormField(
             controller: _tNome,
             decoration: InputDecoration(

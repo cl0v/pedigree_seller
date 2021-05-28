@@ -1,9 +1,9 @@
-import 'dart:io';
-
+import 'package:pedigree_seller/app/components/image_picker_tile_widget.dart';
 import 'package:pedigree_seller/app/pages/canil/canil_model.dart';
 import 'package:pedigree_seller/app/pages/reprodutores/reprodutor_model.dart';
 import 'package:pedigree_seller/app/pages/reprodutores/reprodutores_firestore.dart';
 import 'package:pedigree_seller/app/utils/simple_bloc.dart';
+
 
 class ReprodutoresBloc {
   final reprodutores = SimpleBloc<List<Reprodutor>>();
@@ -22,7 +22,7 @@ class ReprodutoresBloc {
     }
   }
 
-  Future<bool> register(nome, categoria, isMacho, File file) async {
+  Future<bool> register(nome, categoria, isMacho, Foto file) async {
     try {
       registerBtn.add(true);
       var canil = await CanilModel.get();
@@ -33,9 +33,10 @@ class ReprodutoresBloc {
           isMacho: isMacho,
         );
         var response = await ReprodutoresFirestore.register(
-            reprodutor: reprodutorModel,
-            canilReferenceId: canil.referenceId,
-            pedigreeFile: file);
+          reprodutor: reprodutorModel,
+          canilReferenceId: canil.referenceId,
+          pedigreeFile: file,
+        );
 
         registerBtn.add(false);
         return response;

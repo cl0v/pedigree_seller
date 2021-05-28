@@ -1,13 +1,28 @@
+import 'dart:typed_data';
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 //TODO: Implementar o imagePicker onde precisa enviar fotos
 
+class Foto {
+  String nome;
+  Uint8List? fileUnit;
+  String? path;
+
+  Foto({
+    required this.nome,
+    this.fileUnit,
+    this.path,
+  });
+}
+
 class ImagePickerTileWidget extends StatefulWidget {
   final String title;
-  final ValueChanged<File> onChanged;
+  final Function(Foto) onChanged;
   const ImagePickerTileWidget({
     Key? key,
     required this.title,
@@ -20,15 +35,34 @@ class ImagePickerTileWidget extends StatefulWidget {
 
 class _ImagePickerTileWidgetState extends State<ImagePickerTileWidget> {
   bool _picked = false;
+  //TODO: Testar com o android
 
   _getImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      setState(() {
-        _picked = true;
-        return widget.onChanged.call(File(pickedFile.path));
-      });
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.image,
+      );
+      if (result != null) {
+        // var fileName = result.files.single.name;
+        // Uint8List? fileBytes = result.files.first.bytes;
+        // print(result);
+        // print(result.files);
+        // print(result.files.first);
+        // print(result.files.first.path);
+
+        Foto foto = Foto(
+            nome: result.files.single.name,
+            fileUnit: result.files.first.bytes,
+            path: result.files.first.path);
+
+        setState(() {
+          widget.onChanged.call(foto);
+          _picked = true;
+        });
+      } else
+        print('result ta nulo');
+    } catch (e) {
+      print('Ocorreu um error');
     }
   }
 
