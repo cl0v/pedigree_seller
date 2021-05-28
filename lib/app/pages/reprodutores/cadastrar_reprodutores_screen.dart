@@ -1,5 +1,4 @@
-//TODO: Recriar a pagina para deixar bem claro como vai ficar na hora de adicionar(Quadrado grandao pra enviar foto, setinha pra botar nome, etc)
-//TODO: Permitir que a página que cria é a mesma que edita
+//TODO: Minha tarefa de hoje é enviar a foto do bixo e do certificado para o servidor
 
 import 'dart:io';
 
@@ -14,11 +13,6 @@ import 'package:pedigree_seller/app/utils/alert.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
 
-///Página de triagem, para facilitar o preenchimento dos dados mais comuns(Especie, titulo e categoria, macho femea etc))
-///Cadastrar os animais reprodutores (Pai e Mae)
-///Para agilizar o cadastro da ninhada
-///
-
 class CadastrarReprodutoresScreen extends StatefulWidget {
   @override
   _CadastrarReprodutoresScreenState createState() =>
@@ -27,21 +21,20 @@ class CadastrarReprodutoresScreen extends StatefulWidget {
 
 class _CadastrarReprodutoresScreenState
     extends State<CadastrarReprodutoresScreen> {
+  final _bloc = ReprodutoresBloc();
   @override
   void dispose() {
     super.dispose();
     _bloc.registerBtn.dispose();
   }
 
-  final _bloc = ReprodutoresBloc();
-
   bool _showError = false;
 
   bool _isMacho = true;
 
   final _tNome = TextEditingController(text: 'Reprodutor');
+
   String? _validateNome() {
-    //TODO: Implement
     var text = _tNome.text;
     if (text.isEmpty) {
       return "Digite um nome";
@@ -53,6 +46,7 @@ class _CadastrarReprodutoresScreenState
   String _tEspecie = 'Selecione a categoria';
 
   String? _validateCategory() {
+    //TODO: Corrigir o possivel bug da categoria, quando a especie nao existir(Ex: Outros)
     var c = _tCategoria;
     var e = _tEspecie;
     if (c.isEmpty || e == 'Selecione a categoria' || e.isEmpty) {
@@ -61,7 +55,7 @@ class _CadastrarReprodutoresScreenState
     return null;
   }
 
-  _onSavePressed() async {
+  _onSave() async {
     if (!(_validateNome() == null && _validateCategory() == null)) {
       setState(() {
         _showError = true;
@@ -71,12 +65,13 @@ class _CadastrarReprodutoresScreenState
 
     String nome = _tNome.text;
     bool isMacho = _isMacho;
-    EspecificacoesAnimalModel categoria = EspecificacoesAnimalModel(
+    CategoriaAnimal categoria = CategoriaAnimal(
       categoria: _tCategoria,
       especie: _tEspecie,
     );
 
-    var response = await _bloc.register(nome, categoria, isMacho, pedigreeFile!);
+    var response =
+        await _bloc.register(nome, categoria, isMacho, pedigreeFile!);
 
     if (response)
       pop(context);
@@ -91,9 +86,14 @@ class _CadastrarReprodutoresScreenState
     });
   }
 
-  File? pedigreeFile;
+  late File? pedigreeFile;
+//TODO: Validar pedigree
 
-  _onPedigreeChanged(File? file) {
+  _onPedigreeChanged(File file) {
+    pedigreeFile = file;
+    // print(file?.isAbsolute);
+  }
+  _onFotoChanged(File file) {
     pedigreeFile = file;
     print('tudo bugado');
     // print(file?.isAbsolute);
@@ -105,12 +105,26 @@ class _CadastrarReprodutoresScreenState
       'Registrar',
       () => pop(context),
     );
+
+    var bottomNavBar = StreamBuilder(
+      stream: _bloc.registerBtn.stream,
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        return ScaffoldCommonComponents.customBottomAppBar(
+          'Register',
+          _onSave,
+          context,
+          snapshot.data ?? false,
+        );
+      },
+    );
+
     var body = Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: ListView(
         children: [
           ImagePickerTileWidget(
             title: 'Foto',
+            onChanged: _onFotoChanged,
             // fileSetter: fileSetter,
           ),
           TextFormField(
@@ -136,10 +150,11 @@ class _CadastrarReprodutoresScreenState
               push(
                 context,
                 CategorySelectorScreen(
-                    title: 'Categorias',
-                    settaValores: _setCategory,
-                    valores: listaDeValores,
-                    route: Routes.CadastrarReprodutor),
+                  title: 'Categorias',
+                  settaValores: _setCategory,
+                  valores: listaDeValores,
+                  route: Routes.CadastrarReprodutor,
+                ),
               );
             },
           ),
@@ -173,18 +188,6 @@ class _CadastrarReprodutoresScreenState
           )
         ],
       ),
-    );
-
-    var bottomNavBar = StreamBuilder(
-      stream: _bloc.registerBtn.stream,
-      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        return ScaffoldCommonComponents.customBottomAppBar(
-          'Register',
-          _onSavePressed,
-          context,
-          snapshot.data ?? false,
-        );
-      },
     );
 
     return Scaffold(

@@ -27,7 +27,7 @@ class _ReprodutoresScreenState extends State<ReprodutoresScreen>
     _bloc.reprodutores.dispose();
   }
 
-  _buildPetTile(ReprodutorModel pet) => ListTile(
+  _buildPetTile(Reprodutor pet) => ListTile(
         // leading: Icon(Icons.mars),
         trailing: IconButton(
           icon: Icon(Icons.adaptive.more),
@@ -44,7 +44,7 @@ class _ReprodutoresScreenState extends State<ReprodutoresScreen>
   Widget build(BuildContext context) {
     super.build(context);
 
-    var body = StreamBuilder<List<ReprodutorModel>>(
+    var body = StreamBuilder<List<Reprodutor>>(
         stream: _bloc.reprodutores.stream,
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {

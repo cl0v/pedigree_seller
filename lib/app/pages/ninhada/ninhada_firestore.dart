@@ -19,7 +19,7 @@ class NinhadaFirestore {
 
   //TODO: Estudar o collection.withConverter
   static Stream<List<PaiMaeItem>> fetchReprodutores(
-          EspecificacoesAnimalModel categoria, bool macho,
+          CategoriaAnimal categoria, bool macho,
           {required String canilReferenceId}) =>
       FirebaseFirestore.instance
           .collection('canil')
@@ -33,7 +33,7 @@ class NinhadaFirestore {
                 .map(
                   (e) => PaiMaeItem(
                     nome: e.data()['nome'],
-                    specs: EspecificacoesAnimalModel.fromMap(
+                    specs: CategoriaAnimal.fromMap(
                         e.data()['categoria']),
                     referenceId: e.reference.id,
                   ),

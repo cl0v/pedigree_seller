@@ -5,32 +5,42 @@ import 'package:image_picker/image_picker.dart';
 
 //TODO: Implementar o imagePicker onde precisa enviar fotos
 
-class ImagePickerTileWidget extends StatelessWidget {
+class ImagePickerTileWidget extends StatefulWidget {
   final String title;
-  final File? file;
-  final ValueChanged<File?>? onChanged;
+  final ValueChanged<File> onChanged;
   const ImagePickerTileWidget({
     Key? key,
     required this.title,
-    this.file,
-    this.onChanged,
+    required this.onChanged,
   }) : super(key: key);
+
+  @override
+  _ImagePickerTileWidgetState createState() => _ImagePickerTileWidgetState();
+}
+
+class _ImagePickerTileWidgetState extends State<ImagePickerTileWidget> {
+  bool _picked = false;
 
   _getImage() async {
     final picker = ImagePicker();
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
-    if (pickedFile != null) return onChanged?.call(File(pickedFile.path));
+    if (pickedFile != null) {
+      setState(() {
+        _picked = true;
+        return widget.onChanged.call(File(pickedFile.path));
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(title),
+      title: Text(widget.title),
       leading: Icon(
         Icons.upload_rounded,
       ),
       trailing:
-          file != null ? Image.file(file!) : Text('Toque para enviar foto'),
+          _picked ? Text('Foto escolhida') : Text('Toque para enviar foto'),
       onTap: _getImage,
     );
   }

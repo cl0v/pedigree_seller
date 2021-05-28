@@ -19,7 +19,7 @@ class NinhadaBloc {
   final paiList = SimpleBloc<List<PaiMaeItem>>();
   final maeList = SimpleBloc<List<PaiMaeItem>>();
 
-  fetchReprodutores(EspecificacoesAnimalModel categoria) async {
+  fetchReprodutores(CategoriaAnimal categoria) async {
     var canil = await CanilModel.get();
     if (canil != null) {
       paiList.subscribe(NinhadaFirestore.fetchReprodutores(

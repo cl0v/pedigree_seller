@@ -1,16 +1,14 @@
 import 'dart:convert';
-
 import 'package:pedigree_seller/app/components/category_screen.dart';
-//TODO: Deverá extender um DropDownMenuItem(aula 255* de dropdown button)
-//Lembrando q o unico objetivo desse cara é ser um facilitador para cadastrar a ninhada 
-class ReprodutorModel {
+
+class Reprodutor {
   String file;
   String certificado;
   String nome;
   bool isMacho;
-  EspecificacoesAnimalModel categoria;
+  CategoriaAnimal categoria;
 
-  ReprodutorModel({
+  Reprodutor({
     this.file = 'FileUrl',
     this.certificado = 'FileUrl',
     required this.nome,
@@ -28,26 +26,26 @@ class ReprodutorModel {
     };
   }
 
-  factory ReprodutorModel.fromMap(Map<String, dynamic> map) {
-    return ReprodutorModel(
+  factory Reprodutor.fromMap(Map<String, dynamic> map) {
+    return Reprodutor(
       file: map['file'],
       certificado: map['certificado'],
       nome: map['nome'],
       isMacho: map['isMacho'],
-      categoria: EspecificacoesAnimalModel.fromMap(map['categoria']),
+      categoria: CategoriaAnimal.fromMap(map['categoria']),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory ReprodutorModel.fromJson(String source) => ReprodutorModel.fromMap(json.decode(source));
+  factory Reprodutor.fromJson(String source) => Reprodutor.fromMap(json.decode(source));
 
 }
 
-class EspecificacoesAnimalModel {
+class CategoriaAnimal {
   String categoria;
   String especie;
-  EspecificacoesAnimalModel({
+  CategoriaAnimal({
     required this.categoria,
     required this.especie,
   });
@@ -59,8 +57,8 @@ class EspecificacoesAnimalModel {
     };
   }
 
-  factory EspecificacoesAnimalModel.fromMap(Map<String, dynamic> map) {
-    return EspecificacoesAnimalModel(
+  factory CategoriaAnimal.fromMap(Map<String, dynamic> map) {
+    return CategoriaAnimal(
       categoria: map['categoria'],
       especie: map['especie'],
     );
@@ -68,7 +66,7 @@ class EspecificacoesAnimalModel {
 
   String toJson() => json.encode(toMap());
 
-  factory EspecificacoesAnimalModel.fromJson(String source) => EspecificacoesAnimalModel.fromMap(json.decode(source));
+  factory CategoriaAnimal.fromJson(String source) => CategoriaAnimal.fromMap(json.decode(source));
 }
 
 

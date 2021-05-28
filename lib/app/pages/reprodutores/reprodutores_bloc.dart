@@ -6,36 +6,44 @@ import 'package:pedigree_seller/app/pages/reprodutores/reprodutores_firestore.da
 import 'package:pedigree_seller/app/utils/simple_bloc.dart';
 
 class ReprodutoresBloc {
-  final reprodutores = SimpleBloc<List<ReprodutorModel>>();
+  final reprodutores = SimpleBloc<List<Reprodutor>>();
   final registerBtn = SimpleBloc<bool>();
 
   sub() async {
-    var canil = await CanilModel.get();
-    if (canil != null)
-      reprodutores
-          .subscribe(ReprodutoresFirestore.stream(canil.referenceId));
-    else {
-      print('Canil nao registrado, algo deu errado!');
+    try {
+      var canil = await CanilModel.get();
+      if (canil != null)
+        reprodutores.subscribe(ReprodutoresFirestore.stream(canil.referenceId));
+      else {
+        print('Canil nao registrado, algo deu errado!');
+      }
+    } catch (e) {
+      print(e);
     }
   }
 
   Future<bool> register(nome, categoria, isMacho, File file) async {
-    registerBtn.add(true);
+    try {
+      registerBtn.add(true);
+      var canil = await CanilModel.get();
+      if (canil != null) {
+        Reprodutor reprodutorModel = Reprodutor(
+          nome: nome,
+          categoria: categoria,
+          isMacho: isMacho,
+        );
+        var response = await ReprodutoresFirestore.register(
+            reprodutor: reprodutorModel,
+            canilReferenceId: canil.referenceId,
+            pedigreeFile: file);
 
-    var canil = await CanilModel.get();
-    if (canil != null) {
-      ReprodutorModel reprodutorModel = ReprodutorModel(
-        nome: nome,
-        categoria: categoria,
-        isMacho: isMacho,
-      );
-      var response = await ReprodutoresFirestore.register(
-          reprodutorModel, canil.referenceId, file);
-
-      registerBtn.add(false);
-      return response;
+        registerBtn.add(false);
+        return response;
+      }
+      return false;
+    } catch (e) {
+      print(e);
+      return false;
     }
-    print('Nao foi possivel cadastrar');
-    return false;
   }
 }

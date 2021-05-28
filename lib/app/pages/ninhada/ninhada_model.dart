@@ -13,7 +13,7 @@ class NinhadaModel {
   //Cores disponiveis
   //Preco de cada filhote
   String titulo;
-  EspecificacoesAnimalModel categoria;
+  CategoriaAnimal categoria;
   String paiId;
   String maeId;
   String canilReferenceId;
@@ -40,7 +40,7 @@ class NinhadaModel {
   factory NinhadaModel.fromMap(Map<String, dynamic> map) {
     return NinhadaModel(
       titulo: map['titulo'],
-      categoria: EspecificacoesAnimalModel.fromMap(map['categoria']),
+      categoria: CategoriaAnimal.fromMap(map['categoria']),
       paiId: map['paiId'],
       maeId: map['maeId'],
       canilReferenceId: map['canilReferenceId'],
@@ -57,7 +57,7 @@ class NinhadaModel {
 
 class PaiMaeItem extends DropDownItem {
   String nome;
-  EspecificacoesAnimalModel? specs;
+  CategoriaAnimal? specs;
   String? referenceId;
   PaiMaeItem({
     required this.nome,
@@ -100,7 +100,7 @@ class PaiMaeItem extends DropDownItem {
   factory PaiMaeItem.fromMap(Map<String, dynamic> map) {
     return PaiMaeItem(
       nome: map['nome'],
-      specs: EspecificacoesAnimalModel.fromMap(map['specs']),
+      specs: CategoriaAnimal.fromMap(map['specs']),
     );
   }
 
@@ -111,7 +111,7 @@ class PaiMaeItem extends DropDownItem {
 
   PaiMaeItem copyWith({
     String? nome,
-    EspecificacoesAnimalModel? specs,
+    CategoriaAnimal? specs,
     String? referenceId,
   }) {
     return PaiMaeItem(

@@ -18,7 +18,7 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
 
   final _tTitulo = TextEditingController(text: 'Ninhada');
 
-  EspecificacoesAnimalModel? _categoria;
+  CategoriaAnimal? _categoria;
 
   PaiMaeItem? _tPai;
   PaiMaeItem? _tMae;
@@ -35,7 +35,7 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
 
   _setCategory(String categoria, String especie) {
     setState(() {
-      _categoria = EspecificacoesAnimalModel(
+      _categoria = CategoriaAnimal(
         categoria: categoria,
         especie: especie,
       );
