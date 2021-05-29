@@ -1,7 +1,4 @@
 //TODO: Minha tarefa de hoje é enviar a foto do bixo e do certificado para o servidor
-import 'dart:io';
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/components/category_screen.dart';
 import 'package:pedigree_seller/app/components/form_error_text.dart';
@@ -55,8 +52,21 @@ class _CadastrarReprodutoresScreenState
     return null;
   }
 
+  String? _validadePedigree() {
+    // if(pedigreeFile == null) return 'Selecione uma foto';
+    return null;
+  }
+
+  String? _validateFoto() {
+    // if(foto == null) return 'Selecione uma foto';
+    return null;
+  }
+
   _onSave() async {
-    if (!(_validateNome() == null && _validateCategory() == null)) {
+    if (!(_validateNome() == null &&
+        _validateCategory() == null &&
+        _validadePedigree() == null &&
+        _validateFoto() == null)) {
       setState(() {
         _showError = true;
       });
@@ -70,8 +80,13 @@ class _CadastrarReprodutoresScreenState
       especie: _tEspecie,
     );
 
-    var response =
-        await _bloc.register(nome, categoria, isMacho, pedigreeFile!);
+    Reprodutor reprodutorModel = Reprodutor(
+      nome: nome,
+      categoria: categoria,
+      isMacho: isMacho,
+    );
+
+    var response = await _bloc.register(foto!, reprodutorModel, pedigreeFile!);
 
     if (response)
       pop(context);
@@ -87,17 +102,17 @@ class _CadastrarReprodutoresScreenState
   }
 
   late Foto? pedigreeFile;
+  late Foto? foto;
 //TODO: Validar pedigree
 
   _onPedigreeChanged(Foto foto) {
+    //TODO: Fazer a verificação
     pedigreeFile = foto;
-    // print(file?.isAbsolute);
   }
-  // _onFotoChanged(File file) {
-  //   pedigreeFile = file;
-  //   print('tudo bugado');
-  //   // print(file?.isAbsolute);
-  // }
+
+  _onFotoChanged(Foto foto) {
+    this.foto = foto;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -122,11 +137,13 @@ class _CadastrarReprodutoresScreenState
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: ListView(
         children: [
-          // ImagePickerTileWidget(
-          //   title: 'Foto',
-          //   onChanged: _onFotoChanged,
-          //   // fileSetter: fileSetter,
-          // ),
+          ImagePickerTileWidget(
+            title: 'Foto',
+            onChanged: _onFotoChanged,
+          ),
+           _validateFoto() != null && _showError
+              ? FormErrorText(_validateFoto()!)
+              : Container(),
           TextFormField(
             controller: _tNome,
             decoration: InputDecoration(
@@ -141,7 +158,6 @@ class _CadastrarReprodutoresScreenState
           _validateNome() != null && _showError
               ? FormErrorText(_validateNome()!)
               : Container(),
-          //TODO: Tentar colocar em forma de widget reutilizavel
           ListTile(
             title: Text(_tEspecie),
             subtitle: Text('*Selecione a categoria'),
@@ -185,7 +201,10 @@ class _CadastrarReprodutoresScreenState
           ImagePickerTileWidget(
             title: 'Certificado de Pedigree',
             onChanged: _onPedigreeChanged,
-          )
+          ),
+           _validadePedigree() != null && _showError
+              ? FormErrorText(_validadePedigree()!)
+              : Container(),
         ],
       ),
     );
@@ -193,7 +212,7 @@ class _CadastrarReprodutoresScreenState
     return Scaffold(
       body: body,
       appBar: appBar,
-      bottomNavigationBar: bottomNavBar,
+      bottomNavigationBar: bottomNavBar
     );
   }
 }

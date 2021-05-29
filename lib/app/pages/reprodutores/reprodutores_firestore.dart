@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:path/path.dart' as p;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:pedigree_seller/app/components/image_picker_tile_widget.dart';
@@ -19,9 +18,10 @@ class ReprodutoresFirestore {
           snap.docs.map((s) => Reprodutor.fromMap(s.data())).toList());
 
   static Future<bool> register({
+    required Foto foto,
     required Reprodutor reprodutor,
     required String canilReferenceId,
-    required Foto pedigreeFile,
+    required Foto fotoCertificado,
   }) async {
     try {
       final docRef = await collection
@@ -29,30 +29,50 @@ class ReprodutoresFirestore {
           .collection('reprodutores')
           .add(reprodutor.toMap());
 
-      var suffix = p.extension(pedigreeFile.nome);
-
-      SettableMetadata metadata = SettableMetadata(contentType: 'image/jpeg');
-
-      String path =
-          // 'canil/$canilReferenceId/reprodutores/${docRef.id}/pedigree_certificate';
-          'canil/$canilReferenceId/reprodutores/${docRef.id}/pedigree_certificate$suffix';
-      var ref = FirebaseStorage.instance.ref(path);
-
-      //https://pub.dev/packages/file_picker
-      if (kIsWeb) {
-        await ref.putData(pedigreeFile.fileUnit!, metadata).whenComplete(
-            () async => await docRef
-                .update({'certificado': await ref.getDownloadURL()}));
-      } else {
-        await ref.putFile(File(pedigreeFile.path!), metadata).whenComplete(
-            () async => await docRef
-                .update({'certificado': await ref.getDownloadURL()}));
-      }
+      await _uploadFoto(
+        canilReferenceId,
+        docRef,
+        fotoCertificado,
+        'pedigree_certificate',
+        'certificado'
+      );
+      await _uploadFoto(
+        canilReferenceId,
+        docRef,
+        foto,
+        'file',
+        'file',
+      );
 
       return true;
     } catch (e, ex) {
       print(ex);
       return false;
     }
+  }
+
+  static _uploadFoto(
+      String canilReferenceId,
+      DocumentReference<Map<String, dynamic>> docRef,
+      Foto foto,
+      String fileName,
+      String field,) async {
+    String path =
+        'canil/$canilReferenceId/reprodutores/${docRef.id}/$fileName${foto.nome}';
+    var ref = FirebaseStorage.instance.ref(path);
+
+    //https://pub.dev/packages/file_picker
+    SettableMetadata metadata = SettableMetadata(contentType: 'image/jpeg');
+    if (kIsWeb) {
+      await ref.putData(foto.fileUnit!, metadata).whenComplete(
+          () async => await docRef
+              .update({field: await ref.getDownloadURL()}));
+    } else {
+      await ref.putFile(File(foto.path!), metadata).whenComplete(
+          () async => await docRef
+              .update({field: await ref.getDownloadURL()}));
+    }
+
+    return true;
   }
 }

@@ -4,7 +4,6 @@ import 'package:pedigree_seller/app/pages/reprodutores/reprodutor_model.dart';
 import 'package:pedigree_seller/app/pages/reprodutores/reprodutores_firestore.dart';
 import 'package:pedigree_seller/app/utils/simple_bloc.dart';
 
-
 class ReprodutoresBloc {
   final reprodutores = SimpleBloc<List<Reprodutor>>();
   final registerBtn = SimpleBloc<bool>();
@@ -22,20 +21,17 @@ class ReprodutoresBloc {
     }
   }
 
-  Future<bool> register(nome, categoria, isMacho, Foto file) async {
+  Future<bool> register(
+      Foto foto, Reprodutor reprodutor, Foto fotoPedigree) async {
     try {
       registerBtn.add(true);
       var canil = await CanilModel.get();
       if (canil != null) {
-        Reprodutor reprodutorModel = Reprodutor(
-          nome: nome,
-          categoria: categoria,
-          isMacho: isMacho,
-        );
         var response = await ReprodutoresFirestore.register(
-          reprodutor: reprodutorModel,
+          foto: foto,
+          reprodutor: reprodutor,
+          fotoCertificado: fotoPedigree,
           canilReferenceId: canil.referenceId,
-          pedigreeFile: file,
         );
 
         registerBtn.add(false);
