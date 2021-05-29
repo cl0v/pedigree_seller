@@ -8,11 +8,16 @@ class NinhadaBloc {
   final list = SimpleBloc<List<NinhadaModel>>();
 
   subscribe() async {
-    var canil = await CanilModel.get();
-    if (canil != null) {
-      list.subscribe(NinhadaFirestore.stream(canil.referenceId));
-    } else
-      print('Canil nao registrado, algo deu errado!');
+    try {
+      await CanilModel.get().then((canil) {
+        if (canil != null) {
+          list.subscribe(NinhadaFirestore.stream(canil.referenceId));
+        } else
+          print('Canil nao registrado, algo deu errado!');
+      });
+    } catch (e) {
+      print('Ocorreu um error');
+    }
   }
 
   /* Create */

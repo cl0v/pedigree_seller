@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/pages/ninhada/ninhada_bloc.dart';
 import 'package:pedigree_seller/app/pages/ninhada/ninhada_model.dart';
+import 'package:pedigree_seller/app/routes/routes.dart';
+import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/app/utils/screen_size.dart';
 
 class NinhadasScreen extends StatefulWidget {
@@ -34,7 +36,7 @@ class _NinhadasScreenState extends State<NinhadasScreen>
       title: Text(
         ninhada.titulo,
       ),
-      leading: Text('ATIVO'),
+      // leading: Text('ATIVO'),
       // trailing: Wrap(
       //   spacing: 12,
       //   children: [
@@ -104,7 +106,15 @@ class _NinhadasScreenState extends State<NinhadasScreen>
     );
 
     return Scaffold(
-      // appBar: appBar,
+      floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'FabNinhada',
+        onPressed: () {
+          pushNamed(context, Routes.CadastrarNinhada);
+        },
+        label: Text('Nova Ninhada'),
+        icon: Icon(Icons.add),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: body,
     );
   }

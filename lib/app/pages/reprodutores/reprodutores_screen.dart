@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/commons/commons.dart';
 import 'package:pedigree_seller/app/pages/reprodutores/reprodutor_model.dart';
 import 'package:pedigree_seller/app/pages/reprodutores/reprodutores_bloc.dart';
+import 'package:pedigree_seller/app/routes/routes.dart';
+import 'package:pedigree_seller/app/utils/nav.dart';
 
 class ReprodutoresScreen extends StatefulWidget {
   @override
@@ -55,6 +57,7 @@ class _ReprodutoresScreenState extends State<ReprodutoresScreen>
                   return noData;
                 else
                   return ListView.builder(
+                    padding: EdgeInsets.only(bottom: 72),
                     itemCount: petList.length,
                     itemBuilder: (context, index) {
                       var pet = petList[index];
@@ -71,7 +74,15 @@ class _ReprodutoresScreenState extends State<ReprodutoresScreen>
         });
 
     return Scaffold(
-      // appBar: appBar,
+      floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'FabReprodutor',
+        onPressed: () {
+          pushNamed(context, Routes.CadastrarReprodutor);
+        },
+        label: Text('Novo Reprodutor'),
+        icon: Icon(Icons.add),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: body,
     );
   }

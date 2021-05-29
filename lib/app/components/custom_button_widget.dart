@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class CustomButtonWidget extends StatelessWidget {
   final String text;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final bool showProgress;
 
   CustomButtonWidget(this.text,
@@ -16,7 +16,7 @@ class CustomButtonWidget extends StatelessWidget {
       width: size.width * 0.8,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        color: Colors.blue,
+        color: onPressed != null ? Colors.blue : Colors.grey,
       ),
       child: TextButton(
         child: showProgress

@@ -16,7 +16,7 @@ class CadastrarNinhadaScreen extends StatefulWidget {
 class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
   final _bloc = NinhadaBloc();
 
-  final _tTitulo = TextEditingController(text: 'Ninhada');
+  final _tTitulo = TextEditingController();
 
   CategoriaAnimal? _categoria;
 
@@ -45,6 +45,8 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
     });
   }
 
+  bool _continue = true;
+
   _onCreatePressed() async {
     //TODO: Fazer as validações
     await _bloc.create(
@@ -66,7 +68,6 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
   }
 
   _onMaeChanged(v) {
-    print(v.runtimeType);
     if (v.runtimeType == PaiMaeItem) {
       print(v.nome);
       print(v.referenceId);
@@ -77,7 +78,6 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
   }
 
   _onPaiChanged(v) {
-    print(v.runtimeType);
     if (v.runtimeType == PaiMaeItem) {
       print(v.nome);
       print(v.referenceId);
@@ -89,13 +89,12 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     var bottomNavBar = StreamBuilder(
       stream: _bloc.createBtn.stream,
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         return ScaffoldCommonComponents.customBottomAppBar(
-          'Register',
-          _onCreatePressed,
+          'Continuar',
+          _continue ? _onCreatePressed : null,
           context,
           snapshot.data ?? false,
         );
@@ -115,7 +114,8 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
             TextFormField(
               controller: _tTitulo,
               decoration: InputDecoration(
-                hintText: 'Titulo da ninhada',
+                labelText: 'Titulo',
+                hintText: 'Ex: Wooly Red',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(
                     12,
@@ -133,17 +133,13 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
                   context,
                   CategorySelectorScreen(
                     title: 'Categorias',
-                    settaValores: _setCategory,
+                    onValuesChanged: _setCategory,
                     valores: listaDeValores,
                     route: Routes.CadastrarNinhada,
                   ),
                 );
               },
             ),
-            // _validateCategory() != null && _showError
-            //     ? FormErrorText(_validateCategory()!)
-            //     : Container(),
-
             _showDropDown
                 ? Column(
                     children: [
@@ -165,19 +161,19 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
                                     trailing: Icon(Icons.arrow_forward_ios),
                                     onTap: () => pushNamed(
                                         context, Routes.CadastrarReprodutor),
-                                    //TODO: Facilitar com toque para navegar
                                   );
                                 return Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0,
-                                    ),
-                                    child: DropDownButtonWidget<PaiMaeItem>(
-                                      value: _tMae, //TODO: Trocar para _mae
-                                      hint: 'Selecione a mae',
-                                      items: list,
-                                      onChanged: _onMaeChanged,
-                                      // hint: 'Teste',
-                                    ));
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8.0,
+                                  ),
+                                  child: DropDownButtonWidget<PaiMaeItem>(
+                                    value: _tMae,
+                                    hint: 'Selecione a mae',
+                                    items: list,
+                                    onChanged: _onMaeChanged,
+                                    // hint: 'Teste',
+                                  ),
+                                );
                               }
                             }
                             return LinearProgressIndicator();
@@ -191,7 +187,7 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
                                 if (list.isEmpty)
                                   return ListTile(
                                     title: Text(
-                                      'Você não tem nenhum macho dessa espécie cadastrada',
+                                      'Você não tem nenhum macho dessa espécie cadastrado',
                                     ),
                                     subtitle: Text(
                                       'Toque para cadastrar um reprodutor',
@@ -206,7 +202,7 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 8.0),
                                   child: DropDownButtonWidget<PaiMaeItem>(
-                                    value: _tPai, //TODO: Trocar para _pai
+                                    value: _tPai,
                                     hint: 'Selecione o pai',
                                     items: list,
                                     onChanged: _onPaiChanged,
@@ -221,15 +217,7 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
                   )
                 : Container()
 
-//TODO: Exibir error
-
-//TODO: Implementar dropdown do pai
-
-            //TODO: Exibir error
-
             //TODO: Nao permitir avançar enquanto nao preencher as infos corretas caso esteja true
-            //TODO: Posso desativar os botoes tambem (tem parametros deactivated/disabled)
-            //TODO: Mostrar apenas se marcar daqui pra baixo
 
             // ImagePickerTileWidget(
             //   title: 'Foto',

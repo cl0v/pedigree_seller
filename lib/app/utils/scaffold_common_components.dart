@@ -6,7 +6,7 @@ import 'package:pedigree_seller/constants.dart';
 class ScaffoldCommonComponents {
   
   static BottomAppBar customBottomAppBar(
-      String title, VoidCallback onPressed, BuildContext context, bool? showProgress) {
+      String title, VoidCallback? onPressed, BuildContext context, bool? showProgress) {
     Size size = getSize(context);
     return BottomAppBar(
       color: Colors.transparent,

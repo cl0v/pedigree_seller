@@ -29,7 +29,7 @@ class _CadastrarReprodutoresScreenState
 
   bool _isMacho = true;
 
-  final _tNome = TextEditingController(text: 'Reprodutor');
+  final _tNome = TextEditingController();
 
   String? _validateNome() {
     var text = _tNome.text;
@@ -147,7 +147,8 @@ class _CadastrarReprodutoresScreenState
           TextFormField(
             controller: _tNome,
             decoration: InputDecoration(
-              hintText: 'Nome',
+              labelText: 'Nome',
+              hintText: 'Ex: Rex',
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(
                   12,
@@ -167,7 +168,7 @@ class _CadastrarReprodutoresScreenState
                 context,
                 CategorySelectorScreen(
                   title: 'Categorias',
-                  settaValores: _setCategory,
+                  onValuesChanged: _setCategory,
                   valores: listaDeValores,
                   route: Routes.CadastrarReprodutor,
                 ),

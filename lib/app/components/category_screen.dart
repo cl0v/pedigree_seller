@@ -17,12 +17,12 @@ class CategoriasEspecies {
 class CategorySelectorScreen extends StatelessWidget {
   final List<CategoriasEspecies> valores;
   final String title;
-  final Function(String, String) settaValores;
+  final Function(String, String) onValuesChanged;
   final String route;
 
   CategorySelectorScreen({
     required this.title,
-    required this.settaValores,
+    required this.onValuesChanged,
     required this.route,
     this.valores = const [],
   });
@@ -64,14 +64,14 @@ class CategorySelectorScreen extends StatelessWidget {
                 push(
                   context,
                   CategorySelectorScreen(
-                    settaValores: settaValores,
+                    onValuesChanged: onValuesChanged,
                     title: val.text,
                     valores: val.list,
                     route: route,
                   ),
                 );
               else {
-                settaValores(title, val.text);
+                onValuesChanged(title, val.text);
                 popUntil(context, route);
                 //TODO: Posso passar as parada por aq tb
               }

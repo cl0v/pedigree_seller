@@ -73,7 +73,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
                   'Acessar loja',
                 ),
                 onTap: () {
-                  pushNamed(context, Routes.Canil);
+                  pushNamed(context, Routes.CanilInfo);
                 },
               ),
               Divider(),

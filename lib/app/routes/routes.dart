@@ -20,7 +20,7 @@ abstract class Routes {
   static const CadastrarNinhada = '/ninhada/create';
   static const Reprodutores = '/reprodutores';
   static const CadastrarReprodutor = '/reprodutores/create';
-  static const Canil = '/canil';
+  static const CanilInfo = '/canil/info';
   static const CadastrarCanil = '/canil/create';
   static const Perfil = '/perfil';
   // static const Categoria = '/category';
@@ -28,7 +28,7 @@ abstract class Routes {
 
 final routes = <String, WidgetBuilder>{
   //TODO: Troquei a home com canil pra facilitar
-  Routes.Canil: (context) => CanilProfileScreen(),
+  Routes.CanilInfo: (context) => CanilInfoScreen(),
   Routes.CadastrarNinhada: (context) => CadastrarNinhadaScreen(),
   Routes.Login: (context) => LoginScreen(),
   Routes.Register: (context) => RegisterScreen(),

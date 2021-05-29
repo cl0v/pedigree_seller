@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:pedigree_seller/app/components/custom_drawer_widget.dart';
 import 'package:pedigree_seller/app/pages/canil/canil_model.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
 
-class CanilProfileScreen extends StatefulWidget {
+class CanilInfoScreen extends StatefulWidget {
   @override
-  _CanilProfileScreenState createState() => _CanilProfileScreenState();
+  _CanilInfoScreenState createState() => _CanilInfoScreenState();
 }
 
-class _CanilProfileScreenState extends State<CanilProfileScreen> {
+class _CanilInfoScreenState extends State<CanilInfoScreen> {
   var future = CanilModel.get();
 
   @override
@@ -27,6 +26,7 @@ class _CanilProfileScreenState extends State<CanilProfileScreen> {
             CanilModel? canil = snapshot.data;
             if (canil != null)
               return ListView(
+                
                 children: [
                   ListTile(
                     title: Text('Titulo:'),
@@ -34,12 +34,14 @@ class _CanilProfileScreenState extends State<CanilProfileScreen> {
                       canil.titulo,
                     ),
                   ),
+                  Divider(),
                   ListTile(
                     title: Text('Contato:'),
                     subtitle: Text(
                       canil.contato,
                     ),
                   ),
+                  Divider(),
                   ListTile(
                     title: Text('CNPJ:'),
                     subtitle: Text(
@@ -63,11 +65,10 @@ class _CanilProfileScreenState extends State<CanilProfileScreen> {
     var appBar = ScaffoldCommonComponents.customAppBar('Loja', () {
       pop(context);
     });
-    var drawer = CustomDrawer();
 
     var result = Scaffold(
       appBar: appBar,
-      drawer: drawer,
+      // drawer: drawer,
       body: fBuilder,
     );
 
