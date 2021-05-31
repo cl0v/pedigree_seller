@@ -20,14 +20,14 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
     UserModel.get().then((u) {
-      CanilBloc(u!).get().then((c) {
-        if (c == null)
-          pushNamed(context, Routes.CadastrarCanil);
-        else
+      CanilBloc(u!).get().then((c) async {
+        if (c == null) {
+          pushNamed(context, Routes.CadastrarCanil, replace: true);
+        } else {
           setState(() {
             _dataLoaded = true;
-            //TODO: Quando eu cadastro, ele volta, porém com uma tela branca estranha
           });
+        }
       });
     });
   }

@@ -8,7 +8,6 @@ import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/alert.dart';
 import 'package:pedigree_seller/app/utils/app_bar.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
-import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
 import 'package:pedigree_seller/app/utils/screen_size.dart';
 
 class CreateCanilScreen extends StatefulWidget {
@@ -67,7 +66,7 @@ class _CreateCanilScreenState extends State<CreateCanilScreen> {
     var c = await _bloc.create(nome, contato, cnpj);
 
     if (c != null)
-      pop(context);
+      pushNamed(context, Routes.Home, replace: true);
     else
       alert(context, 'Error na criação de conta!');
   }
