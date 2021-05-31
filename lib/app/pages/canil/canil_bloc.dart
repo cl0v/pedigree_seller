@@ -4,30 +4,37 @@ import 'package:pedigree_seller/app/pages/canil/canil_model.dart';
 import 'package:pedigree_seller/app/utils/simple_bloc.dart';
 
 class CanilBloc {
-  var createBtn = SimpleBloc<bool>();
+  final createBtnBloc = SimpleBloc<bool>();
+  final bloc = SimpleBloc<CanilModel?>();
 
-  Future<bool> create(titulo, contato, cnpj) async {
-    createBtn.add(true);
-    UserModel? user = await UserModel.get();
-    var response = false;
-    if (user != null)
-      response = await CanilFirestore.register(titulo, contato, cnpj, user.referenceId);
-    createBtn.add(false);
+  final UserModel user;
+  CanilModel? canil; //Quando for nulo, preciso procurar
 
-    return response;
+//TODA vez que é chamado ele cria um novo bloc, obviamente
+  CanilBloc(this.user, {this.canil}) {
+    bloc.add(canil);
   }
 
-  var canil = SimpleBloc<CanilModel?>();
+  Future<CanilModel?> create(titulo, contato, cnpj) async {
+    createBtnBloc.add(true);
+    var c =
+        await CanilFirestore.register(titulo, contato, cnpj, user.referenceId);
+    bloc.add(c);
+    createBtnBloc.add(false);
 
-  sub() async {
-    var user = await UserModel.get();
+    return c;
+  }
+
+  Future<CanilModel?> get() async {
     var c = await CanilModel.get();
-    if (c != null) {
-      canil.add(c);
-    } else if (user != null) {
-      canil.subscribe(CanilFirestore.stream(user.referenceId));
-    } else {
-      print('Nenhum user cadastrado, deu erro');
+    if (c == null) {
+      c = await CanilFirestore.future(user.referenceId);
+      if (c != null) {
+        c.save();
+      }
     }
+    print('Valor do c: $c');
+    bloc.add(c);
+    return c;
   }
 }

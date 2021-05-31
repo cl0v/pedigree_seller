@@ -1,14 +1,17 @@
 import 'package:pedigree_seller/app/pages/authentication/authentication_firestore.dart';
+import 'package:pedigree_seller/app/pages/authentication/user_model.dart';
 import 'package:pedigree_seller/app/utils/simple_bloc.dart';
 
 class LoginBloc extends SimpleBloc<bool> {
-  Future<bool> login(String email, String senha) async {
+  
+  Future<UserModel?> login(String email, String senha) async {
     add(true);
 
-    var response = await AuthenticationFirestore.login(email, senha);
+    var u = await AuthenticationFirestore.login(email, senha);
+    if(u !=null) u.save(); 
 
     add(false);
 
-    return response;
+    return u;
   }
 }

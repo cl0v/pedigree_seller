@@ -6,18 +6,12 @@ import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
 
 class PerfilScreen extends StatefulWidget {
+  const PerfilScreen();
   @override
   _PerfilScreenState createState() => _PerfilScreenState();
 }
 
 class _PerfilScreenState extends State<PerfilScreen> {
-  var future = UserModel.get();
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     var appBar = ScaffoldCommonComponents.customAppBarWithoutIcons(
@@ -25,7 +19,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
     );
 
     var fBuilder = FutureBuilder<UserModel?>(
-      future: future,
+      future: UserModel.get(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           UserModel user = snapshot.data!;
@@ -42,7 +36,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
                 ),
               ),
               Divider(),
-              
+
               ListTile(
                 title: Text('Email:'),
                 subtitle: Text(
@@ -51,7 +45,6 @@ class _PerfilScreenState extends State<PerfilScreen> {
               ),
               Divider(),
               ListTile(
-                
                 title: Text('Contato:'),
                 subtitle: Text(
                   user.contato,

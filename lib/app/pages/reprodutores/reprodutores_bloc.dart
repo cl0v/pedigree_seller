@@ -3,43 +3,44 @@ import 'package:pedigree_seller/app/pages/canil/canil_model.dart';
 import 'package:pedigree_seller/app/pages/reprodutores/reprodutor_model.dart';
 import 'package:pedigree_seller/app/pages/reprodutores/reprodutores_firestore.dart';
 import 'package:pedigree_seller/app/utils/simple_bloc.dart';
+import 'package:rxdart/subjects.dart';
 
 class ReprodutoresBloc {
-  final reprodutores = SimpleBloc<List<Reprodutor>>();
-  final registerBtn = SimpleBloc<bool>();
+  final bloc = SimpleBloc<List<Reprodutor>>();
+  final registerBtnBloc = SimpleBloc<bool>();
+
+  
+
+  final CanilModel canil;
+
+  ReprodutoresBloc(this.canil);
 
   sub() async {
     try {
-      var canil = await CanilModel.get();
-      if (canil != null)
-        reprodutores.subscribe(ReprodutoresFirestore.stream(canil.referenceId));
-      else {
-        print('Canil nao registrado, algo deu errado!');
-      }
+      bloc.subscribe(ReprodutoresFirestore.stream(canil.referenceId));
     } catch (e) {
       print(e);
     }
   }
 
+  //TODO: Remover pedigree por enquanto
   Future<bool> register(
-      Foto foto, Reprodutor reprodutor, Foto fotoPedigree) async {
+    Foto foto,
+    Reprodutor reprodutor,
+    Foto? fotoPedigree,
+  ) async {
     try {
-      registerBtn.add(true);
-      var canil = await CanilModel.get();
-      if (canil != null) {
-        var response = await ReprodutoresFirestore.register(
-          foto: foto,
-          reprodutor: reprodutor,
-          fotoCertificado: fotoPedigree,
-          canilReferenceId: canil.referenceId,
-        );
+      registerBtnBloc.add(true);
+      var response = await ReprodutoresFirestore.register(
+        foto: foto,
+        reprodutor: reprodutor,
+        fotoCertificado: fotoPedigree,
+        canilReferenceId: canil.referenceId,
+      );
 
-        registerBtn.add(false);
-        return response;
-      }
-      return false;
+      registerBtnBloc.add(false);
+      return response;
     } catch (e) {
-      print(e);
       return false;
     }
   }

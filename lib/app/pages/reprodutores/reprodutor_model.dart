@@ -3,7 +3,8 @@ import 'package:pedigree_seller/app/components/category_screen.dart';
 
 class Reprodutor {
   String file;
-  String certificado;
+  String certificado; //TODO: Remover certificado obrigatorio
+  //bool isPure? isPedigree? isCertificated?
   String nome;
   bool isMacho;
   CategoriaAnimal categoria;

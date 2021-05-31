@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:pedigree_seller/app/pages/ninhada/ninhada_bloc.dart';
+import 'package:pedigree_seller/app/pages/canil/canil_model.dart';
 import 'package:pedigree_seller/app/pages/ninhada/ninhada_model.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/app/utils/screen_size.dart';
+
+import 'ninhada_bloc.dart';
 
 class NinhadasScreen extends StatefulWidget {
   @override
@@ -12,22 +14,46 @@ class NinhadasScreen extends StatefulWidget {
 
 class _NinhadasScreenState extends State<NinhadasScreen>
     with AutomaticKeepAliveClientMixin<NinhadasScreen> {
-  final _bloc = NinhadaBloc();
+  late final _bloc;
+
+  bool _dataLoaded = false;
 
   @override
   bool get wantKeepAlive => true;
 
   @override
-  void dispose() {
-    super.dispose();
-    _bloc.list.dispose();
-  }
-
-  @override
   void initState() {
     super.initState();
-    _bloc.subscribe();
-    //TODO: Ta dando algum bug quando entra na página, ai nao ta carregando
+    CanilModel.get().then((c) {
+      print('Inicializado ni');
+      //Segunda vez que roda parece que ta vindo nullo, após sair do app
+      if (c != null) {
+        _bloc = NinhadaBloc(c);
+        _bloc.subscribe();
+        setState(() {
+          _dataLoaded = true;
+        });
+      }
+    });
+  }
+
+/* BUG: 
+The following LateError was thrown while finalizing the widget tree:
+LateInitializationError: Field '_bloc' has not been initialized.
+
+When the exception was thrown, this was the stack:
+dart-sdk/lib/_internal/js_dev_runtime/private/ddc_runtime/errors.dart 236:49
+throw_
+packages/pedigree_seller/app/pages/ninhada/ninhada_screen.dart 17:14
+get [_bloc]
+packages/pedigree_seller/app/pages/ninhada/ninhada_screen.dart 45:5
+*/
+  @override
+  void dispose() {
+    print('Dispensado ni');
+    super.dispose();
+    deactivate();
+    _bloc.bloc.dispose();
   }
 
   ListTile ninhadaTile(NinhadaModel ninhada) {
@@ -36,25 +62,9 @@ class _NinhadasScreenState extends State<NinhadasScreen>
       title: Text(
         ninhada.titulo,
       ),
-      // leading: Text('ATIVO'),
-      // trailing: Wrap(
-      //   spacing: 12,
-      //   children: [
-      //     IconButton(
-      //       icon: Icon(Icons.remove_red_eye),
-      //       onPressed: () {
-      //         //TODO: Implement ninhada view
-      //       },
-      //     ),
-      //     IconButton(
-      //       icon: Icon(Icons.adaptive.more),
-      //       onPressed: () {
-      //         //Mostrar um popupmenubutton com as opçoes de editar, deletar, (Add arquivar), etc;
-      //       },
-      //     ),
 
-      //   ],
-      // ),
+//TODO: Implement ninhada view, e editar ninhada
+      //       icon: Icon(Icons.adaptive.more),
     );
   }
 
@@ -76,46 +86,50 @@ class _NinhadasScreenState extends State<NinhadasScreen>
       child: CircularProgressIndicator(),
     );
 
-    var body = Container(
-      height: size.height,
-      width: size.width,
-      child: StreamBuilder<List<NinhadaModel>>(
-        stream: _bloc.list.stream,
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.active:
-              var ninhadas = snapshot.data;
-              return ninhadas != null
-                  ? ninhadas.isEmpty
-                      ? noData
-                      : ListView.builder(
-                          itemCount: ninhadas.length,
-                          itemBuilder: (context, index) {
-                            var ninhada = ninhadas[index];
-                            return ninhadaTile(ninhada);
-                          },
-                        )
-                  : error;
-            case ConnectionState.waiting:
-              return loading;
-            default:
-              return error;
-          }
-        },
-      ),
+    var body = _dataLoaded
+        ? Container(
+            height: size.height,
+            width: size.width,
+            child: StreamBuilder<List<NinhadaModel>>(
+              stream: _bloc.bloc.stream,
+              builder: (context, snapshot) {
+                switch (snapshot.connectionState) {
+                  case ConnectionState.active:
+                    var ninhadas = snapshot.data;
+                    return ninhadas != null
+                        ? ninhadas.isEmpty
+                            ? noData
+                            : ListView.builder(
+                                itemCount: ninhadas.length,
+                                itemBuilder: (context, index) {
+                                  var ninhada = ninhadas[index];
+                                  return ninhadaTile(ninhada);
+                                },
+                              )
+                        : error;
+                  case ConnectionState.waiting:
+                    return loading;
+                  default:
+                    return error;
+                }
+              },
+            ),
+          )
+        : Center(
+            child: CircularProgressIndicator(),
+          );
+    final fab = FloatingActionButton.extended(
+      heroTag: 'FabNinhada',
+      onPressed: () {
+        pushNamed(context, Routes.CadastrarNinhada);
+      },
+      label: Text('Nova Ninhada'),
+      icon: Icon(Icons.add),
     );
 
     return Scaffold(
-      floatingActionButton: FloatingActionButton.extended(
-        heroTag: 'FabNinhada',
-        onPressed: () {
-          pushNamed(context, Routes.CadastrarNinhada);
-        },
-        label: Text('Nova Ninhada'),
-        icon: Icon(Icons.add),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      body: body,
-    );
+        floatingActionButton: fab,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        body: body);
   }
 }

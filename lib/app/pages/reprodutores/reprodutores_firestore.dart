@@ -21,7 +21,7 @@ class ReprodutoresFirestore {
     required Foto foto,
     required Reprodutor reprodutor,
     required String canilReferenceId,
-    required Foto fotoCertificado,
+    required Foto? fotoCertificado,
   }) async {
     try {
       final docRef = await collection
@@ -29,13 +29,13 @@ class ReprodutoresFirestore {
           .collection('reprodutores')
           .add(reprodutor.toMap());
 
-      await _uploadFoto(
-        canilReferenceId,
-        docRef,
-        fotoCertificado,
-        'pedigree_certificate',
-        'certificado'
-      );
+      // await _uploadFoto(
+      //   canilReferenceId,
+      //   docRef,
+      //   fotoCertificado,
+      //   'pedigree_certificate',
+      //   'certificado'
+      // );
       await _uploadFoto(
         canilReferenceId,
         docRef,

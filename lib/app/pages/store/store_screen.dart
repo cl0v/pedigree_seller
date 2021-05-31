@@ -4,6 +4,7 @@ import 'package:pedigree_seller/app/pages/reprodutores/reprodutores_screen.dart'
 import 'package:pedigree_seller/constants.dart';
 
 class StoreScreen extends StatefulWidget {
+  const StoreScreen();
   @override
   _StoreScreenState createState() => _StoreScreenState();
 }

@@ -5,6 +5,7 @@ import 'package:pedigree_seller/app/components/custom_button_widget.dart';
 import 'package:pedigree_seller/app/components/form_error_text.dart';
 import 'package:pedigree_seller/app/components/text_input_field_widget.dart';
 import 'package:pedigree_seller/app/pages/authentication/login/login_bloc.dart';
+import 'package:pedigree_seller/app/pages/canil/canil_model.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/alert.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
@@ -44,9 +45,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
     var response = await _bloc.login(email, senha);
 
-    if (response)
+    if (response != null) {
+      
       pushNamed(context, Routes.Home, replace: true);
-    else
+    } else
       //TODO: Criar uma ApiResponse para exibir o error
       alert(context, 'Error no login');
   }

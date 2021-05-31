@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/components/category_screen.dart';
 import 'package:pedigree_seller/app/components/form_error_text.dart';
 import 'package:pedigree_seller/app/components/image_picker_tile_widget.dart';
+import 'package:pedigree_seller/app/pages/canil/canil_model.dart';
 import 'package:pedigree_seller/app/pages/reprodutores/reprodutor_model.dart';
 import 'package:pedigree_seller/app/pages/reprodutores/reprodutores_bloc.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
@@ -18,11 +19,25 @@ class CadastrarReprodutoresScreen extends StatefulWidget {
 
 class _CadastrarReprodutoresScreenState
     extends State<CadastrarReprodutoresScreen> {
-  final _bloc = ReprodutoresBloc();
+  late final _bloc;
+
+  bool _dataLoaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    CanilModel.get().then((c) {
+      if (c != null) _bloc = ReprodutoresBloc(c);
+      setState(() {
+        _dataLoaded = true;
+      });
+    });
+  }
+
   @override
   void dispose() {
     super.dispose();
-    _bloc.registerBtn.dispose();
+    _bloc.registerBtnBloc.dispose();
   }
 
   bool _showError = false;
@@ -121,17 +136,19 @@ class _CadastrarReprodutoresScreenState
       () => pop(context),
     );
 
-    var bottomNavBar = StreamBuilder(
-      stream: _bloc.registerBtn.stream,
-      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        return ScaffoldCommonComponents.customBottomAppBar(
-          'Register',
-          _onSave,
-          context,
-          snapshot.data ?? false,
-        );
-      },
-    );
+    var bottomNavBar = _dataLoaded
+        ? StreamBuilder(
+            stream: _bloc.registerBtnBloc.stream,
+            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              return ScaffoldCommonComponents.customBottomAppBar(
+                'Register',
+                _onSave,
+                context,
+                snapshot.data ?? false,
+              );
+            },
+          )
+        : Container();
 
     var body = Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -141,7 +158,7 @@ class _CadastrarReprodutoresScreenState
             title: 'Foto',
             onChanged: _onFotoChanged,
           ),
-           _validateFoto() != null && _showError
+          _validateFoto() != null && _showError
               ? FormErrorText(_validateFoto()!)
               : Container(),
           TextFormField(
@@ -203,7 +220,7 @@ class _CadastrarReprodutoresScreenState
             title: 'Certificado de Pedigree',
             onChanged: _onPedigreeChanged,
           ),
-           _validadePedigree() != null && _showError
+          _validadePedigree() != null && _showError
               ? FormErrorText(_validadePedigree()!)
               : Container(),
         ],
@@ -211,9 +228,6 @@ class _CadastrarReprodutoresScreenState
     );
 
     return Scaffold(
-      body: body,
-      appBar: appBar,
-      bottomNavigationBar: bottomNavBar
-    );
+        body: body, appBar: appBar, bottomNavigationBar: bottomNavBar);
   }
 }

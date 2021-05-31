@@ -1,11 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/commons/commons.dart';
+import 'package:pedigree_seller/app/pages/authentication/user_model.dart';
 import 'package:pedigree_seller/app/pages/canil/canil_bloc.dart';
 import 'package:pedigree_seller/app/pages/canil/canil_model.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
+import 'package:pedigree_seller/app/utils/app_bar.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
-import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
 import 'package:pedigree_seller/constants.dart';
 /*
  - Essa página será a dashboard
@@ -13,47 +14,48 @@ import 'package:pedigree_seller/constants.dart';
 */
 
 class CanilScreen extends StatefulWidget {
+  const CanilScreen();
   @override
   _CanilScreenState createState() => _CanilScreenState();
 }
 
 class _CanilScreenState extends State<CanilScreen> {
-  final _bloc = CanilBloc();
+  late final CanilBloc _bloc;
+
+  bool _dataLoaded = false;
 
   @override
   void dispose() {
     super.dispose();
-    _bloc.canil.dispose();
+    _bloc.bloc.dispose();
   }
+
+  //TODO: Criar o push para caso não tenha canil cadastrado
 
   @override
   void initState() {
     super.initState();
-    _bloc.sub();
+
+    UserModel.get().then((u) {
+      CanilModel.get().then((c) {
+        _bloc = CanilBloc(u!, canil: c!);
+        setState(() {
+          _dataLoaded = true;
+        });
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final appBar = customAppBar('Canil');
 
-    var appBar = ScaffoldCommonComponents.customAppBarWithoutIcons('Canil');
-
-    var noData = Center(
-      child: RichText(
-        text: TextSpan(
-          style: kBodyTextStyle,
-          children: [
-            TextSpan(
-              text: 'Você não criou uma loja ainda\n',
-              style: TextStyle(color: Colors.black),
-            ),
-            TextSpan(
-              text: 'Clique aqui para criar\n\n\n',
-              style: TextStyle(color: Colors.blue),
-              recognizer: TapGestureRecognizer()
-                ..onTap = () => pushNamed(context, Routes.CadastrarCanil),
-            ),
-          ],
-        ),
+    final noData = Center(
+      child: ElevatedButton(
+        child: Text('Toque aqui para cadastrar o canil'),
+        onPressed: () {
+          pushNamed(context, Routes.CadastrarCanil);
+        },
       ),
     );
 
@@ -62,28 +64,33 @@ class _CanilScreenState extends State<CanilScreen> {
           'Funcionalidade ainda não está pronta, aguarde mais um pouco...'),
     );
 
-    final body = StreamBuilder<CanilModel?>(
-        stream: _bloc.canil.stream,
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.active:
-              var canil = snapshot.data;
-              if (canil != null) {
-                return msg;
+    final body = _dataLoaded
+        ? StreamBuilder<CanilModel?>(
+            stream: _bloc.bloc.stream,
+            builder: (context, snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.active:
+                  var canil = snapshot.data;
+                  if (canil != null) {
+                    return msg;
+                  } else {
+                    return noData;
+                  }
+                case ConnectionState.waiting:
+                  return loading;
+                case ConnectionState.done:
+                  var canil = snapshot.data;
+                  if (canil == null)
+                    return noData;
+                  else
+                    return msg;
+                default:
+                  return loadingError;
               }
-              return noData;
-            case ConnectionState.waiting:
-              return loading;
-            case ConnectionState.done:
-              var canil = snapshot.data;
-              if (canil == null)
-                return noData;
-              else
-                return msg;
-            default:
-              return loadingError;
-          }
-        });
+            })
+        : Center(
+            child: CircularProgressIndicator(),
+          );
 
     return Scaffold(
       appBar: appBar,

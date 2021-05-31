@@ -14,21 +14,33 @@ class CanilFirestore {
             .first,
       );
 
-  static Future<bool> register(titulo, contato, cnpj, userReferenceId) async {
-    try {
-      
-        CanilModel canil = CanilModel(
-          titulo: titulo,
-          contato: contato,
-          cnpj: cnpj,
-          donoReferencia: userReferenceId,
-        );
+  static Future<CanilModel?> future(String userReferenceId) async {
+    var c = await canilCollection
+        .where('donoReferencia', isEqualTo: userReferenceId)
+        .get();
+    if (c.size > 0) {
+      return canilCollection
+          .where('donoReferencia', isEqualTo: userReferenceId)
+          .get()
+          .then((q) => CanilModel.fromDocumentSnapshot(q.docs.first));
+    } else
+      return null;
+  }
 
-        var reference = await canilCollection.add(canil.toMap());
-        canil = canil.copyWith(referenceId: reference.id)..save();
-        return true;
+  static Future<CanilModel?> register(titulo, contato, cnpj, userReferenceId) async {
+    try {
+      CanilModel canil = CanilModel(
+        titulo: titulo,
+        contato: contato,
+        cnpj: cnpj,
+        donoReferencia: userReferenceId,
+      );
+
+      var reference = await canilCollection.add(canil.toMap());
+      canil = canil.copyWith(referenceId: reference.id)..save();
+      return canil;
     } catch (e) {
-      return false;
+      return null;
     }
   }
 }
