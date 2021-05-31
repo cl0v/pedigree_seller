@@ -3,39 +3,29 @@ import 'package:pedigree_seller/app/pages/canil/canil_model.dart';
 import 'package:pedigree_seller/app/pages/reprodutores/reprodutor_model.dart';
 import 'package:pedigree_seller/app/pages/reprodutores/reprodutores_firestore.dart';
 import 'package:pedigree_seller/app/utils/simple_bloc.dart';
-import 'package:rxdart/subjects.dart';
 
 class ReprodutoresBloc {
-  final bloc = SimpleBloc<List<Reprodutor>>();
   final registerBtnBloc = SimpleBloc<bool>();
-
-  
 
   final CanilModel canil;
 
+  ReprodutoresFirestore get _repository =>
+      ReprodutoresFirestore(canil.referenceId);
+
   ReprodutoresBloc(this.canil);
 
-  sub() async {
-    try {
-      bloc.subscribe(ReprodutoresFirestore.stream(canil.referenceId));
-    } catch (e) {
-      print(e);
-    }
-  }
+  Stream<List<Reprodutor>> get stream => _repository.stream;
 
   //TODO: Remover pedigree por enquanto
   Future<bool> register(
     Foto foto,
     Reprodutor reprodutor,
-    Foto? fotoPedigree,
   ) async {
     try {
       registerBtnBloc.add(true);
-      var response = await ReprodutoresFirestore.register(
+      var response = await _repository.register(
         foto: foto,
         reprodutor: reprodutor,
-        fotoCertificado: fotoPedigree,
-        canilReferenceId: canil.referenceId,
       );
 
       registerBtnBloc.add(false);

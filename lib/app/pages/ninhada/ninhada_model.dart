@@ -12,14 +12,16 @@ class NinhadaModel {
   ///'Cores' (String) : quantidade (int)
   //Cores disponiveis
   //Preco de cada filhote
+  String img;
   String titulo;
   CategoriaAnimal categoria;
-  String paiId;
-  String maeId;
-  String canilReferenceId;
-  String? reference;
-
+  String paiId; //TODO: Substituir para referencia
+  String maeId; //TODO: Substituir para referencia
+  String canilReferenceId; //TODO: Substituir por referencia
+  String? reference; //TODO: Substituir por referencia
+ 
   NinhadaModel({
+    this.img = '',
     required this.titulo,
     required this.categoria,
     required this.paiId,
@@ -29,6 +31,7 @@ class NinhadaModel {
 
   Map<String, dynamic> toMap() {
     return {
+      'img': img,
       'titulo': titulo,
       'categoria': categoria.toMap(),
       'paiId': paiId,
@@ -39,6 +42,7 @@ class NinhadaModel {
 
   factory NinhadaModel.fromMap(Map<String, dynamic> map) {
     return NinhadaModel(
+      img: map['img'] ?? '',
       titulo: map['titulo'],
       categoria: CategoriaAnimal.fromMap(map['categoria']),
       paiId: map['paiId'],

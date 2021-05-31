@@ -13,20 +13,17 @@ class ReprodutoresScreen extends StatefulWidget {
 
 class _ReprodutoresScreenState extends State<ReprodutoresScreen>
     with AutomaticKeepAliveClientMixin<ReprodutoresScreen> {
-  late final _bloc;
+  late final ReprodutoresBloc _bloc;
   bool _dataLoaded = false;
 
   @override
   bool get wantKeepAlive => true;
-  //TODO: Talvez esse want keep alive esteja trollando
 
   @override
   void initState() {
     super.initState();
     CanilModel.get().then((c) {
-      print('Inicializado re');
       if (c != null) _bloc = ReprodutoresBloc(c);
-      _bloc.init();
       setState(() {
         _dataLoaded = true;
       });
@@ -35,10 +32,8 @@ class _ReprodutoresScreenState extends State<ReprodutoresScreen>
 
   @override
   void dispose() {
-    print('Dispensado re');
     super.dispose();
     deactivate();
-    _bloc.bloc.dispose();
   }
 
   _buildPetTile(Reprodutor pet) => ListTile(
@@ -60,7 +55,7 @@ class _ReprodutoresScreenState extends State<ReprodutoresScreen>
 
     var body = _dataLoaded
         ? StreamBuilder<List<Reprodutor>>(
-            stream: _bloc.bloc.stream,
+            stream: _bloc.stream,
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
                 case ConnectionState.active:

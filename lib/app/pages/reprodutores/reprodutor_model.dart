@@ -1,17 +1,19 @@
 import 'dart:convert';
 import 'package:pedigree_seller/app/components/category_screen.dart';
+import 'package:pedigree_seller/app/components/drop_down_button_widget.dart';
 
-class Reprodutor {
-  String file;
-  String certificado; //TODO: Remover certificado obrigatorio
+class Reprodutor extends DropDownItem {
+  String img;
+  // String certificado; //TODO: Remover certificado obrigatorio
   //bool isPure? isPedigree? isCertificated?
   String nome;
   bool isMacho;
   CategoriaAnimal categoria;
+  //TODO: Implementar referencia
 
   Reprodutor({
-    this.file = 'FileUrl',
-    this.certificado = 'FileUrl',
+    this.img = 'img',
+    // this.certificado = 'img',
     required this.nome,
     required this.categoria,
     required this.isMacho,
@@ -19,8 +21,7 @@ class Reprodutor {
 
   Map<String, dynamic> toMap() {
     return {
-      'file': file,
-      'certificado': certificado,
+      'img': img,
       'nome': nome,
       'isMacho': isMacho,
       'categoria': categoria.toMap(),
@@ -29,8 +30,7 @@ class Reprodutor {
 
   factory Reprodutor.fromMap(Map<String, dynamic> map) {
     return Reprodutor(
-      file: map['file'],
-      certificado: map['certificado'],
+      img: map['img'],
       nome: map['nome'],
       isMacho: map['isMacho'],
       categoria: CategoriaAnimal.fromMap(map['categoria']),
@@ -39,8 +39,13 @@ class Reprodutor {
 
   String toJson() => json.encode(toMap());
 
-  factory Reprodutor.fromJson(String source) => Reprodutor.fromMap(json.decode(source));
+  factory Reprodutor.fromJson(String source) =>
+      Reprodutor.fromMap(json.decode(source));
 
+  @override
+  String text() {
+    return this.nome;
+  }
 }
 
 class CategoriaAnimal {
@@ -67,9 +72,9 @@ class CategoriaAnimal {
 
   String toJson() => json.encode(toMap());
 
-  factory CategoriaAnimal.fromJson(String source) => CategoriaAnimal.fromMap(json.decode(source));
+  factory CategoriaAnimal.fromJson(String source) =>
+      CategoriaAnimal.fromMap(json.decode(source));
 }
-
 
 List<CategoriasEspecies> listaDeValores = [
   CategoriasEspecies(text: 'Cachorro', list: [

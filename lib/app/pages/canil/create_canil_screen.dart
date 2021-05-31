@@ -16,9 +16,9 @@ class CreateCanilScreen extends StatefulWidget {
 }
 
 class _CreateCanilScreenState extends State<CreateCanilScreen> {
-  final _tNome = TextEditingController(text: 'Canil');
-  final _tContato = TextEditingController(text: 'Canil');
-  final _tCnpj = TextEditingController(text: 'Canil');
+  final _tNome = TextEditingController();
+  final _tContato = TextEditingController();
+  final _tCnpj = TextEditingController();
 
   late final CanilBloc _bloc;
   bool _dataLoaded = false;
@@ -27,7 +27,6 @@ class _CreateCanilScreenState extends State<CreateCanilScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     UserModel.get().then((u) {
       if (u != null)

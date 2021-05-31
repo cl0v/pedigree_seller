@@ -17,7 +17,7 @@ class CadastrarNinhadaScreen extends StatefulWidget {
 }
 
 class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
-  late final _bloc;
+  late final NinhadaBloc _bloc;
 
   bool _loadedData = false;
 
@@ -40,8 +40,8 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
 
   CategoriaAnimal? _categoria;
 
-  PaiMaeItem? _tPai;
-  PaiMaeItem? _tMae;
+  Reprodutor? _tPai;
+  Reprodutor? _tMae;
 
   bool _showDropDown = false;
 
@@ -75,8 +75,8 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
         _tTitulo.text,
         foto!,
         _categoria,
-        _tPai!.referenceId!,
-        _tMae!.referenceId!,
+        _tPai!.nome,
+        _tMae!.nome,
       );
       pop(context);
     } else
@@ -84,9 +84,8 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
   }
 
   _onMaeChanged(v) {
-    if (v.runtimeType == PaiMaeItem) {
-      print(v.nome);
-      print(v.referenceId);
+    if (v.runtimeType == Reprodutor) {
+      v = v as Reprodutor;
       setState(() {
         _tMae = v;
       });
@@ -94,17 +93,17 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
   }
 
   _onPaiChanged(v) {
-    if (v.runtimeType == PaiMaeItem) {
-      print(v.nome);
-      print(v.referenceId);
+    if (v.runtimeType == Reprodutor) {
+      v = v as Reprodutor;
       setState(() {
         _tPai = v;
       });
     }
   }
 
-  late Foto? foto;
+  Foto? foto;
   _onFotoChanged(Foto foto) {
+    //TODO: Implement enviar foto
     this.foto = foto;
   }
 
@@ -171,7 +170,7 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
                   _showDropDown
                       ? Column(
                           children: [
-                            StreamBuilder<List<PaiMaeItem>>(
+                            StreamBuilder<List<Reprodutor>>(
                                 stream: _bloc.maesBloc.stream,
                                 builder: (context, snapshot) {
                                   if (snapshot.hasData) {
@@ -194,7 +193,7 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
                                         padding: const EdgeInsets.symmetric(
                                           horizontal: 8.0,
                                         ),
-                                        child: DropDownButtonWidget<PaiMaeItem>(
+                                        child: DropDownButtonWidget<Reprodutor>(
                                           value: _tMae,
                                           hint: 'Selecione a mae',
                                           items: list,
@@ -206,7 +205,7 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
                                   }
                                   return LinearProgressIndicator();
                                 }),
-                            StreamBuilder<List<PaiMaeItem>>(
+                            StreamBuilder<List<Reprodutor>>(
                                 stream: _bloc.paisBloc.stream,
                                 builder: (context, snapshot) {
                                   if (snapshot.hasData) {
@@ -230,7 +229,7 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
                                       return Padding(
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 8.0),
-                                        child: DropDownButtonWidget<PaiMaeItem>(
+                                        child: DropDownButtonWidget<Reprodutor>(
                                           value: _tPai,
                                           hint: 'Selecione o pai',
                                           items: list,

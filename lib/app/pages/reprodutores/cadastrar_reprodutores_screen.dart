@@ -19,7 +19,7 @@ class CadastrarReprodutoresScreen extends StatefulWidget {
 
 class _CadastrarReprodutoresScreenState
     extends State<CadastrarReprodutoresScreen> {
-  late final _bloc;
+  late final ReprodutoresBloc _bloc;
 
   bool _dataLoaded = false;
 
@@ -70,6 +70,7 @@ class _CadastrarReprodutoresScreenState
   String? _validadePedigree() {
     // if(pedigreeFile == null) return 'Selecione uma foto';
     return null;
+    //TODO: Remover certificado de pedigree
   }
 
   String? _validateFoto() {
@@ -101,7 +102,10 @@ class _CadastrarReprodutoresScreenState
       isMacho: isMacho,
     );
 
-    var response = await _bloc.register(foto!, reprodutorModel, pedigreeFile!);
+    var response = await _bloc.register(
+      foto!,
+      reprodutorModel,
+    );
 
     if (response)
       pop(context);
@@ -116,14 +120,10 @@ class _CadastrarReprodutoresScreenState
     });
   }
 
-  late Foto? pedigreeFile;
   late Foto? foto;
 //TODO: Validar pedigree
 
-  _onPedigreeChanged(Foto foto) {
-    //TODO: Fazer a verificação
-    pedigreeFile = foto;
-  }
+  
 
   _onFotoChanged(Foto foto) {
     this.foto = foto;
@@ -216,13 +216,7 @@ class _CadastrarReprodutoresScreenState
               });
             },
           ),
-          ImagePickerTileWidget(
-            title: 'Certificado de Pedigree',
-            onChanged: _onPedigreeChanged,
-          ),
-          _validadePedigree() != null && _showError
-              ? FormErrorText(_validadePedigree()!)
-              : Container(),
+          
         ],
       ),
     );
