@@ -4,22 +4,23 @@ import 'package:pedigree_seller/app/pages/canil/canil_model.dart';
 import 'package:pedigree_seller/app/utils/simple_bloc.dart';
 
 class CanilBloc {
-  final createBtnBloc = SimpleBloc<bool>();
-  final bloc = SimpleBloc<CanilModel?>();
-
-  final UserModel user;
-  CanilModel? canil; //Quando for nulo, preciso procurar
-
-//TODA vez que é chamado ele cria um novo bloc, obviamente
   CanilBloc(this.user, {this.canil}) {
     bloc.add(canil);
   }
 
-  Future<CanilModel?> create(titulo, contato, cnpj) async {
+  final UserModel user;
+  CanilModel? canil;
+
+  final createBtnBloc = SimpleBloc<bool>();
+  final bloc = SimpleBloc<CanilModel?>();
+
+  CanilFirestore get _respository => CanilFirestore(user.referenceId);
+
+  Future<CanilModel?> create(CanilModel canil) async {
+    //TODO: Receber o model
     createBtnBloc.add(true);
     var c =
-        await CanilFirestore.register(titulo, contato, cnpj, user.referenceId);
-    bloc.add(c);
+        await _respository.register(canil.copyWith(donoID: user.referenceId));
     createBtnBloc.add(false);
 
     return c;
@@ -28,12 +29,12 @@ class CanilBloc {
   Future<CanilModel?> get() async {
     var c = await CanilModel.get();
     if (c == null) {
-      c = await CanilFirestore.future(user.referenceId);
+      c = await _respository.future();
+      //Tenho uma stream la, posso bindar
       if (c != null) {
         c.save();
       }
     }
-    print('Valor do c: $c');
     bloc.add(c);
     return c;
   }

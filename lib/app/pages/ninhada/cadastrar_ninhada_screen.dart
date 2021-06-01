@@ -4,7 +4,7 @@ import 'package:pedigree_seller/app/components/drop_down_button_widget.dart';
 import 'package:pedigree_seller/app/components/image_picker_tile_widget.dart';
 import 'package:pedigree_seller/app/pages/canil/canil_model.dart';
 import 'package:pedigree_seller/app/pages/ninhada/ninhada_bloc.dart';
-import 'package:pedigree_seller/app/pages/ninhada/ninhada_model.dart';
+
 import 'package:pedigree_seller/app/pages/reprodutores/reprodutor_model.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/alert.dart';
@@ -70,6 +70,8 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
   //TODO: Fazer as validações
   _onCreatePressed() async {
     //TODO: Se eu tentar cadastrar sem a foto, pode dar biziu
+    if (_tTitulo.text == '' || _categoria == null)
+      return alert(context, 'Por favor preencha todos os campos');
     if (foto != null) {
       await _bloc.create(
         _tTitulo.text,

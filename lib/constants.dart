@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-TextStyle kBodyTextStyle = TextStyle();
-TextStyle kTitleTextStyle = TextStyle(
+const TextStyle kBodyTextStyle = TextStyle();
+const TextStyle kTitleTextStyle = TextStyle(
   color: Colors.black,
 );
 TextStyle kErrorTextStyle = TextStyle(

@@ -76,6 +76,28 @@ class CategoriaAnimal {
       CategoriaAnimal.fromMap(json.decode(source));
 }
 
+
+
+//TODO: Implementar esse mocked
+
+final mockedCategories = [
+  {
+    'categoria': 'Cachorro',
+    'especies': [
+      'Rotwailer',
+      'Poodle',
+      'Fila',
+    ]
+  },
+  {
+    'categoria': 'Gato',
+    'especies': [
+      'Persa',
+      'Chaninha',
+    ]
+  },
+];
+
 List<CategoriasEspecies> listaDeValores = [
   CategoriasEspecies(text: 'Cachorro', list: [
     CategoriasEspecies(text: 'Rotwailer'),

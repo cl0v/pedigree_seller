@@ -2,20 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:pedigree_seller/pedigree.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-// >>>>> Eu estava fazendo o [canilmodel.get()] functionar na canil_bloc
-//Estou testando com o email marcelo.itaa.boss@gmail.com um novo canil
-//TODO: Ta rolando um bug quando eu saio do app
+//TODO: Salvar o json das categorias no storage, pegar o link e colocar aqui
 
 
-/** //TODO:
+/** 
  * Ordene as páginas
  * Adicione fotos na ninhada
  * Altere o nome das coisas
  * Quando toca no botao, envia para o whatsapp
- */
-
-/** //BUG:
- * Não está sendo carregado o usuário
  */
 
 
@@ -25,7 +19,6 @@ void main() async {
   await Firebase.initializeApp();
   runApp(Pedigree());
 }
-//TODO: Adicionar imagem do filhote
 
 /*//TODO: O que fazer antes de ir para o servidor ou outro app
 ->> Materiais de estudo flutter/gallery no github

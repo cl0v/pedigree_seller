@@ -17,12 +17,17 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final _bloc = RegisterBloc();
-  final _tEmail = TextEditingController(text: 'marcelo.ita.boss@gmail.com'); //text: 'marcelo.ita.boss@gmail.com'
+  final _tEmail = TextEditingController(
+      text: 'marcelo.ita.boss@gmail.com'); //text: 'marcelo.ita.boss@gmail.com'
   final _tNome = TextEditingController(text: 'marcelo'); //text: 'marcelo'
-  final _tContato = TextEditingController(text: '73932146147'); //text: '73932146147'
-  final _tCpf = TextEditingController(text: '09841232606'); //text: '09841232606'
-  final _tSenha = TextEditingController(text: '..sdidasd..'); //text: '..sdidasd..'
-  final _tConfSenha = TextEditingController(text: '..sdidasd..'); //text: '..sdidasd..'
+  final _tContato =
+      TextEditingController(text: '73932146147'); //text: '73932146147'
+  final _tCpf =
+      TextEditingController(text: '09841232606'); //text: '09841232606'
+  final _tSenha =
+      TextEditingController(text: '..sdidasd..'); //text: '..sdidasd..'
+  final _tConfSenha =
+      TextEditingController(text: '..sdidasd..'); //text: '..sdidasd..'
 
   bool _showError = false;
 
@@ -33,11 +38,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   _onRegisterPressed() async {
-    if (!(_validateEmail() == null &&
+    final validation = !(_validateEmail() == null &&
         _validateNome() == null &&
         _validateContato() == null &&
         _validateCpf() == null &&
-        _validateSenha() == null)) {
+        _validateSenha() == null);
+    if (validation) {
       setState(() {
         _showError = true;
       });
@@ -57,10 +63,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     var response = await _bloc.register(email, senha, cpf, nome, contato);
 
-    if (response)
-      pushNamed(context, Routes.Home, replace: true);
-    else
-      alert(context, 'Error na criação de conta!');
+    response
+        ? pushNamed(context, Routes.Home, replace: true)
+        : alert(context, 'Error na criação de conta!');
   }
 
   _onBackToLoginPressed() {
@@ -122,24 +127,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
     Size size = MediaQuery.of(context).size;
 
     var registerBtn = BottomAppBar(
-      color: Colors.transparent,
-      elevation: 0,
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(
-          size.width * 0.1,
-          0,
-          size.width * 0.1,
-          8,
-        ),
-        child: StreamBuilder(
-        stream: _bloc.stream,
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          return CustomButtonWidget(
-            'Register',
-            onPressed: _onRegisterPressed,
-            showProgress: snapshot.data ?? false,
-          );
-        })));
+        color: Colors.transparent,
+        elevation: 0,
+        child: Padding(
+            padding: EdgeInsets.fromLTRB(
+              size.width * 0.1,
+              0,
+              size.width * 0.1,
+              8,
+            ),
+            child: StreamBuilder(
+                stream: _bloc.stream,
+                builder:
+                    (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                  return CustomButtonWidget(
+                    'Register',
+                    onPressed: _onRegisterPressed,
+                    showProgress: snapshot.data ?? false,
+                  );
+                })));
 
     var backBtn = Center(
       child: RichText(
