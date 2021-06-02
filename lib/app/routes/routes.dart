@@ -7,8 +7,6 @@ import 'package:pedigree_seller/app/pages/home/canil_profile_screen.dart';
 import 'package:pedigree_seller/app/pages/main_screen.dart';
 import 'package:pedigree_seller/app/pages/ninhada/ninhada_screen.dart';
 import 'package:pedigree_seller/app/pages/ninhada/cadastrar_ninhada_screen.dart';
-import 'package:pedigree_seller/app/pages/reprodutores/cadastrar_reprodutores_screen.dart';
-import 'package:pedigree_seller/app/pages/reprodutores/reprodutores_screen.dart';
 import 'package:pedigree_seller/app/pages/perfil/perfil_screen.dart';
 
 abstract class Routes {
@@ -19,11 +17,8 @@ abstract class Routes {
   static const Perfil = '/user';
   static const Ninhada = '/ninhada';
   static const CadastrarNinhada = '/ninhada/create';
-  static const Reprodutores = '/reprodutores';
-  static const CadastrarReprodutor = '/reprodutores/create';
   static const CanilInfo = '/canil';
   static const CadastrarCanil = '/canil/create';
-  // static const Categoria = '/category';
 }
 
 final routes = <String, WidgetBuilder>{
@@ -32,8 +27,6 @@ final routes = <String, WidgetBuilder>{
   Routes.Login: (context) => LoginScreen(),
   Routes.Register: (context) => RegisterScreen(),
   Routes.Ninhada: (context) => NinhadasScreen(),
-  Routes.Reprodutores: (context) => ReprodutoresScreen(),
-  Routes.CadastrarReprodutor: (context) => CadastrarReprodutoresScreen(),
   Routes.CadastrarCanil: (context) => CreateCanilScreen(),
   Routes.Home: (context) => MainScreen(),
   Routes.Perfil: (context) => PerfilScreen(),

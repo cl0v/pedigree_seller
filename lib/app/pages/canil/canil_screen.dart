@@ -6,6 +6,8 @@ import 'package:pedigree_seller/app/pages/canil/canil_model.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/app_bar.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
+
+
 /*
  - Essa página será a dashboard
  - Aqui dentro aparecerá a parte de adicionar reprodutores, pets etc...
@@ -46,7 +48,7 @@ class _CanilScreenState extends State<CanilScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final appBar = customAppBar('Canil');
+    final appBar = customAppBar('Dashboard');
 
     final noData = Center(
       child: ElevatedButton(

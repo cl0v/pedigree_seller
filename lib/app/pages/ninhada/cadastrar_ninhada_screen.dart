@@ -4,12 +4,46 @@ import 'package:pedigree_seller/app/components/drop_down_button_widget.dart';
 import 'package:pedigree_seller/app/components/image_picker_tile_widget.dart';
 import 'package:pedigree_seller/app/pages/canil/canil_model.dart';
 import 'package:pedigree_seller/app/pages/ninhada/ninhada_bloc.dart';
+import 'package:pedigree_seller/app/pages/ninhada/ninhada_model.dart';
 
-import 'package:pedigree_seller/app/pages/reprodutores/reprodutor_model.dart';
+//TODO: Remove os reprodutores da jogada
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/alert.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
+
+//TODO: Remover reprodutor
+
+class _CategoryBloc {
+  final mockedCategories = [
+    {
+      'categoria': 'Cachorro',
+      'especies': [
+        'Rotwailer',
+        'Poodle',
+        'Fila',
+      ]
+    },
+    {
+      'categoria': 'Gato',
+      'especies': [
+        'Persa',
+        'Chaninha',
+      ]
+    },
+    {
+      'categoria': 'Rato',
+      'especies': [
+        'RATOERA ASUHSASA',
+        'Chaninha',
+      ]
+    },
+  ];
+
+  List<Categoria> fetch(){
+    return mockedCategories.map((m) => Categoria.fromMap(m)).toList();
+  }
+}
 
 class CadastrarNinhadaScreen extends StatefulWidget {
   @override
@@ -18,6 +52,7 @@ class CadastrarNinhadaScreen extends StatefulWidget {
 
 class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
   late final NinhadaBloc _bloc;
+  final _CategoryBloc _cBloc = _CategoryBloc();
 
   bool _loadedData = false;
 
@@ -30,27 +65,17 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
         _loadedData = true;
       });
     });
-
-    // _bloc.fetchPai(
-    //   null,
-    // );
   }
 
   final _tTitulo = TextEditingController();
 
   CategoriaAnimal? _categoria;
 
-  Reprodutor? _tPai;
-  Reprodutor? _tMae;
-
-  bool _showDropDown = false;
 
   @override
   dispose() {
     super.dispose();
     _bloc.createBtnBloc.dispose();
-    _bloc.maesBloc.dispose();
-    _bloc.paisBloc.dispose();
   }
 
   _setCategory(String categoria, String especie) {
@@ -59,8 +84,7 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
         categoria: categoria,
         especie: especie,
       );
-      _showDropDown = true;
-      if (_categoria != null) _bloc.fetchReprodutores(_categoria!);
+      
       //TODO: Quando troca a categoria pela segunda vez, nao atualiza as opções
     });
   }
@@ -72,36 +96,22 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
     //TODO: Se eu tentar cadastrar sem a foto, pode dar biziu
     if (_tTitulo.text == '' || _categoria == null)
       return alert(context, 'Por favor preencha todos os campos');
-    if (foto != null) {
-      await _bloc.create(
-        _tTitulo.text,
-        foto!,
-        _categoria,
-        _tPai!.nome,
-        _tMae!.nome,
+    if (foto != null && _categoria != null) {
+      NinhadaModel ninhada = NinhadaModel(
+        titulo: _tTitulo.text,
+        categoria: _categoria!,
       );
+
+      await _bloc.create(
+        foto!,
+        ninhada,
+      );
+
       pop(context);
     } else
       alert(context, 'Não foi possivel cadastrar, pois voce nao enviou imagem');
   }
 
-  _onMaeChanged(v) {
-    if (v.runtimeType == Reprodutor) {
-      v = v as Reprodutor;
-      setState(() {
-        _tMae = v;
-      });
-    }
-  }
-
-  _onPaiChanged(v) {
-    if (v.runtimeType == Reprodutor) {
-      v = v as Reprodutor;
-      setState(() {
-        _tPai = v;
-      });
-    }
-  }
 
   Foto? foto;
   _onFotoChanged(Foto foto) {
@@ -125,7 +135,7 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
           )
         : Container();
     var appBar = ScaffoldCommonComponents.customAppBar(
-      'Cadastrar ninhada',
+      'Novo',
       () => pop(context),
     );
     var body = _loadedData
@@ -162,90 +172,16 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
                         context,
                         CategorySelectorScreen(
                           title: 'Categorias',
-                          onValuesChanged: _setCategory,
-                          valores: listaDeValores,
-                          route: Routes.CadastrarNinhada,
+                          c: _cBloc.fetch(),
+                          especies: null,
+                          onChanged: _setCategory,
+                          // categorias: listaDeValores,
+                          routeBack: Routes.CadastrarNinhada,
                         ),
                       );
                     },
                   ),
-                  _showDropDown
-                      ? Column(
-                          children: [
-                            StreamBuilder<List<Reprodutor>>(
-                                stream: _bloc.maesBloc.stream,
-                                builder: (context, snapshot) {
-                                  if (snapshot.hasData) {
-                                    var list = snapshot.data;
-                                    if (list != null) {
-                                      if (list.isEmpty)
-                                        return ListTile(
-                                          title: Text(
-                                            'Você não tem nenhuma fêmea dessa espécie cadastrada',
-                                          ),
-                                          subtitle: Text(
-                                            'Toque para cadastrar um reprodutor',
-                                          ),
-                                          trailing:
-                                              Icon(Icons.arrow_forward_ios),
-                                          onTap: () => pushNamed(context,
-                                              Routes.CadastrarReprodutor),
-                                        );
-                                      return Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 8.0,
-                                        ),
-                                        child: DropDownButtonWidget<Reprodutor>(
-                                          value: _tMae,
-                                          hint: 'Selecione a mae',
-                                          items: list,
-                                          onChanged: _onMaeChanged,
-                                          // hint: 'Teste',
-                                        ),
-                                      );
-                                    }
-                                  }
-                                  return LinearProgressIndicator();
-                                }),
-                            StreamBuilder<List<Reprodutor>>(
-                                stream: _bloc.paisBloc.stream,
-                                builder: (context, snapshot) {
-                                  if (snapshot.hasData) {
-                                    var list = snapshot.data;
-                                    if (list != null) {
-                                      if (list.isEmpty)
-                                        return ListTile(
-                                          title: Text(
-                                            'Você não tem nenhum macho dessa espécie cadastrado',
-                                          ),
-                                          subtitle: Text(
-                                            'Toque para cadastrar um reprodutor',
-                                          ),
-                                          trailing:
-                                              Icon(Icons.arrow_forward_ios),
-                                          onTap: () => pushNamed(
-                                            context,
-                                            Routes.CadastrarReprodutor,
-                                          ),
-                                        );
-                                      return Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8.0),
-                                        child: DropDownButtonWidget<Reprodutor>(
-                                          value: _tPai,
-                                          hint: 'Selecione o pai',
-                                          items: list,
-                                          onChanged: _onPaiChanged,
-                                          // hint: 'Teste',
-                                        ),
-                                      );
-                                    }
-                                  }
-                                  return LinearProgressIndicator();
-                                }),
-                          ],
-                        )
-                      : Container()
+                  // cadastrarPaiMae()
 
                   //TODO: Nao permitir avançar enquanto nao preencher as infos corretas caso esteja true
 
@@ -285,6 +221,104 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
       body: body,
     );
   }
+
+  // Widget cadastrarPaiMae() {
+
+  // _onMaeChanged(v) {
+  //   if (v.runtimeType == Reprodutor) {
+  //     v = v as Reprodutor;
+  //     setState(() {
+  //       _tMae = v;
+  //     });
+  //   }
+  // }
+
+  // _onPaiChanged(v) {
+  //   if (v.runtimeType == Reprodutor) {
+  //     v = v as Reprodutor;
+  //     setState(() {
+  //       _tPai = v;
+  //     });
+  //   }
+  // }
+  //   return _showDropDown
+  //                   ? Column(
+  //                       children: [
+  //                         StreamBuilder<List<Reprodutor>>(
+  //                             stream: _bloc.maesBloc.stream,
+  //                             builder: (context, snapshot) {
+  //                               if (snapshot.hasData) {
+  //                                 var list = snapshot.data;
+  //                                 if (list != null) {
+  //                                   if (list.isEmpty)
+  //                                     return ListTile(
+  //                                       title: Text(
+  //                                         'Você não tem nenhuma fêmea dessa espécie cadastrada',
+  //                                       ),
+  //                                       subtitle: Text(
+  //                                         'Toque para cadastrar um reprodutor',
+  //                                       ),
+  //                                       trailing:
+  //                                           Icon(Icons.arrow_forward_ios),
+  //                                       // onTap: () => pushNamed(context,
+  //                                       //     Routes.CadastrarReprodutor),
+  //                                     );
+  //                                   return Padding(
+  //                                     padding: const EdgeInsets.symmetric(
+  //                                       horizontal: 8.0,
+  //                                     ),
+  //                                     child: DropDownButtonWidget<Reprodutor>(
+  //                                       value: _tMae,
+  //                                       hint: 'Selecione a mae',
+  //                                       items: list,
+  //                                       onChanged: _onMaeChanged,
+  //                                       // hint: 'Teste',
+  //                                     ),
+  //                                   );
+  //                                 }
+  //                               }
+  //                               return LinearProgressIndicator();
+  //                             }),
+  //                         StreamBuilder<List<Reprodutor>>(
+  //                             stream: _bloc.paisBloc.stream,
+  //                             builder: (context, snapshot) {
+  //                               if (snapshot.hasData) {
+  //                                 var list = snapshot.data;
+  //                                 if (list != null) {
+  //                                   if (list.isEmpty)
+  //                                     return ListTile(
+  //                                       title: Text(
+  //                                         'Você não tem nenhum macho dessa espécie cadastrado',
+  //                                       ),
+  //                                       subtitle: Text(
+  //                                         'Toque para cadastrar um reprodutor',
+  //                                       ),
+  //                                       trailing:
+  //                                           Icon(Icons.arrow_forward_ios),
+  //                                       // onTap: () => pushNamed(
+  //                                       //   context,
+  //                                       //   Routes.CadastrarReprodutor,
+  //                                       // ),
+  //                                     );
+  //                                   return Padding(
+  //                                     padding: const EdgeInsets.symmetric(
+  //                                         horizontal: 8.0),
+  //                                     child: DropDownButtonWidget<Reprodutor>(
+  //                                       value: _tPai,
+  //                                       hint: 'Selecione o pai',
+  //                                       items: list,
+  //                                       onChanged: _onPaiChanged,
+  //                                       // hint: 'Teste',
+  //                                     ),
+  //                                   );
+  //                                 }
+  //                               }
+  //                               return LinearProgressIndicator();
+  //                             }),
+  //                       ],
+  //                     )
+  //                   : Container();
+  // }
 }
 
 class Avancados extends StatelessWidget {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/pages/authentication/user_model.dart';
 import 'package:pedigree_seller/app/pages/canil/canil_bloc.dart';
+import 'package:pedigree_seller/app/pages/ninhada/ninhada_screen.dart';
 import 'package:pedigree_seller/app/pages/perfil/perfil_screen.dart';
-import 'package:pedigree_seller/app/pages/store/store_screen.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 
@@ -36,7 +36,7 @@ class _MainScreenState extends State<MainScreen> {
 
   static const pages = [
     const CanilScreen(),
-    const StoreScreen(),
+    const NinhadasScreen(),
     const PerfilScreen(),
   ];
 

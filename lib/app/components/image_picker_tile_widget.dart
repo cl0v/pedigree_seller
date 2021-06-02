@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-import 'package:path/path.dart' as p;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -33,13 +32,14 @@ class _ImagePickerTileWidgetState extends State<ImagePickerTileWidget> {
   bool _picked = false;
 
   _getImage() async {
+    //TODO: Modificar isso e enviar o arquivo direto
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.image,
       );
       if (result != null) {
         Foto foto = Foto(
-          nome: p.extension(result.files.single.name),
+          nome: result.files.single.name,
           fileUnit: result.files.first.bytes,
           path: result.files.first.path,
         );

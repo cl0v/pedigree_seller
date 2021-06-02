@@ -4,23 +4,24 @@ import 'package:pedigree_seller/app/pages/canil/canil_model.dart';
 import 'package:pedigree_seller/app/pages/ninhada/ninhada_model.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
-import 'package:pedigree_seller/app/utils/screen_size.dart';
 
+import '../../../constants.dart';
 import 'ninhada_bloc.dart';
 
 class NinhadasScreen extends StatefulWidget {
+  const NinhadasScreen();
   @override
   _NinhadasScreenState createState() => _NinhadasScreenState();
 }
 
-class _NinhadasScreenState extends State<NinhadasScreen>
-    with AutomaticKeepAliveClientMixin<NinhadasScreen> {
+class _NinhadasScreenState extends State<NinhadasScreen> {
+  // with AutomaticKeepAliveClientMixin<NinhadasScreen> {
   late final NinhadaBloc _bloc;
 
   bool _dataLoaded = false;
 
-  @override
-  bool get wantKeepAlive => true;
+  // @override
+  // bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -57,54 +58,68 @@ class _NinhadasScreenState extends State<NinhadasScreen>
   //TODO: Quando o canil nao está cadastrado fica no loading eterno
   @override
   Widget build(BuildContext context) {
-    super.build(context);
-    Size size = getSize(context);
+    // Size size = getSize(context);
 
+    final AppBar appBar = AppBar(
+      brightness: Brightness.light,
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      centerTitle: true,
+      automaticallyImplyLeading: false,
+      title: Text(
+        'Anúncios',
+        style: kTitleTextStyle,
+      ),
+    );
 
     var body = _dataLoaded
-        ? Container(
-            height: size.height,
-            width: size.width,
-            child: StreamBuilder<List<NinhadaModel>>(
-              stream: _bloc.stream,
-              builder: (context, snapshot) {
-                switch (snapshot.connectionState) {
-                  case ConnectionState.active:
-                    var ninhadas = snapshot.data;
-                    return ninhadas != null
-                        ? ninhadas.isEmpty
-                            ? noData
-                            : ListView.builder(
-                                itemCount: ninhadas.length,
-                                itemBuilder: (context, index) {
-                                  var ninhada = ninhadas[index];
-                                  return ninhadaTile(ninhada);
-                                },
-                              )
-                        : loadingError;
-                  case ConnectionState.waiting:
-                    return loading;
-                  default:
-                    return loadingError;
-                }
-              },
-            ),
+        ?
+        // Container(
+        //     height: size.height,
+        //     width: size.width,
+        //     child:
+        StreamBuilder<List<NinhadaModel>>(
+            stream: _bloc.stream,
+            builder: (context, snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.active:
+                  var ninhadas = snapshot.data;
+                  return ninhadas != null
+                      ? ninhadas.isEmpty
+                          ? noData
+                          : ListView.builder(
+                              itemCount: ninhadas.length,
+                              itemBuilder: (context, index) {
+                                var ninhada = ninhadas[index];
+                                return ninhadaTile(ninhada);
+                              },
+                            )
+                      : loadingError;
+                case ConnectionState.waiting:
+                  return loading;
+                default:
+                  return loadingError;
+              }
+            },
+            // ),
           )
         : Center(
             child: CircularProgressIndicator(),
           );
     final fab = FloatingActionButton.extended(
-      heroTag: 'FabNinhada',
+      // heroTag: 'FabNinhada',
       onPressed: () {
         pushNamed(context, Routes.CadastrarNinhada);
       },
-      label: Text('Nova Ninhada'),
+      label: Text('Criar Anúncio'),
       icon: Icon(Icons.add),
     );
 
     return Scaffold(
-        floatingActionButton: fab,
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        body: body);
+      appBar: appBar,
+      floatingActionButton: fab,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      body: body,
+    );
   }
 }

@@ -4,7 +4,6 @@ import 'package:pedigree_seller/app/interfaces/authentication_interface.dart';
 class FirebaseAuthenticationRepository implements IAuthentication {
   FirebaseAuth auth = FirebaseAuth.instance;
 
-//TODO: Ta rolando bug de quando erra login
   @override
   Future<String> login(String email, String senha) async {
     try {
@@ -12,11 +11,6 @@ class FirebaseAuthenticationRepository implements IAuthentication {
           await auth.signInWithEmailAndPassword(email: email, password: senha);
       return user.user!.uid;
     } catch (e, exeption) {
-      //BUG:
-      /*
-      [firebase_auth/user-not-found] There is no user record corresponding to this
-identifier. The user may have been deleted.
-      */
       print(e);
       throw exeption;
     }

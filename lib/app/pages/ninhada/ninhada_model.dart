@@ -1,6 +1,5 @@
 import 'dart:convert';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:pedigree_seller/app/pages/reprodutores/reprodutor_model.dart';
+
 import '../../components/drop_down_button_widget.dart';
 
 //TODO: Colocar indicador avisando o status do anuncio
@@ -15,18 +14,18 @@ class NinhadaModel {
   String img;
   String titulo;
   CategoriaAnimal categoria;
-  String paiId; //TODO: Substituir para referencia
-  String maeId; //TODO: Substituir para referencia
-  String canilReferenceId; //TODO: Substituir por referencia
-  String? reference; //TODO: Substituir por referencia
+  // String paiId; //TODO: Substituir para referencia
+  // String maeId; //TODO: Substituir para referencia
+  String? canilReferenceId; //TODO: Substituir por referencia
+  // String? reference; //TODO: Substituir por referencia
  
   NinhadaModel({
     this.img = '',
     required this.titulo,
     required this.categoria,
-    required this.paiId,
-    required this.maeId,
-    required this.canilReferenceId,
+    // required this.paiId,
+    // required this.maeId,
+    this.canilReferenceId,
   });
 
   Map<String, dynamic> toMap() {
@@ -34,8 +33,6 @@ class NinhadaModel {
       'img': img,
       'titulo': titulo,
       'categoria': categoria.toMap(),
-      'paiId': paiId,
-      'maeId': maeId,
       'canilReferenceId': canilReferenceId,
     };
   }
@@ -45,8 +42,6 @@ class NinhadaModel {
       img: map['img'] ?? '',
       titulo: map['titulo'],
       categoria: CategoriaAnimal.fromMap(map['categoria']),
-      paiId: map['paiId'],
-      maeId: map['maeId'],
       canilReferenceId: map['canilReferenceId'],
     );
   }
@@ -57,71 +52,51 @@ class NinhadaModel {
 
   factory NinhadaModel.fromJson(String source) =>
       NinhadaModel.fromMap(json.decode(source));
+
+
+  NinhadaModel copyWith({
+    String? img,
+    String? titulo,
+    CategoriaAnimal? categoria,
+    String? canilReferenceId,
+  }) {
+    return NinhadaModel(
+      img: img ?? this.img,
+      titulo: titulo ?? this.titulo,
+      categoria: categoria ?? this.categoria,
+      canilReferenceId: canilReferenceId ?? this.canilReferenceId,
+    );
+  }
 }
 
-class PaiMaeItem extends DropDownItem {
-  String nome;
-  CategoriaAnimal? specs;
-  String? referenceId;
-  PaiMaeItem({
-    required this.nome,
-    this.specs,
-    this.referenceId,
+
+
+
+class CategoriaAnimal {
+  String categoria;
+  String especie;
+  CategoriaAnimal({
+    required this.categoria,
+    required this.especie,
   });
-
-  @override
-  String text() {
-    return nome;
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is PaiMaeItem &&
-        other.nome == nome &&
-        other.referenceId == referenceId;
-  }
-
-  @override
-  int get hashCode => nome.hashCode ^ referenceId.hashCode;
 
   Map<String, dynamic> toMap() {
     return {
-      'nome': nome,
-      'specs': specs?.toMap(),
-      'referenceId': referenceId,
+      'categoria': categoria,
+      'especie': especie,
     };
   }
 
-  factory PaiMaeItem.fromDocumentSnapshot(
-      QueryDocumentSnapshot<Map<String, dynamic>> snapshot) {
-    print(snapshot);
-    return PaiMaeItem.fromMap(snapshot.data())
-        .copyWith(referenceId: snapshot.reference.id);
-  }
-
-  factory PaiMaeItem.fromMap(Map<String, dynamic> map) {
-    return PaiMaeItem(
-      nome: map['nome'],
-      specs: CategoriaAnimal.fromMap(map['specs']),
+  factory CategoriaAnimal.fromMap(Map<String, dynamic> map) {
+    return CategoriaAnimal(
+      categoria: map['categoria'],
+      especie: map['especie'],
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory PaiMaeItem.fromJson(String source) =>
-      PaiMaeItem.fromMap(json.decode(source));
-
-  PaiMaeItem copyWith({
-    String? nome,
-    CategoriaAnimal? specs,
-    String? referenceId,
-  }) {
-    return PaiMaeItem(
-      nome: nome ?? this.nome,
-      specs: specs ?? this.specs,
-      referenceId: referenceId ?? this.referenceId,
-    );
-  }
+  factory CategoriaAnimal.fromJson(String source) =>
+      CategoriaAnimal.fromMap(json.decode(source));
 }
+

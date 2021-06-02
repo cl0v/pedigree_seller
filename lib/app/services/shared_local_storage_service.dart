@@ -17,20 +17,12 @@ class SharedLocalStorageService implements ILocalStorage {
   @override
   Future put(String key, dynamic value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    switch (value.runtimeType) {
-      case String:
-        print("é string po, bota aq sem dó");
-        break;
-      case bool:
-        print("é bool po, bota aq sem dó");
-        break;
-    }
-    if (value.runtimeType is String) return prefs.setString(key, value);
-    if (value.runtimeType is int) return prefs.setInt(key, value);
-    if (value.runtimeType is bool) return prefs.setBool(key, value);
-    if (value.runtimeType is double) return prefs.setDouble(key, value);
-    if (value.runtimeType is List<String>)
-      return prefs.setStringList(key, value);
+    final type = value.runtimeType;
+    if (type is String) return prefs.setString(key, value);
+    if (type is int) return prefs.setInt(key, value);
+    if (type is bool) return prefs.setBool(key, value);
+    if (type is double) return prefs.setDouble(key, value);
+    if (type is List<String>) return prefs.setStringList(key, value);
   }
 }
 

@@ -21,7 +21,6 @@ class DropDownButtonWidget<G extends DropDownItem> extends StatelessWidget {
     var i = items
         .map(
           (i) => DropdownMenuItem<G>(
-            //TODO: Adicionar valor nessa merda
             value: i,
             child: new Text(
               "${i.text()}",

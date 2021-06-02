@@ -1,8 +1,29 @@
+
 import 'package:flutter/material.dart';
+
 import 'package:pedigree_seller/app/utils/nav.dart';
 
 import '../../constants.dart';
 
+class Categoria {
+  late String categoria;
+  late List<String> especies;
+
+  Categoria({
+    required this.categoria,
+    required this.especies,
+  });
+
+
+  factory Categoria.fromMap(Map<String, dynamic> map) {
+    return Categoria(
+      categoria: map['categoria'],
+      especies:  map['especies'],
+    );
+  }
+
+}
+//TODO: Remover
 class CategoriasEspecies {
   String text;
   List<CategoriasEspecies> list;
@@ -12,23 +33,27 @@ class CategoriasEspecies {
   });
 }
 
-
-
 class CategorySelectorScreen extends StatelessWidget {
-  final List<CategoriasEspecies> valores;
+  final List<CategoriasEspecies> categorias;
+  final List<Categoria> c;
+  final List<String>? especies;
   final String title;
-  final Function(String, String) onValuesChanged;
-  final String route;
+  final Function(String, String) onChanged;
+  final String routeBack;
 
   CategorySelectorScreen({
     required this.title,
-    required this.onValuesChanged,
-    required this.route,
-    this.valores = const [],
+    required this.onChanged,
+    required this.routeBack,
+    this.c = const [],
+    this.categorias = const [],
+    this.especies = const [],
   });
 
   @override
   Widget build(BuildContext context) {
+    final List<String> list = especies ?? c.map((c) => c.categoria).toList();
+
     var appBar = AppBar(
       brightness: Brightness.light,
       backgroundColor: Colors.transparent,
@@ -50,30 +75,40 @@ class CategorySelectorScreen extends StatelessWidget {
       ),
     );
     var body = ListView.builder(
-        itemCount: valores.length,
+        itemCount: list.length,
         itemBuilder: (context, idx) {
-          var val = valores[idx];
+          final txt = list[idx];
           return ListTile(
             title: Text(
-              val.text,
+              txt,
             ),
-            trailing:
-                val.list.length > 0 ? Icon(Icons.arrow_forward_ios) : null,
+            trailing: especies == null ? Icon(Icons.arrow_forward_ios) : null,
             onTap: () {
-              if (val.list.length > 0)
+              if (especies == null) {
                 push(
-                  context,
-                  CategorySelectorScreen(
-                    onValuesChanged: onValuesChanged,
-                    title: val.text,
-                    valores: val.list,
-                    route: route,
-                  ),
-                );
+                    context,
+                    CategorySelectorScreen(
+                      title: c[idx].categoria,
+                      onChanged: onChanged,
+                      routeBack: routeBack,
+                      especies: c[idx].especies
+
+                    ));
+              }
+
+              // if (val.list.length > 0)
+              //   push(
+              //     context,
+              //     CategorySelectorScreen(
+              //       onChanged: onChanged,
+              //       title: val.text,
+              //       categorias: val.list,
+              //       routeBack: routeBack,
+              //     ),
+              //   );
               else {
-                onValuesChanged(title, val.text);
-                popUntil(context, route);
-                //TODO: Posso passar as parada por aq tb
+                onChanged(title, txt);
+                popUntil(context, routeBack);
               }
             },
           );
