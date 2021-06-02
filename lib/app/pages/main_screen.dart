@@ -35,7 +35,7 @@ class _MainScreenState extends State<MainScreen> {
   int pageIndex = 0;
 
   static const pages = [
-    const CanilScreen(),
+    // const CanilScreen(),
     const NinhadasScreen(),
     const PerfilScreen(),
   ];
@@ -60,8 +60,8 @@ class _MainScreenState extends State<MainScreen> {
               });
             },
             items: [
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.dashboard), label: 'Dashboard'),
+              // BottomNavigationBarItem(
+              //     icon: Icon(Icons.dashboard), label: 'Dashboard'),
               BottomNavigationBarItem(icon: Icon(Icons.store), label: 'Loja'),
               BottomNavigationBarItem(
                   icon: Icon(Icons.person), label: 'Perfil'),
