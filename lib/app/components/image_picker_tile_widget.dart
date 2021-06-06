@@ -36,6 +36,7 @@ class _ImagePickerTileWidgetState extends State<ImagePickerTileWidget> {
 
   _getImage() async {
     //TODO: Modificar isso e enviar o arquivo direto
+    //Melhor do que criar um objeto so pra trabalhar com isso(Foto)
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.image,

@@ -27,7 +27,8 @@ class FirebaseAuthenticationRepository implements IAuthentication {
       email: email,
       password: senha,
     );
+         //TODO: Futuramente parar de retornar o ID(nao preciso dele nos users)
     return c.user!
-        .uid; //TODO: Futuramente parar de retornar o ID(nao preciso dele nos users)
+        .uid;
   }
 }

@@ -57,7 +57,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   String? _validateEmail() {
-    //TODO: Mostrar na tela o erro, definir um setState
     var text = _tEmail.text;
     if (text.isEmpty) {
       return "Digite o login";
