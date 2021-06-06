@@ -1,3 +1,4 @@
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
@@ -5,38 +6,44 @@ import 'package:pedigree_seller/app/utils/nav.dart';
 
 import '../../constants.dart';
 
-class Categoria {
-  late String categoria;
-  late List<String> especies;
+//final url =
+//    'http://localhost:9199/v0/b/pedigree-app-5cfbe.appspot.com/o/jsons%2Fpt_br%2Fcategorias.json?alt=media&token=776ad2d1-1e10-4635-8219-9eb008a7ea54';
 
-  Categoria({
+class CategoriaModelHelper {
+  late String categoria;
+  late List<EspecieModelHelper> especies;
+
+  CategoriaModelHelper({
     required this.categoria,
     required this.especies,
   });
 
-
-  factory Categoria.fromMap(Map<String, dynamic> map) {
-    return Categoria(
-      categoria: map['categoria'],
-      especies:  map['especies'],
-    );
+  CategoriaModelHelper.fromMap(Map<String, dynamic> json) {
+    categoria = json['categoria'];
+    especies = json['especies']
+        .map<EspecieModelHelper>((m) => EspecieModelHelper.fromJson(m))
+        .toList();
   }
 
+  factory CategoriaModelHelper.fromJson(String source) =>
+      CategoriaModelHelper.fromMap(json.decode(source));
 }
-//TODO: Remover
-class CategoriasEspecies {
-  String text;
-  List<CategoriasEspecies> list;
-  CategoriasEspecies({
-    required this.text,
-    this.list = const [],
+
+class EspecieModelHelper {
+  late String nome;
+
+  EspecieModelHelper({
+    required this.nome,
   });
+
+  EspecieModelHelper.fromJson(Map<String, dynamic> json) {
+    nome = json['nome'];
+  }
 }
 
 class CategorySelectorScreen extends StatelessWidget {
-  final List<CategoriasEspecies> categorias;
-  final List<Categoria> c;
-  final List<String>? especies;
+  final List<CategoriaModelHelper> categorias;
+  final List<EspecieModelHelper>? especies;
   final String title;
   final Function(String, String) onChanged;
   final String routeBack;
@@ -45,14 +52,13 @@ class CategorySelectorScreen extends StatelessWidget {
     required this.title,
     required this.onChanged,
     required this.routeBack,
-    this.c = const [],
     this.categorias = const [],
     this.especies = const [],
   });
 
   @override
   Widget build(BuildContext context) {
-    final List<String> list = especies ?? c.map((c) => c.categoria).toList();
+    final List<String> list = especies?.map((e) => e.nome).toList() ?? categorias.map((c) => c.categoria).toList();
 
     var appBar = AppBar(
       brightness: Brightness.light,
@@ -88,12 +94,10 @@ class CategorySelectorScreen extends StatelessWidget {
                 push(
                     context,
                     CategorySelectorScreen(
-                      title: c[idx].categoria,
-                      onChanged: onChanged,
-                      routeBack: routeBack,
-                      especies: c[idx].especies
-
-                    ));
+                        title: categorias[idx].categoria,
+                        onChanged: onChanged,
+                        routeBack: routeBack,
+                        especies: categorias[idx].especies));
               }
 
               // if (val.list.length > 0)

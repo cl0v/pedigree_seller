@@ -12,15 +12,3 @@ class Pedigree extends StatelessWidget {
     );
   }
 }
-
-class PedigreeDebug extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Pedigree seller',
-      debugShowCheckedModeBanner: false,
-      initialRoute: Routes.Home,
-      routes: routes,
-    );
-  }
-}

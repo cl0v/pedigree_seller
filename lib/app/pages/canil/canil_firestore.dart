@@ -6,10 +6,14 @@ class CanilFirestore {
 
   CanilFirestore(this.userReferenceId);
 
-   CollectionReference<Map<String, dynamic>> get _canilCollection =>
-      FirebaseFirestore.instance.collection('canil');
+  static final String collectionPath = 'stores';
 
-   Stream<CanilModel?> stream() => _canilCollection
+  CollectionReference<Map<String, dynamic>> get _canilCollection =>
+      FirebaseFirestore.instance.collection(collectionPath);
+
+  //TODO: Implement withConverter
+
+  Stream<CanilModel?> stream() => _canilCollection
       .where('donoReferencia', isEqualTo: userReferenceId)
       .snapshots()
       .map(
@@ -18,7 +22,7 @@ class CanilFirestore {
             .first,
       );
 
-   Future<CanilModel?> future() async {
+  Future<CanilModel?> future() async {
     var c = await _canilCollection
         .where('donoReferencia', isEqualTo: userReferenceId)
         .get();
@@ -31,7 +35,7 @@ class CanilFirestore {
       return null;
   }
 
-   Future<CanilModel?> register(CanilModel canil) async {
+  Future<CanilModel?> register(CanilModel canil) async {
     try {
       var reference = await _canilCollection.add(canil.toMap());
       canil = canil.copyWith(referenceId: reference.id)..save();

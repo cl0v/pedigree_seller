@@ -22,7 +22,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  // await Prefs.put('firestore.settings', false);
+  await Prefs.put('firestore.settings', false);
   bool useEmulator = true;
   bool settings = (await Prefs.get('firestore.settings')) ?? false;
 

@@ -11,37 +11,16 @@ import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/alert.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
+import 'package:dio/dio.dart';
 
 //TODO: Remover reprodutor
 
 class _CategoryBloc {
-  final mockedCategories = [
-    {
-      'categoria': 'Cachorro',
-      'especies': [
-        'Rotwailer',
-        'Poodle',
-        'Fila',
-      ]
-    },
-    {
-      'categoria': 'Gato',
-      'especies': [
-        'Persa',
-        'Chaninha',
-      ]
-    },
-    {
-      'categoria': 'Rato',
-      'especies': [
-        'RATOERA ASUHSASA',
-        'Chaninha',
-      ]
-    },
-  ];
-
-  List<Categoria> fetch(){
-    return mockedCategories.map((m) => Categoria.fromMap(m)).toList();
+   final url =
+      'http://localhost:9199/v0/b/pedigree-app-5cfbe.appspot.com/o/jsons%2Fpt_br%2Fcategorias.json?alt=media&token=776ad2d1-1e10-4635-8219-9eb008a7ea54';
+  Future<List<CategoriaModelHelper>> get future async {
+    var response = await Dio().get(url);
+    return response.data.map<CategoriaModelHelper>((v) => CategoriaModelHelper.fromMap(v)).toList();
   }
 }
 
@@ -52,7 +31,7 @@ class CadastrarNinhadaScreen extends StatefulWidget {
 
 class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
   late final NinhadaBloc _bloc;
-  final _CategoryBloc _cBloc = _CategoryBloc();
+  final _CategoryBloc _categoryBloc = _CategoryBloc();
 
   bool _loadedData = false;
 
@@ -71,7 +50,6 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
 
   CategoriaAnimal? _categoria;
 
-
   @override
   dispose() {
     super.dispose();
@@ -84,7 +62,7 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
         categoria: categoria,
         especie: especie,
       );
-      
+
       //TODO: Quando troca a categoria pela segunda vez, nao atualiza as opções
     });
   }
@@ -111,7 +89,6 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
     } else
       alert(context, 'Não foi possivel cadastrar, pois voce nao enviou imagem');
   }
-
 
   Foto? foto;
   _onFotoChanged(Foto foto) {
@@ -163,24 +140,32 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
                     ),
                   ),
 
-                  ListTile(
-                    title: Text(_categoria?.especie ?? 'Selecione a categoria'),
-                    subtitle: Text('*Selecione a categoria'),
-                    trailing: Icon(Icons.arrow_forward_ios),
-                    onTap: () {
-                      push(
-                        context,
-                        CategorySelectorScreen(
-                          title: 'Categorias',
-                          c: _cBloc.fetch(),
-                          especies: null,
-                          onChanged: _setCategory,
-                          // categorias: listaDeValores,
-                          routeBack: Routes.CadastrarNinhada,
-                        ),
-                      );
-                    },
-                  ),
+                  FutureBuilder<List<CategoriaModelHelper>>(
+                      future: _categoryBloc.future,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData)
+                          return ListTile(
+                            title: Text(
+                                _categoria?.especie ?? 'Selecione a categoria'),
+                            subtitle: Text('*Selecione a categoria'),
+                            trailing: Icon(Icons.arrow_forward_ios),
+                            onTap: () {
+                              push(
+                                context,
+                                CategorySelectorScreen(
+                                  title: 'Categorias',
+                                  categorias: snapshot.data??[],
+                                  especies: null,
+                                  onChanged: _setCategory,
+                                  routeBack: Routes.CadastrarNinhada,
+                                ),
+                              );
+                            },
+                          );
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }),
                   // cadastrarPaiMae()
 
                   //TODO: Nao permitir avançar enquanto nao preencher as infos corretas caso esteja true

@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import '../../components/drop_down_button_widget.dart';
 
 //TODO: Colocar indicador avisando o status do anuncio
 //Aprovado, Negado, Aguardando
@@ -8,6 +7,11 @@ import '../../components/drop_down_button_widget.dart';
 
 class NinhadaModel {
   ///Pretendo colocar relação de cores com quantidade
+//TODO: Substituir tudo por static para ter acesso facilitado e menos erros
+// static final String  pImg = 'img';
+// static final String  pTitle = 'titulo';
+// static final String  pCategory = 'categoria';
+// static final String  pStoreReference = 'canilReferenceId';
   ///'Cores' (String) : quantidade (int)
   //Cores disponiveis
   //Preco de cada filhote

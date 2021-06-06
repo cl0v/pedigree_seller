@@ -8,7 +8,7 @@ import 'package:pedigree_seller/app/pages/authentication/firebase_authentication
 class AuthenticationFirestore {
   static IAuthentication _auth = FirebaseAuthenticationRepository();
 
-  static final String _collectionPath = 'sellers';
+  static final String collectionPath = 'users';
 
   static Future<UserModel?> login(String email, String senha) async {
     try {
@@ -17,7 +17,7 @@ class AuthenticationFirestore {
     //TODO: Tratar os erros
     //There is no user record corresponding to this identifier. The user may have been deleted.    
       var query = await FirebaseFirestore.instance
-          .collection(_collectionPath)
+          .collection(collectionPath)
           .where('id', isEqualTo: id)
           .get();
 
@@ -51,7 +51,7 @@ class AuthenticationFirestore {
       );
 
       var referencia = await FirebaseFirestore.instance
-          .collection(_collectionPath)
+          .collection(collectionPath)
           .add(user.toMap());
 
       user.copyWith(referenceId: referencia.id).save();
