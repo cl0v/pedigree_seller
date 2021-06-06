@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/pages/authentication/user_model.dart';
-import 'package:pedigree_seller/app/pages/canil/canil_model.dart';
+import 'package:pedigree_seller/app/pages/canil/store_model.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
@@ -77,7 +77,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
                 trailing: Icon(Icons.arrow_forward_ios),
                 onTap: () {
                   UserModel.clear();
-                  CanilModel.clear();
+                  Store.clear();
                   pushNamed(context, Routes.Login, replace: true);
                 },
                 //TODO: Passar o sair para cá futuramente(Sair da drawer)

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/commons/commons.dart';
 import 'package:pedigree_seller/app/pages/authentication/user_model.dart';
 import 'package:pedigree_seller/app/pages/canil/canil_bloc.dart';
-import 'package:pedigree_seller/app/pages/canil/canil_model.dart';
+import 'package:pedigree_seller/app/pages/canil/store_model.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/app_bar.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
@@ -37,7 +37,7 @@ class _CanilScreenState extends State<CanilScreen> {
     super.initState();
 
     UserModel.get().then((u) {
-      CanilModel.get().then((c) {
+      Store.get().then((c) {
         _bloc = CanilBloc(u!, canil: c!);
         setState(() {
           _dataLoaded = true;
@@ -65,7 +65,7 @@ class _CanilScreenState extends State<CanilScreen> {
     );
 
     final body = _dataLoaded
-        ? StreamBuilder<CanilModel?>(
+        ? StreamBuilder<Store?>(
             stream: _bloc.bloc.stream,
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {

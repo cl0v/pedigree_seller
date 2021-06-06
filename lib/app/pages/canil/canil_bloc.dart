@@ -1,6 +1,6 @@
 import 'package:pedigree_seller/app/pages/authentication/user_model.dart';
 import 'package:pedigree_seller/app/pages/canil/canil_firestore.dart';
-import 'package:pedigree_seller/app/pages/canil/canil_model.dart';
+import 'package:pedigree_seller/app/pages/canil/store_model.dart';
 import 'package:pedigree_seller/app/utils/simple_bloc.dart';
 
 class CanilBloc {
@@ -9,14 +9,14 @@ class CanilBloc {
   }
 
   final UserModel user;
-  CanilModel? canil;
+  Store? canil;
 
   final createBtnBloc = SimpleBloc<bool>();
-  final bloc = SimpleBloc<CanilModel?>();
+  final bloc = SimpleBloc<Store?>();
 
   CanilFirestore get _respository => CanilFirestore(user.referenceId);
 
-  Future<CanilModel?> create(CanilModel canil) async {
+  Future<Store?> create(Store canil) async {
     //TODO: Receber o model
     createBtnBloc.add(true);
     var c =
@@ -26,8 +26,8 @@ class CanilBloc {
     return c;
   }
 
-  Future<CanilModel?> get() async {
-    var c = await CanilModel.get();
+  Future<Store?> get() async {
+    var c = await Store.get();
     if (c == null) {
       c = await _respository.future();
       //Tenho uma stream la, posso bindar

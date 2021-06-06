@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/commons/commons.dart';
-import 'package:pedigree_seller/app/pages/canil/canil_model.dart';
-import 'package:pedigree_seller/app/pages/ninhada/ninhada_model.dart';
+import 'package:pedigree_seller/app/pages/canil/store_model.dart';
+import 'package:pedigree_seller/app/pages/ninhada/product_model.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 
@@ -26,7 +26,7 @@ class _NinhadasScreenState extends State<NinhadasScreen> {
   @override
   void initState() {
     super.initState();
-    CanilModel.get().then((c) {
+    Store.get().then((c) {
       //Segunda vez que roda parece que ta vindo nullo, após sair do app
       if (c != null) {
         _bloc = NinhadaBloc(c);
@@ -43,11 +43,11 @@ class _NinhadasScreenState extends State<NinhadasScreen> {
     deactivate();
   }
 
-  ListTile ninhadaTile(NinhadaModel ninhada) {
+  ListTile ninhadaTile(Product ninhada) {
     return ListTile(
-      subtitle: Text(ninhada.categoria.especie),
+      subtitle: Text(ninhada.category.breed),
       title: Text(
-        ninhada.titulo,
+        ninhada.title,
       ),
 
 //TODO: Implement ninhada view, e editar ninhada
@@ -78,7 +78,7 @@ class _NinhadasScreenState extends State<NinhadasScreen> {
         //     height: size.height,
         //     width: size.width,
         //     child:
-        StreamBuilder<List<NinhadaModel>>(
+        StreamBuilder<List<Product>>(
             stream: _bloc.stream,
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {

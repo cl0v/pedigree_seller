@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/components/category_screen.dart';
-import 'package:pedigree_seller/app/components/drop_down_button_widget.dart';
 import 'package:pedigree_seller/app/components/image_picker_tile_widget.dart';
-import 'package:pedigree_seller/app/pages/canil/canil_model.dart';
+import 'package:pedigree_seller/app/pages/canil/store_model.dart';
 import 'package:pedigree_seller/app/pages/ninhada/ninhada_bloc.dart';
-import 'package:pedigree_seller/app/pages/ninhada/ninhada_model.dart';
+import 'package:pedigree_seller/app/pages/ninhada/product_model.dart';
 
 //TODO: Remove os reprodutores da jogada
 import 'package:pedigree_seller/app/routes/routes.dart';
@@ -16,11 +15,13 @@ import 'package:dio/dio.dart';
 //TODO: Remover reprodutor
 
 class _CategoryBloc {
-   final url =
+  final url =
       'http://localhost:9199/v0/b/pedigree-app-5cfbe.appspot.com/o/jsons%2Fpt_br%2Fcategorias.json?alt=media&token=776ad2d1-1e10-4635-8219-9eb008a7ea54';
   Future<List<CategoriaModelHelper>> get future async {
     var response = await Dio().get(url);
-    return response.data.map<CategoriaModelHelper>((v) => CategoriaModelHelper.fromMap(v)).toList();
+    return response.data
+        .map<CategoriaModelHelper>((v) => CategoriaModelHelper.fromMap(v))
+        .toList();
   }
 }
 
@@ -32,14 +33,18 @@ class CadastrarNinhadaScreen extends StatefulWidget {
 class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
   late final NinhadaBloc _bloc;
   final _CategoryBloc _categoryBloc = _CategoryBloc();
+  late final String storeId;
 
   bool _loadedData = false;
 
   @override
   void initState() {
     super.initState();
-    CanilModel.get().then((c) {
-      if (c != null) _bloc = NinhadaBloc(c);
+    Store.get().then((c) {
+      if (c != null) {
+        storeId = c.id;
+        _bloc = NinhadaBloc(c);
+      }
       setState(() {
         _loadedData = true;
       });
@@ -48,7 +53,7 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
 
   final _tTitulo = TextEditingController();
 
-  CategoriaAnimal? _categoria;
+  CategoriaFilhote? _categoria;
 
   @override
   dispose() {
@@ -58,9 +63,9 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
 
   _setCategory(String categoria, String especie) {
     setState(() {
-      _categoria = CategoriaAnimal(
-        categoria: categoria,
-        especie: especie,
+      _categoria = CategoriaFilhote(
+        category: categoria,
+        breed: especie,
       );
 
       //TODO: Quando troca a categoria pela segunda vez, nao atualiza as opções
@@ -75,9 +80,10 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
     if (_tTitulo.text == '' || _categoria == null)
       return alert(context, 'Por favor preencha todos os campos');
     if (foto != null && _categoria != null) {
-      NinhadaModel ninhada = NinhadaModel(
-        titulo: _tTitulo.text,
-        categoria: _categoria!,
+      Product ninhada = Product(
+        title: _tTitulo.text,
+        storeId: storeId,
+        category: _categoria!,
       );
 
       await _bloc.create(
@@ -146,7 +152,7 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
                         if (snapshot.hasData)
                           return ListTile(
                             title: Text(
-                                _categoria?.especie ?? 'Selecione a categoria'),
+                                _categoria?.breed ?? 'Selecione a categoria'),
                             subtitle: Text('*Selecione a categoria'),
                             trailing: Icon(Icons.arrow_forward_ios),
                             onTap: () {
@@ -154,7 +160,7 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
                                 context,
                                 CategorySelectorScreen(
                                   title: 'Categorias',
-                                  categorias: snapshot.data??[],
+                                  categorias: snapshot.data ?? [],
                                   especies: null,
                                   onChanged: _setCategory,
                                   routeBack: Routes.CadastrarNinhada,

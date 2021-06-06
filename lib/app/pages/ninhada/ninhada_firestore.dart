@@ -5,7 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pedigree_seller/app/components/image_picker_tile_widget.dart';
 import 'package:pedigree_seller/app/pages/canil/canil_firestore.dart';
-import 'package:pedigree_seller/app/pages/ninhada/ninhada_model.dart';
+import 'package:pedigree_seller/app/pages/ninhada/product_model.dart';
 
 class NinhadaFirestore {
   NinhadaFirestore(this.canilReferenceId);
@@ -17,8 +17,8 @@ class NinhadaFirestore {
   CollectionReference<Map<String, dynamic>> get collection =>
       FirebaseFirestore.instance.collection(collectionPath);
 
-  Stream<List<NinhadaModel>> get stream => collection
-      .where('canilReferenceId', isEqualTo: canilReferenceId)
+  Stream<List<Product>> get stream => collection
+      .where(Product.pStoreId, isEqualTo: canilReferenceId)
       .
       //   .withConverter<NinhadaModel>(
       //     fromFirestore: (json) => NinhadaModel.fromMap(json.data()!),
@@ -26,10 +26,10 @@ class NinhadaFirestore {
       //  ).
       snapshots()
       .map((query) =>
-          query.docs.map((snap) => NinhadaModel.fromMap(snap.data())).toList());
+          query.docs.map((snap) => Product.fromMap(snap.data())).toList());
 
-  Stream<List<NinhadaModel>> get streamWithConverter => collection
-      .where('canilReferenceId', isEqualTo: canilReferenceId)
+  Stream<List<Product>> get streamWithConverter => collection
+      .where(Product.pStoreId, isEqualTo: canilReferenceId)
       .
       //   .withConverter<NinhadaModel>(
       //     fromFirestore: (json) => NinhadaModel.fromMap(json.data()!),
@@ -37,22 +37,22 @@ class NinhadaFirestore {
       //  ).
       snapshots()
       .map((query) =>
-          query.docs.map((snap) => NinhadaModel.fromMap(snap.data())).toList());
+          query.docs.map((snap) => Product.fromMap(snap.data())).toList());
   /* Create */
 
   //TODO: Estudar o collection.withConverter
   Future<bool> register(
     Foto foto,
-    NinhadaModel ninhada,
+    Product ninhada,
   ) async {
     try {
       Map<String, dynamic> map = ninhada.toMap()
         ..addEntries([
-          MapEntry('approved', false),
+          MapEntry(Product.pApproved, false),
         ]);
 
       var ref = await collection.add(map);
-      await _uploadFoto(ref, foto, 'foto', 'img');
+      await _uploadFoto(ref, foto, 'foto', Product.pImgUrl);
       //TODO: Salvar a foto dentro da pasta de canil, para facilitar manutenção
       return true;
     } catch (e) {

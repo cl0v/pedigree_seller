@@ -4,7 +4,7 @@ import 'package:pedigree_seller/app/components/form_error_text.dart';
 import 'package:pedigree_seller/app/components/text_input_field_widget.dart';
 import 'package:pedigree_seller/app/pages/authentication/user_model.dart';
 import 'package:pedigree_seller/app/pages/canil/canil_bloc.dart';
-import 'package:pedigree_seller/app/pages/canil/canil_model.dart';
+import 'package:pedigree_seller/app/pages/canil/store_model.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/alert.dart';
 import 'package:pedigree_seller/app/utils/app_bar.dart';
@@ -63,7 +63,7 @@ class _CreateCanilScreenState extends State<CreateCanilScreen> {
     String contato = _tContato.text;
     String cnpj = _tCnpj.text;
 
-    final canil = CanilModel(titulo: nome, contato: contato, cnpj: cnpj);
+    final canil = Store(title: nome, phone: contato, cnpj: cnpj);
 
     var c = await _bloc.create(canil);
 

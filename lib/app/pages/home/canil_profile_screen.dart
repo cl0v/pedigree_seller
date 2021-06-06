@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pedigree_seller/app/pages/canil/canil_model.dart';
+import 'package:pedigree_seller/app/pages/canil/store_model.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
 
@@ -9,7 +9,7 @@ class CanilInfoScreen extends StatefulWidget {
 }
 
 class _CanilInfoScreenState extends State<CanilInfoScreen> {
-  var future = CanilModel.get();
+  var future = Store.get();
 
   @override
   void initState() {
@@ -18,12 +18,12 @@ class _CanilInfoScreenState extends State<CanilInfoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var fBuilder = FutureBuilder<CanilModel?>(
+    var fBuilder = FutureBuilder<Store?>(
       future: future,
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.done:
-            CanilModel? canil = snapshot.data;
+            Store? canil = snapshot.data;
             if (canil != null)
               return ListView(
                 
@@ -31,14 +31,14 @@ class _CanilInfoScreenState extends State<CanilInfoScreen> {
                   ListTile(
                     title: Text('Titulo:'),
                     subtitle: Text(
-                      canil.titulo,
+                      canil.title,
                     ),
                   ),
                   Divider(),
                   ListTile(
                     title: Text('Contato:'),
                     subtitle: Text(
-                      canil.contato,
+                      canil.phone,
                     ),
                   ),
                   Divider(),
