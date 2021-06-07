@@ -1,9 +1,9 @@
+import 'package:commons/models/product.dart';
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/components/category_screen.dart';
 import 'package:pedigree_seller/app/components/image_picker_tile_widget.dart';
 import 'package:pedigree_seller/app/pages/canil/store_model.dart';
 import 'package:pedigree_seller/app/pages/ninhada/ninhada_bloc.dart';
-import 'package:pedigree_seller/app/pages/ninhada/product_model.dart';
 
 //TODO: Remove os reprodutores da jogada
 import 'package:pedigree_seller/app/routes/routes.dart';
@@ -11,14 +11,19 @@ import 'package:pedigree_seller/app/utils/alert.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
 import 'package:dio/dio.dart';
+import 'package:pedigree_seller/keys.dart';
 
 //TODO: Remover reprodutor
 
 class _CategoryBloc {
-  final url =
-      'http://localhost:9199/v0/b/pedigree-app-5cfbe.appspot.com/o/jsons%2Fpt_br%2Fcategorias.json?alt=media&token=776ad2d1-1e10-4635-8219-9eb008a7ea54';
-  Future<List<CategoriaModelHelper>> get future async {
+  final url = configJsonUrl;
+  Future<List<CategoriaModelHelper>> future() async {
+    Dio()
+        .get(
+            "https://firebasestorage.googleapis.com/v0/b/pedigree-app-5cfbe.appspot.com/o/jsons%2Fpt_br%2Fcategorias.json?alt=media&token=33aa2be0-c2d5-4b63-92d9-04dce8d74297")
+        .then((value) => print(value));
     var response = await Dio().get(url);
+    print(response.data);
     return response.data
         .map<CategoriaModelHelper>((v) => CategoriaModelHelper.fromMap(v))
         .toList();
@@ -147,7 +152,7 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
                   ),
 
                   FutureBuilder<List<CategoriaModelHelper>>(
-                      future: _categoryBloc.future,
+                      future: _categoryBloc.future(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData)
                           return ListTile(

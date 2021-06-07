@@ -1,7 +1,7 @@
+import 'package:commons/models/product.dart';
 import 'package:pedigree_seller/app/components/image_picker_tile_widget.dart';
 import 'package:pedigree_seller/app/pages/canil/store_model.dart';
 import 'package:pedigree_seller/app/pages/ninhada/product_firestore.dart';
-import 'package:pedigree_seller/app/pages/ninhada/product_model.dart';
 import 'package:pedigree_seller/app/utils/simple_bloc.dart';
 
 class NinhadaBloc {

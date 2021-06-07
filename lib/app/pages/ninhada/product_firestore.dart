@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:commons/models/product.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pedigree_seller/app/components/image_picker_tile_widget.dart';
 import 'package:pedigree_seller/app/pages/canil/store_firestore.dart';
-import 'package:pedigree_seller/app/pages/ninhada/product_model.dart';
 
 class ProductFirestore {
   ProductFirestore(this.storeId);
@@ -36,6 +36,8 @@ class ProductFirestore {
     Product p,
   ) async {
     try {
+
+      
       await _ref.add(p).then((r) async => await _uploadFoto(r, foto, 'foto', Product.pImgUrl));
       
       //TODO: Salvar a foto dentro da pasta de canil, para facilitar manutenção

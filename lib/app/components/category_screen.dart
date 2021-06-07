@@ -99,17 +99,6 @@ class CategorySelectorScreen extends StatelessWidget {
                         routeBack: routeBack,
                         especies: categorias[idx].especies));
               }
-
-              // if (val.list.length > 0)
-              //   push(
-              //     context,
-              //     CategorySelectorScreen(
-              //       onChanged: onChanged,
-              //       title: val.text,
-              //       categorias: val.list,
-              //       routeBack: routeBack,
-              //     ),
-              //   );
               else {
                 onChanged(title, txt);
                 popUntil(context, routeBack);

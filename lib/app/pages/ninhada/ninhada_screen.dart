@@ -1,7 +1,7 @@
+import 'package:commons/models/product.dart';
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/commons/commons.dart';
 import 'package:pedigree_seller/app/pages/canil/store_model.dart';
-import 'package:pedigree_seller/app/pages/ninhada/product_model.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 

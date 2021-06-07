@@ -17,7 +17,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  bool useEmulator = true;
+  bool useEmulator = false;
   bool firstRun = true;
 
 
