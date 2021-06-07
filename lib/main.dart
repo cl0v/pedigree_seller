@@ -2,29 +2,23 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:pedigree_seller/app/services/shared_local_storage_service.dart';
 import 'package:pedigree_seller/pedigree.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-//TODO: Criar a dashboard
 
-//TODO: Salvar o json das categorias no storage, pegar o link e colocar aqui
 
 /** 
- * Ordene as páginas
- * Adicione fotos na ninhada
+ * Criar a dashboard
  * Altere o nome das coisas
- * Quando toca no botao, envia para o whatsapp
  */
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  await Prefs.put('firestore.settings', false);
   bool useEmulator = true;
-  bool settings = (await Prefs.get('firestore.settings')) ?? false;
+  bool firstRun = true;
 
 
   if (kDebugMode && useEmulator) {
@@ -32,8 +26,7 @@ void main() async {
         ? '10.0.2.2:8080'
         : 'localhost:8080';
 
-    if (!settings) {
-      Prefs.put('firestore.settings', true);
+    if (firstRun) {
       FirebaseFirestore.instance.settings = Settings(
         host: host,
         sslEnabled: false,

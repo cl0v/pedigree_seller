@@ -12,13 +12,13 @@ class AuthenticationFirestore {
 
   static Future<UserModel?> login(String email, String senha) async {
     try {
-      var id = await _auth.login(email, senha);
-      
-    //TODO: Tratar os erros
-    //There is no user record corresponding to this identifier. The user may have been deleted.    
+      var uid = await _auth.login(email, senha);
+
+      //TODO: Tratar os erros
+      //There is no user record corresponding to this identifier. The user may have been deleted.
       var query = await FirebaseFirestore.instance
           .collection(collectionPath)
-          .where('id', isEqualTo: id)
+          .where(UserModel.pUid, isEqualTo: uid)
           .get();
 
       var referencia = query.docs.first;
@@ -28,7 +28,9 @@ class AuthenticationFirestore {
       } else {
         return null;
       }
-    } catch (e) {
+    } catch (e, ex) {
+      print('AUTH STACKTRACE >: $ex');
+      print('AUTH EXPECTION >: $e');
       return null;
     }
   }
@@ -36,25 +38,19 @@ class AuthenticationFirestore {
   static Future<bool> register(
     String email,
     String senha,
-    String cpf,
-    String nome,
-    String contato,
+    UserModel u,
   ) async {
     try {
-      var id = await _auth.register(email, senha);
-      UserModel user = UserModel(
-        cpf: cpf,
-        nome: nome,
-        email: email,
-        contato: contato,
-        id: id,
-      );
+      var uid = await _auth.register(email, senha);
+      u = u..uid = uid;
 
-      var referencia = await FirebaseFirestore.instance
+      final referencia = await FirebaseFirestore.instance
           .collection(collectionPath)
-          .add(user.toMap());
+          .add(u.toMap());
 
-      user.copyWith(referenceId: referencia.id).save();
+      u
+        ..id = referencia.id
+        ..save();
       return true;
     } catch (e) {
       return false;

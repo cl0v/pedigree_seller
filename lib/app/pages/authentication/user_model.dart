@@ -6,71 +6,65 @@ import 'package:pedigree_seller/app/services/shared_local_storage_service.dart';
 //MEU USUARIO NAO PRECISA DA REFERENCIA DO CANIL, BASTA EU USAR MEU UID PARA PESQUISAR NOS CANILS
 //JUNTAR USUARIOS COM SELLERS
 class UserModel {
-  late final String cpf;
-  late final String nome;
-  late final String email;
-  late final String contato;
-  late final String id;
-  String referenceId;
+  static final String _pref = 'user.prefs';
+
+  static final String pId = 'id';
+  static final String pUid = 'uid';
+  static final String pNome = 'nome';
+  static final String pEmail = 'email';
+  static final String pContato = 'contato';
+
+  String? id; //TODO: Acredito que isso nao seja necessario
+  String? uid;
+  String nome;
+  String email;
+  String contato;
 
   UserModel({
-    required this.cpf,
     required this.nome,
     required this.email,
     required this.contato,
-    required this.id,
-    this.referenceId = '',
+    this.uid,
+    this.id,
   });
 
   factory UserModel.fromMap(Map<String, dynamic> json) => UserModel(
-        cpf: json['cpf'],
-        nome: json['nome'],
-        email: json['email'],
-        contato: json['contato'],
-        id: json['id'],
+        uid: json[pUid],
+        nome: json[pNome],
+        email: json[pEmail],
+        contato: json[pContato],
       );
 
   Map<String, dynamic> toMap() => {
-        'cpf': cpf,
-        'nome': nome,
-        'email': email,
-        'contato': contato,
-        'id': id,
+        pUid: uid,
+        pNome: nome,
+        pEmail: email,
+        pContato: contato,
       };
 
   String toJson() => json.encode(toMap());
 
+  Map<String, dynamic> toMapWithReference() =>
+      {pUid: uid, pNome: nome, pEmail: email, pContato: contato, pId: id};
 
-  Map<String, dynamic> toMapWithReference() => {
-        'cpf': cpf,
-        'nome': nome,
-        'email': email,
-        'contato': contato,
-        'id': id,
-        'referenceId': referenceId
-      };
-
-      factory UserModel.fromMapWithReference(Map<String, dynamic> json) => UserModel(
-        cpf: json['cpf'],
-        nome: json['nome'],
-        email: json['email'],
-        contato: json['contato'],
-        id: json['id'],
-        referenceId: json['referenceId'],
+  factory UserModel.fromMapWithReference(Map<String, dynamic> json) =>
+      UserModel(
+        uid: json[pUid],
+        nome: json[pNome],
+        email: json[pEmail],
+        contato: json[pContato],
+        id: json[pId],
       );
-
 
   factory UserModel.fromDocumentSnapshot(
           DocumentSnapshot<Map<String, dynamic>> snapshot) =>
-      UserModel.fromMap(snapshot.data()!)
-          .copyWith(referenceId: snapshot.reference.id);
-
+      UserModel.fromMap(snapshot.data()!)..id = snapshot.reference.id;
 
   factory UserModel.fromJson(String source) =>
       UserModel.fromMapWithReference(json.decode(source));
 
   static Future<UserModel?> get() async {
-    final json = await Prefs.get('seller.prefs');
+    final json = await Prefs.get(_pref);
     if (json != null)
       return json.isEmpty ? null : UserModel.fromJson(json);
     else
@@ -79,28 +73,10 @@ class UserModel {
 
   save() {
     String json = jsonEncode(toMapWithReference());
-    Prefs.put('seller.prefs', json);
+    Prefs.put(_pref, json);
   }
 
   static clear() {
-    Prefs.put('seller.prefs', '');
-  }
-
-  UserModel copyWith({
-    String? cpf,
-    String? nome,
-    String? email,
-    String? contato,
-    String? id,
-    String? referenceId,
-  }) {
-    return UserModel(
-      cpf: cpf ?? this.cpf,
-      nome: nome ?? this.nome,
-      email: email ?? this.email,
-      contato: contato ?? this.contato,
-      id: id ?? this.id,
-      referenceId: referenceId ?? this.referenceId,
-    );
+    Prefs.put(_pref, '');
   }
 }

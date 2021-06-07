@@ -3,7 +3,7 @@ import 'package:pedigree_seller/app/components/custom_button_widget.dart';
 import 'package:pedigree_seller/app/components/form_error_text.dart';
 import 'package:pedigree_seller/app/components/text_input_field_widget.dart';
 import 'package:pedigree_seller/app/pages/authentication/user_model.dart';
-import 'package:pedigree_seller/app/pages/canil/canil_bloc.dart';
+import 'package:pedigree_seller/app/pages/canil/store_bloc.dart';
 import 'package:pedigree_seller/app/pages/canil/store_model.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/alert.dart';
@@ -19,9 +19,9 @@ class CreateCanilScreen extends StatefulWidget {
 class _CreateCanilScreenState extends State<CreateCanilScreen> {
   final _tNome = TextEditingController();
   final _tContato = TextEditingController();
-  final _tCnpj = TextEditingController();
+  final _tInstagram = TextEditingController();
 
-  late final CanilBloc _bloc;
+  late final StoreBloc _bloc;
   bool _dataLoaded = false;
 
   bool _showError = false;
@@ -30,10 +30,7 @@ class _CreateCanilScreenState extends State<CreateCanilScreen> {
   void initState() {
     super.initState();
     UserModel.get().then((u) {
-      if (u != null)
-        _bloc = CanilBloc(
-          u,
-        );
+      if (u != null) _bloc = StoreBloc(u.id!);
       setState(() {
         _dataLoaded = true;
       });
@@ -49,7 +46,7 @@ class _CreateCanilScreenState extends State<CreateCanilScreen> {
   _onCreatePressed() async {
     if (!(_validateNome() == null &&
         _validateContato() == null &&
-        _validateCnpj() == null)) {
+        _validateInstagram() == null)) {
       setState(() {
         _showError = true;
       });
@@ -61,9 +58,9 @@ class _CreateCanilScreenState extends State<CreateCanilScreen> {
 
     String nome = _tNome.text;
     String contato = _tContato.text;
-    String cnpj = _tCnpj.text;
+    String instagram = _tInstagram.text;
 
-    final canil = Store(title: nome, phone: contato, cnpj: cnpj);
+    final canil = Store(title: nome, phone: contato, instagram: instagram);
 
     var c = await _bloc.create(canil);
 
@@ -91,11 +88,11 @@ class _CreateCanilScreenState extends State<CreateCanilScreen> {
     return null;
   }
 
-  String? _validateCnpj() {
+  String? _validateInstagram() {
     //TODO: Implement
-    var text = _tCnpj.text;
+    var text = _tInstagram.text;
     if (text.isEmpty) {
-      return "Digite o cnpj";
+      return "Digite o instagram";
     }
     return null;
   }
@@ -160,13 +157,13 @@ class _CreateCanilScreenState extends State<CreateCanilScreen> {
               : Container(),
           TextInputFieldWidget(
             icon: Icons.document_scanner,
-            hint: 'CNPJ',
+            hint: 'Instagram',
             inputAction: TextInputAction.next,
             inputType: TextInputType.number,
-            controller: _tCnpj,
+            controller: _tInstagram,
           ),
-          _validateCnpj() != null && _showError
-              ? FormErrorText(_validateCnpj()!)
+          _validateInstagram() != null && _showError
+              ? FormErrorText(_validateInstagram()!)
               : Container(),
         ],
       ),

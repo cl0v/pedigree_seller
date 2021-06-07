@@ -51,13 +51,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
                 ),
               ),
               Divider(),
-              ListTile(
-                title: Text('CPF:'),
-                subtitle: Text(
-                  '${user.cpf.substring(0, 3)}********',
-                ),
-              ),
-              Divider(),
+              
               ListTile(
                 leading: Icon(Icons.store),
                 title: Text('Dados da loja:'),

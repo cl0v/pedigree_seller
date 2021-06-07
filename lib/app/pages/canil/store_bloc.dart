@@ -1,26 +1,25 @@
 import 'package:pedigree_seller/app/pages/authentication/user_model.dart';
-import 'package:pedigree_seller/app/pages/canil/canil_firestore.dart';
+import 'package:pedigree_seller/app/pages/canil/store_firestore.dart';
 import 'package:pedigree_seller/app/pages/canil/store_model.dart';
 import 'package:pedigree_seller/app/utils/simple_bloc.dart';
 
-class CanilBloc {
-  CanilBloc(this.user, {this.canil}) {
+class StoreBloc {
+  StoreBloc(this.userId, {this.canil}) {
     bloc.add(canil);
   }
 
-  final UserModel user;
+  final String userId;
   Store? canil;
 
   final createBtnBloc = SimpleBloc<bool>();
   final bloc = SimpleBloc<Store?>();
 
-  CanilFirestore get _respository => CanilFirestore(user.referenceId);
+  StoreFirestore get _respository => StoreFirestore(userId);
 
-  Future<Store?> create(Store canil) async {
+  Future<Store?> create(Store s) async {
     //TODO: Receber o model
     createBtnBloc.add(true);
-    var c =
-        await _respository.register(canil.copyWith(donoID: user.referenceId));
+    var c = await _respository.register(s..userId = userId);
     createBtnBloc.add(false);
 
     return c;

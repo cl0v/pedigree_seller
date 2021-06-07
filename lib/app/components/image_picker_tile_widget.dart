@@ -41,6 +41,7 @@ class _ImagePickerTileWidgetState extends State<ImagePickerTileWidget> {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.image,
       );
+      
       if (result != null) {
         Foto foto = Foto(
           nome: result.files.single.name,

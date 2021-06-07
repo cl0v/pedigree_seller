@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 //TODO: Colocar indicador avisando o status do anuncio
 //Aprovado, Negado, Aguardando
 //Posso criar um modelo para trabalhar com essas infos
@@ -34,6 +36,7 @@ class Product {
       pImgUrl: imgUrl,
       pTitle: title,
       pCategory: category.toMap(),
+      pApproved: approved,
       pStoreId: storeId,
     };
   }
@@ -47,25 +50,10 @@ class Product {
     );
   }
 
+  factory Product.fromSnap(DocumentSnapshot<Map<String, dynamic>> snap) =>
+      Product.fromMap(snap.data()!)..id = snap.reference.id;
 
-  String toJson() => json.encode(toMap());
 
-  factory Product.fromJson(String source) =>
-      Product.fromMap(json.decode(source));
-
-  Product copyWith({
-    String? img,
-    String? titulo,
-    CategoriaFilhote? categoria,
-    String? canilReferenceId,
-  }) {
-    return Product(
-      imgUrl: img ?? this.imgUrl,
-      title: titulo ?? this.title,
-      category: categoria ?? this.category,
-      storeId: canilReferenceId ?? this.storeId,
-    );
-  }
 }
 
 class CategoriaFilhote {

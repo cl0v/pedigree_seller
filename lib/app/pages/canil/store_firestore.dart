@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pedigree_seller/app/pages/canil/store_model.dart';
 
-class CanilFirestore {
-  final String userReferenceId;
+class StoreFirestore {
+  final String userId;
 
-  CanilFirestore(this.userReferenceId);
+  StoreFirestore(this.userId);
 
   static final String collectionPath = 'stores';
 
@@ -14,7 +14,7 @@ class CanilFirestore {
   //TODO: Implement withConverter
 
   Stream<Store?> stream() => _canilCollection
-      .where(Store.pUserId, isEqualTo: userReferenceId)
+      .where(Store.pUserId, isEqualTo: userId)
       .snapshots()
       .map(
         (query) => query.docs
@@ -24,11 +24,11 @@ class CanilFirestore {
 
   Future<Store?> future() async {
     var c = await _canilCollection
-        .where(Store.pUserId, isEqualTo: userReferenceId)
+        .where(Store.pUserId, isEqualTo: userId)
         .get();
     if (c.size > 0) {
       return _canilCollection
-          .where(Store.pUserId, isEqualTo: userReferenceId)
+          .where(Store.pUserId, isEqualTo: userId)
           .get()
           .then((q) => Store.fromDocumentSnapshot(q.docs.first));
     } else
@@ -38,7 +38,11 @@ class CanilFirestore {
   Future<Store?> register(Store canil) async {
     try {
       var reference = await _canilCollection.add(canil.toMap());
-      canil = canil.copyWith(referenceId: reference.id)..save();
+      canil = canil
+        ..id = reference.id
+        //TODO: Testar se o save esta enviando a referencia correta
+        // se nao basta fazer canil.save()
+        ..save();
       return canil;
     } catch (e) {
       return null;

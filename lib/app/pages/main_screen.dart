@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/pages/authentication/user_model.dart';
-import 'package:pedigree_seller/app/pages/canil/canil_bloc.dart';
+import 'package:pedigree_seller/app/pages/canil/store_bloc.dart';
 import 'package:pedigree_seller/app/pages/ninhada/ninhada_screen.dart';
 import 'package:pedigree_seller/app/pages/perfil/perfil_screen.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/nav.dart';
 
-import 'canil/canil_screen.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -20,7 +19,7 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
     UserModel.get().then((u) {
-      CanilBloc(u!).get().then((c) async {
+      StoreBloc(u!.id!).get().then((c) async {
         if (c == null) {
           pushNamed(context, Routes.CadastrarCanil, replace: true);
         } else {

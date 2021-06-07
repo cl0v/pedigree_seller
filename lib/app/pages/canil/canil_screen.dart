@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/commons/commons.dart';
 import 'package:pedigree_seller/app/pages/authentication/user_model.dart';
-import 'package:pedigree_seller/app/pages/canil/canil_bloc.dart';
+import 'package:pedigree_seller/app/pages/canil/store_bloc.dart';
 import 'package:pedigree_seller/app/pages/canil/store_model.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
 import 'package:pedigree_seller/app/utils/app_bar.dart';
@@ -20,7 +20,7 @@ class CanilScreen extends StatefulWidget {
 }
 
 class _CanilScreenState extends State<CanilScreen> {
-  late final CanilBloc _bloc;
+  late final StoreBloc _bloc;
 
   bool _dataLoaded = false;
 
@@ -38,7 +38,7 @@ class _CanilScreenState extends State<CanilScreen> {
 
     UserModel.get().then((u) {
       Store.get().then((c) {
-        _bloc = CanilBloc(u!, canil: c!);
+        _bloc = StoreBloc(u!.id!, canil: c!);
         setState(() {
           _dataLoaded = true;
         });

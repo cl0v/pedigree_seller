@@ -18,34 +18,34 @@ class _CanilInfoScreenState extends State<CanilInfoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    //TODO: estudar a possibilidade de tirar o ? do store
     var fBuilder = FutureBuilder<Store?>(
       future: future,
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.done:
-            Store? canil = snapshot.data;
-            if (canil != null)
+            Store? store = snapshot.data;
+            if (store != null)
               return ListView(
-                
                 children: [
                   ListTile(
                     title: Text('Titulo:'),
                     subtitle: Text(
-                      canil.title,
+                      store.title,
                     ),
                   ),
                   Divider(),
                   ListTile(
                     title: Text('Contato:'),
                     subtitle: Text(
-                      canil.phone,
+                      store.phone,
                     ),
                   ),
                   Divider(),
                   ListTile(
-                    title: Text('CNPJ:'),
+                    title: Text('Instagram:'),
                     subtitle: Text(
-                      '${canil.cnpj.substring(0, 3)}*...*******',
+                      '${store.instagram}',
                     ),
                   ),
                 ],
