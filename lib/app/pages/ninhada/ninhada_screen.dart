@@ -1,9 +1,9 @@
+import 'package:commons/commons.dart';
 import 'package:commons/models/product.dart';
 import 'package:flutter/material.dart';
-import 'package:pedigree_seller/app/commons/commons.dart';
-import 'package:pedigree_seller/app/pages/canil/store_model.dart';
+import 'package:pedigree_seller/app/pages/canil/store_prefs.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
-import 'package:pedigree_seller/app/utils/nav.dart';
+import 'package:pedigree_seller/app/widgets/commons.dart';
 
 import '../../../constants.dart';
 import 'ninhada_bloc.dart';
@@ -16,7 +16,7 @@ class NinhadasScreen extends StatefulWidget {
 
 class _NinhadasScreenState extends State<NinhadasScreen> {
   // with AutomaticKeepAliveClientMixin<NinhadasScreen> {
-  late final NinhadaBloc _bloc;
+  late final ProductBloc _bloc;
 
   bool _dataLoaded = false;
 
@@ -26,10 +26,10 @@ class _NinhadasScreenState extends State<NinhadasScreen> {
   @override
   void initState() {
     super.initState();
-    Store.get().then((c) {
+    StorePrefs.get().then((c) {
       //Segunda vez que roda parece que ta vindo nullo, após sair do app
       if (c != null) {
-        _bloc = NinhadaBloc(c);
+        _bloc = ProductBloc(c);
         setState(() {
           _dataLoaded = true;
         });

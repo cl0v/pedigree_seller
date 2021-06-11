@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:pedigree_seller/app/interfaces/authentication_interface.dart';
+import 'package:commons/commons.dart';
 import 'package:pedigree_seller/app/pages/authentication/user_model.dart';
 import 'package:pedigree_seller/app/pages/authentication/firebase_authentication_repository.dart';
 //TODO: Testar quando ja existe user com esse email
@@ -23,7 +23,7 @@ class AuthenticationFirestore {
 
       var referencia = query.docs.first;
       if (referencia.exists) {
-        var user = UserModel.fromDocumentSnapshot(referencia);
+        var user = UserModel.fromSnap(referencia);
         return user;
       } else {
         return null;

@@ -1,6 +1,6 @@
+import 'package:commons/commons.dart';
 import 'package:flutter/material.dart';
-import 'package:pedigree_seller/app/pages/canil/store_model.dart';
-import 'package:pedigree_seller/app/utils/nav.dart';
+import 'package:pedigree_seller/app/pages/canil/store_prefs.dart';
 import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
 
 class CanilInfoScreen extends StatefulWidget {
@@ -9,7 +9,7 @@ class CanilInfoScreen extends StatefulWidget {
 }
 
 class _CanilInfoScreenState extends State<CanilInfoScreen> {
-  var future = Store.get();
+  var future = StorePrefs.get();
 
   @override
   void initState() {

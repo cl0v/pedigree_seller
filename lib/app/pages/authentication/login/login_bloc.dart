@@ -1,6 +1,6 @@
+import 'package:commons/commons.dart';
 import 'package:pedigree_seller/app/pages/authentication/authentication_firestore.dart';
 import 'package:pedigree_seller/app/pages/authentication/user_model.dart';
-import 'package:pedigree_seller/app/utils/simple_bloc.dart';
 
 class LoginBloc extends SimpleBloc<bool> {
   

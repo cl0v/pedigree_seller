@@ -56,7 +56,7 @@ class UserModel {
         id: json[pId],
       );
 
-  factory UserModel.fromDocumentSnapshot(
+  factory UserModel.fromSnap(
           DocumentSnapshot<Map<String, dynamic>> snapshot) =>
       UserModel.fromMap(snapshot.data()!)..id = snapshot.reference.id;
 

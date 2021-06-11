@@ -1,7 +1,5 @@
-import 'package:pedigree_seller/app/pages/authentication/user_model.dart';
-import 'package:pedigree_seller/app/pages/canil/store_firestore.dart';
-import 'package:pedigree_seller/app/pages/canil/store_model.dart';
-import 'package:pedigree_seller/app/utils/simple_bloc.dart';
+import 'package:commons/commons.dart';
+import 'package:pedigree_seller/app/pages/canil/store_prefs.dart';
 
 class StoreBloc {
   StoreBloc(this.userId, {this.canil}) {
@@ -14,21 +12,26 @@ class StoreBloc {
   final createBtnBloc = SimpleBloc<bool>();
   final bloc = SimpleBloc<Store?>();
 
-  StoreFirestore get _respository => StoreFirestore(userId);
+  StoreFirebase _respository = StoreFirebase();
 
   Future<Store?> create(Store s) async {
     //TODO: Receber o model
-    createBtnBloc.add(true);
-    var c = await _respository.register(s..userId = userId);
-    createBtnBloc.add(false);
+    try {
+      createBtnBloc.add(true);
+      s = s
+        ..userId = userId
+        ..save();
+      var c = await _respository.create(s);
+      createBtnBloc.add(false);
 
-    return c;
+      return s;
+    } catch (e) {}
   }
 
   Future<Store?> get() async {
-    var c = await Store.get();
+    var c = await StorePrefs.get();
     if (c == null) {
-      c = await _respository.future();
+      c = await _respository.read(userId).first;
       //Tenho uma stream la, posso bindar
       if (c != null) {
         c.save();

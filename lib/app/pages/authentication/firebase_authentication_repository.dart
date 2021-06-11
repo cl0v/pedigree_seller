@@ -1,5 +1,5 @@
+import 'package:commons/commons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:pedigree_seller/app/interfaces/authentication_interface.dart';
 
 class FirebaseAuthenticationRepository implements IAuthentication {
   FirebaseAuth auth = FirebaseAuth.instance;

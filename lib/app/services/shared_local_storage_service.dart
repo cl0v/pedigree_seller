@@ -1,5 +1,5 @@
-import 'package:pedigree_seller/app/interfaces/local_storage_interface.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:commons/commons.dart';
 
 class SharedLocalStorageService implements ILocalStorage {
   @override

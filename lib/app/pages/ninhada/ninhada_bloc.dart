@@ -1,32 +1,30 @@
+import 'package:commons/commons.dart';
 import 'package:commons/models/product.dart';
-import 'package:pedigree_seller/app/components/image_picker_tile_widget.dart';
-import 'package:pedigree_seller/app/pages/canil/store_model.dart';
-import 'package:pedigree_seller/app/pages/ninhada/product_firestore.dart';
-import 'package:pedigree_seller/app/utils/simple_bloc.dart';
+import 'package:file_picker/file_picker.dart';
 
-class NinhadaBloc {
+class ProductBloc {
 
-  NinhadaBloc(
+  ProductBloc(
     this.canil,
   );
 
   final Store canil;
 
-  ProductFirestore get _repository => ProductFirestore(canil.id);
+  ProductFirebase _repository = ProductFirebase();
 
-  get stream => _repository.readAll;
+  get stream => _repository.readFromStore(canil.id!);
 
   final createBtnBloc = SimpleBloc<bool>();
   Future<bool> create(
-    Foto foto,
+    PlatformFile file,
     Product product,
   ) async {
     try {
       createBtnBloc.add(true);
 
       final response = await _repository.create(
-        foto,
-        product..storeId = canil.id,
+        file,
+        product..storeId = canil.id!,
       );
       createBtnBloc.add(false);
       return response;

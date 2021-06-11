@@ -1,17 +1,17 @@
 import 'package:commons/models/product.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:pedigree_seller/app/components/category_screen.dart';
-import 'package:pedigree_seller/app/components/image_picker_tile_widget.dart';
-import 'package:pedigree_seller/app/pages/canil/store_model.dart';
+import 'package:pedigree_seller/app/pages/canil/store_prefs.dart';
 import 'package:pedigree_seller/app/pages/ninhada/ninhada_bloc.dart';
 
 //TODO: Remove os reprodutores da jogada
 import 'package:pedigree_seller/app/routes/routes.dart';
-import 'package:pedigree_seller/app/utils/alert.dart';
-import 'package:pedigree_seller/app/utils/nav.dart';
 import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
 import 'package:dio/dio.dart';
 import 'package:pedigree_seller/keys.dart';
+
+import 'package:commons/commons.dart';
 
 //TODO: Remover reprodutor
 
@@ -36,7 +36,7 @@ class CadastrarNinhadaScreen extends StatefulWidget {
 }
 
 class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
-  late final NinhadaBloc _bloc;
+  late final ProductBloc _bloc;
   final _CategoryBloc _categoryBloc = _CategoryBloc();
   late final String storeId;
 
@@ -45,10 +45,10 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
   @override
   void initState() {
     super.initState();
-    Store.get().then((c) {
+    StorePrefs.get().then((c) {
       if (c != null) {
-        storeId = c.id;
-        _bloc = NinhadaBloc(c);
+        storeId = c.id!;
+        _bloc = ProductBloc(c);
       }
       setState(() {
         _loadedData = true;
@@ -100,9 +100,9 @@ class _CadastrarNinhadaScreenState extends State<CadastrarNinhadaScreen> {
     } else
       alert(context, 'Não foi possivel cadastrar, pois voce nao enviou imagem');
   }
-
-  Foto? foto;
-  _onFotoChanged(Foto foto) {
+//TODO: Trocar para platformfile
+  PlatformFile? foto;
+  _onFotoChanged(PlatformFile foto) {
     //TODO: Implement enviar foto
     this.foto = foto;
   }

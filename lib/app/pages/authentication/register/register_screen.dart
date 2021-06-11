@@ -1,15 +1,14 @@
-import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:commons/commons.dart';
+import 'package:pedigree_seller/app/pages/authentication/register/register_bloc.dart';
+import 'package:pedigree_seller/app/components/text_input_field_widget.dart';
+import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
+import 'package:pedigree_seller/app/pages/authentication/user_model.dart';
 import 'package:pedigree_seller/app/components/custom_button_widget.dart';
 import 'package:pedigree_seller/app/components/form_error_text.dart';
-import 'package:pedigree_seller/app/components/text_input_field_widget.dart';
-import 'package:pedigree_seller/app/pages/authentication/register/register_bloc.dart';
-import 'package:pedigree_seller/app/pages/authentication/user_model.dart';
 import 'package:pedigree_seller/app/routes/routes.dart';
-import 'package:pedigree_seller/app/utils/alert.dart';
-import 'package:pedigree_seller/app/utils/nav.dart';
-import 'package:pedigree_seller/app/utils/scaffold_common_components.dart';
 import 'package:pedigree_seller/constants.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
